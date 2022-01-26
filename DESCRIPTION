@@ -1,0 +1,28 @@
+Package: openalex
+Title: Data from OpenAlex REST API
+Version: 0.0.1
+Authors@R: 
+    person(given = "Markus",
+           family = "Skyttner",
+           role = c("cre", "aut"),
+           email = "markussk@kth.se")
+Description: The OpenAlex website provides open data on
+    papers/works, venues, institutions and more around the world under the CC0 license. 
+    This R package provides some functions to access data from the OpenAlex REST API.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+Imports: 
+    httr,
+    magrittr,
+    utils,
+    dplyr,
+    purrr,
+    progress,
+    jsonlite,
+    tibble
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
