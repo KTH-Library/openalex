@@ -42,15 +42,6 @@ data <-
       "institutions.id:I86987016,publication_year:2022"))
 
 long <- openalex_flatten_long(data)
-
-head(long)
-
-# long %>% count(name) %>% arrange(desc(n))
-# 
-# long %>%
-#   filter(grepl("_id$", name)) %>%
-#   mutate(entity = gsub("_id$", "", name)) %>%
-#   count(entity)
 ```
 
 ## Rate limits

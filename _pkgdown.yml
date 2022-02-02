@@ -1,2 +1,4 @@
-destination: docs
 url: https://kth-library.github.io/openalex/
+template:
+  bootstrap: 5
+
