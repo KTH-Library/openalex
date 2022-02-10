@@ -47,6 +47,8 @@ data <-
 
 long <- openalex_flatten_long(data)
 
+# number of ids
+#long %>% filter(name == "id") %>% nrow()
 ```
 
 ## Rate limits

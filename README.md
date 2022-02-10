@@ -42,6 +42,9 @@ data <-
       "institutions.id:I86987016,publication_year:2022"))
 
 long <- openalex_flatten_long(data)
+
+# number of ids
+#long %>% filter(name == "id") %>% nrow()
 ```
 
 ## Rate limits

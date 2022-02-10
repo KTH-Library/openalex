@@ -163,7 +163,7 @@ openalex_list <- function(entity, query, format = "object", verbose = TRUE) {
 #'
 #' Iterates over paged results showing a progress bar
 #'
-#' @param entity one of the values in openalix_entity_enum()
+#' @param entity one of the values in openalex_entity_enum()
 #' @param query an openalex_query object
 #' @param verbose boolean to indicate whether to output messages during process
 #' @return R object with results matching the query
@@ -189,11 +189,16 @@ openalex_crawl <- function(entity, query, verbose = TRUE) {
     format = "  open alex resolving [:bar] :percent eta: :eta",
     total = length(pages), clear = FALSE, width = 60)
 
+  #TODO: fixme so this can run in parallel?
+  q <- query
+  i <- 1
   entities <- purrr::possibly(
     .f = function(x) {
       pb$tick()
+      q$page <- i
       Sys.sleep(1 / 100)
-      openalex_list(entity, query, format = "object", verbose = FALSE)$result #%>%
+      i <<- i + 1
+      openalex_list(entity, q, format = "object", verbose = FALSE)$result #%>%
         #bind_cols(page = x) %>%
         #select(page, everything())
     },

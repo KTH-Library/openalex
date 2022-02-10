@@ -7,7 +7,7 @@
 openalex_crawl(entity, query, verbose = TRUE)
 }
 \arguments{
-\item{entity}{one of the values in openalix_entity_enum()}
+\item{entity}{one of the values in openalex_entity_enum()}
 
 \item{query}{an openalex_query object}
 
