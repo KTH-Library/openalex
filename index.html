@@ -83,7 +83,10 @@
     query <span class="op">=</span> <span class="fu">openalex</span><span class="fu">:::</span><span class="fu">openalex_query</span><span class="op">(</span>filter <span class="op">=</span> 
       <span class="st">"institutions.id:I86987016,publication_year:2022"</span><span class="op">)</span><span class="op">)</span>
 
-<span class="va">long</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/openalex_flatten_long.html">openalex_flatten_long</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></code></pre></div>
+<span class="va">long</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/openalex_flatten_long.html">openalex_flatten_long</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>
+
+<span class="co"># number of ids</span>
+<span class="co">#long %&gt;% filter(name == "id") %&gt;% nrow()</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="rate-limits">Rate limits<a class="anchor" aria-label="anchor" href="#rate-limits"></a>
