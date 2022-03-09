@@ -8,13 +8,19 @@ test_that("fetching work works", {
 
   identifier <- "W2741809807"
 
-  is_ok <- identical(openalex_work(identifier), openalex_work(identifier, "table"))
+  #is_ok <- identical(openalex_work(identifier), openalex_work(identifier))
+  expected_id <- paste0("https://openalex.org/", identifier)
+
+  table_has_ok_id <-
+    subset(openalex_work(identifier), name == "id")$value ==
+      expected_id
 
   object_has_ok_id <-
     openalex_work(identifier, format = "object")$ids$openalex ==
-      paste0("https://openalex.org/", identifier)
+      expected_id
 
-  expect_true(is_ok && object_has_ok_id)
+  expect_true(table_has_ok_id && object_has_ok_id)
+
 })
 
 test_that("error 404 is returned for when work is not found", {
@@ -63,3 +69,33 @@ test_that("fetching random work works", {
 #
 # library(dplyr)
 # res %>% openalex_flatten_long() %>% count(name) %>% arrange(desc(n))
+
+test_that("providing email for polite pool gives faster response...", {
+
+  # so initial setting can be restored
+  initial <- Sys.getenv("OPENALEX_USERAGENT")
+  on.exit(Sys.setenv("OPENALEX_USERAGENT" = initial))
+
+  # not polite
+  openalex_polite("")
+  tn <- system.time(
+    c1 <- openalex_crawl("works", verbose = TRUE,
+             query = openalex:::openalex_query(filter =
+                 "institutions.id:I86987016,publication_year:2022"))
+  )[3]
+
+  # polite
+  openalex_polite("markussk@kth.se")
+  tp <- system.time(
+    c2 <- openalex_crawl("works", verbose = TRUE,
+             query = openalex:::openalex_query(filter =
+                 "institutions.id:I86987016,publication_year:2022"))
+  )[3]
+
+  message("Polite time: ", tp)
+  message("Not polite time: ", tn)
+
+  is_faster <- tp < tn
+  expect_true(is_faster)
+
+})

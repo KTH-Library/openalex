@@ -55,6 +55,21 @@ long <- openalex_flatten_long(data)
 
 By providing an email adress you enter the "polite pool" which provides even less of rate limiting for API requests.
 
+Either provide it in `~/.Renviron` or use helper fcn `openalex_polite()` to set or unset email:
+
+```{r polite}
+library(openalex)
+
+# set an email to use for the session
+
+openalex_polite("you@example.com")
+
+# unset, and use default user agent string...
+
+openalex_polite("")
+
+```
+
 ## Data source attribution
 
 When data from `openalex` is displayed publicly, this attribution also needs to be displayed:

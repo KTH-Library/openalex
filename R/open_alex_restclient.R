@@ -1,6 +1,49 @@
 #file.edit("~/.Renviron")
 #readRenviron("~/.Renviron")
 
+#' Enter the OpenAlex API polite pool for faster requests by providing an email
+#' @param email an email address, on the form "you@example.com" or "" to unset email
+#' @return a logical depending on whether email was set or unset
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  # to set
+#'  openalex_polite("you@example.com")
+#'  # to unset
+#'  openalex_polite("")
+#'  }
+#' }
+#' @export
+openalex_polite <- function(email) {
+
+  if (!nzchar(email)) {
+    message("Exiting from polite pool, email no longer provided in user agent header")
+    Sys.setenv("OPENALEX_USERAGENT" = "http://github.com/hadley/httr")
+    return (FALSE)
+  }
+
+  stopifnot(is.character(email), length(email) == 1)
+  re_email <- "^mailto:.*?@.*?\\..*?"
+  if (!grepl(re_email, email))
+    email <- paste0("mailto:", trimws(email))
+  stopifnot(grepl(re_email, email))
+
+  ua <- sprintf("http://github.com/hadley/httr (%s)", email)
+
+  if (Sys.getenv("OPENALEX_USERAGENT") != "") {
+    message("Hint: You can provide an email to enter the polite pool")
+    message("To have the setting stick persistently using .Renviron, do ...")
+    message('  file.edit("~/.Renviron")')
+    message(sprintf('  # and add a line OPENALEX_USERAGENT="%s"', ua))
+    message("Then reload settings for the R environment in the current session")
+    message('  readRenviron("~/.Renviron")')
+  }
+
+  message("Temporarily setting OPENALEX_USERAGENT envvar for this session to: ", ua)
+  Sys.setenv("OPENALEX_USERAGENT" = ua)
+  return (TRUE)
+}
+
 cfg <- function() {
 
   res <- list(
