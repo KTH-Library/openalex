@@ -5,9 +5,9 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/KTH-Library/openalex/workflows/R-CMD-check/badge.svg)](https://github.com/KTH-Library/openalex/actions)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![R-CMD-check](https://github.com/KTH-Library/openalex/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/KTH-Library/openalex/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The goal of `openalex` is to provide access to data from
@@ -59,8 +59,8 @@ data <-
     query = openalex:::openalex_query(filter =
       sprintf("institutions.id:%s,publication_year:2024", iid)))
 #> About to crawl a total of 9 pages of results with a total of 207 records.
-#> ■■■■■■■■ 22% | ETA: 5s ■■■■■■■■■■■ 33% | ETA: 5s ■■■■■■■■■■■■■■ 44% | ETA: 4s
-#> ■■■■■■■■■■■■■■■■■■ 56% | ETA: 3s ■■■■■■■■■■■■■■■■■■■■■ 67% | ETA: 2s
+#> ■■■■■■■■ 22% | ETA: 4s ■■■■■■■■■■■ 33% | ETA: 3s ■■■■■■■■■■■■■■ 44% | ETA: 3s
+#> ■■■■■■■■■■■■■■■■■■ 56% | ETA: 2s ■■■■■■■■■■■■■■■■■■■■■ 67% | ETA: 2s
 #> ■■■■■■■■■■■■■■■■■■■■■■■■ 78% | ETA: 1s ■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 89% | ETA:
 #> 1s
 
@@ -265,14 +265,14 @@ last modification timestamps.
 # we do not require an API key for the publish date
 published_since_ <- openalex_works_published_since(since_days = 7)
 #> About to crawl a total of 4 pages of results with a total of 97 records.
-#> ■■■■■■■■■■■■■■■■ 50% | ETA: 2s ■■■■■■■■■■■■■■■■■■■■■■■ 75% | ETA: 1s
+#> ■■■■■■■■■■■■■■■■ 50% | ETA: 1s
 
 # but an API key is needed when using "from_created_date" and "from_updated_date" fields.
 created_since_7d <- openalex_works_created_since(since_days = 7)
 #> About to crawl a total of 1 pages of results with a total of 17 records.
 updated_since_1h <- openalex_works_updated_since(since_minutes = 60)
-#> About to crawl a total of 8 pages of results with a total of 177 records.
-#>  ■■■■■■■■■                         25% |  ETA:  6s ■■■■■■■■■■■■                      38% |  ETA:  6s ■■■■■■■■■■■■■■■■                  50% |  ETA:  5s ■■■■■■■■■■■■■■■■■■■■              62% |  ETA:  3s ■■■■■■■■■■■■■■■■■■■■■■■           75% |  ETA:  2s ■■■■■■■■■■■■■■■■■■■■■■■■■■■       88% |  ETA:  1s                                                   
+#> About to crawl a total of 7 pages of results with a total of 156 records.
+#>  ■■■■■                             14% |  ETA:  6s ■■■■■■■■■■                        29% |  ETA:  6s ■■■■■■■■■■■■■■                    43% |  ETA:  4s ■■■■■■■■■■■■■■■■■■                57% |  ETA:  3s ■■■■■■■■■■■■■■■■■■■■■■            71% |  ETA:  2s ■■■■■■■■■■■■■■■■■■■■■■■■■■■       86% |  ETA:  1s                                                   
 
 # first few rows of each of these retrievals
 created_since_7d |> _$work_ids |> head() |> knitr::kable()
