@@ -10,10 +10,10 @@
     This R package provides some functions to access data from the OpenAlex REST API.">
 <title>Data from OpenAlex REST API • openalex</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Data from OpenAlex REST API">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Data from OpenAlex REST API">
 <meta property="og:description" content="The OpenAlex website provides open data on
     papers/works, venues, institutions and more around the world under the CC0 license. 
     This R package provides some functions to access data from the OpenAlex REST API.">
@@ -30,7 +30,7 @@
     
     <a class="navbar-brand me-2" href="index.html">openalex</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,63 +65,357 @@
 </h2>
 <p>You can install the current version of <code>openalex</code> from <a href="https://github.com/kth-library/openalex" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#install.packages("devtools")</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"kth-library/openalex"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">#install.packages("devtools")</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"kth-library/openalex"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
 <p>This is a basic example which shows you how to get information for papers and authors:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://kth-library.github.io/openalex/">openalex</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://purrr.tidyverse.org" class="external-link">purrr</a></span><span class="op">)</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yihui.org/knitr/" class="external-link">knitr</a></span><span class="op">)</span>
-
-<span class="va">data</span> <span class="op">&lt;-</span> 
-  <span class="fu"><a href="reference/openalex_crawl.html">openalex_crawl</a></span><span class="op">(</span><span class="st">"works"</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>,
-    query <span class="op">=</span> <span class="fu">openalex</span><span class="fu">:::</span><span class="fu">openalex_query</span><span class="op">(</span>filter <span class="op">=</span> 
-      <span class="st">"institutions.id:I86987016,publication_year:2022"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">long</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/openalex_flatten_long.html">openalex_flatten_long</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>
-
-<span class="co"># number of ids</span>
-<span class="co">#long %&gt;% filter(name == "id") %&gt;% nrow()</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://kth-library.github.io/openalex/">openalex</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     filter, lag</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://purrr.tidyverse.org/" class="external-link">purrr</a></span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yihui.org/knitr/" class="external-link">knitr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">iid</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">openalex</span><span class="fu">:::</span><span class="fu">openalex_autocomplete</span><span class="op">(</span></span>
+<span>    query <span class="op">=</span> <span class="st">"Royal Institute of Technology"</span>, </span>
+<span>    entity_type <span class="op">=</span> <span class="st">"institution"</span>, </span>
+<span>    format <span class="op">=</span> <span class="st">"table"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="st">"id"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Requesting url: https://api.openalex.org/autocomplete/institutions?q=Royal%20Institute%20of%20Technology</span></span>
+<span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu"><a href="reference/openalex_crawl.html">openalex_crawl</a></span><span class="op">(</span>entity <span class="op">=</span> <span class="st">"works"</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, fmt <span class="op">=</span> <span class="st">"tables"</span>,</span>
+<span>    query <span class="op">=</span> <span class="fu">openalex</span><span class="fu">:::</span><span class="fu">openalex_query</span><span class="op">(</span>filter <span class="op">=</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"institutions.id:%s,publication_year:2024"</span>, <span class="va">iid</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; About to crawl a total of 9 pages of results with a total of 207 records.</span></span>
+<span><span class="co">#&gt; ■■■■■■■■ 22% | ETA: 4s ■■■■■■■■■■■ 33% | ETA: 3s ■■■■■■■■■■■■■■ 44% | ETA: 3s</span></span>
+<span><span class="co">#&gt; ■■■■■■■■■■■■■■■■■■ 56% | ETA: 2s ■■■■■■■■■■■■■■■■■■■■■ 67% | ETA: 2s</span></span>
+<span><span class="co">#&gt; ■■■■■■■■■■■■■■■■■■■■■■■■ 78% | ETA: 1s ■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 89% | ETA:</span></span>
+<span><span class="co">#&gt; 1s</span></span>
+<span></span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="va">data</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">head</span><span class="op">)</span>  <span class="co"># return only first six rows from each table</span></span>
+<span></span>
+<span><span class="va">res</span></span>
+<span><span class="co">#&gt; $work</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 13</span></span>
+<span><span class="co">#&gt;   id            doi   display_name title publication_year publication_date type </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;         &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;            &lt;int&gt; &lt;chr&gt;            &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; 1 https://open… http… Human Digit… Huma…             2024 2024-02-01       arti…</span></span>
+<span><span class="co">#&gt; 2 https://open… http… Skeleton-RG… Skel…             2024 2024-04-01       arti…</span></span>
+<span><span class="co">#&gt; 3 https://open… http… Cognitive n… Cogn…             2024 2024-02-01       arti…</span></span>
+<span><span class="co">#&gt; 4 https://open… http… The Calvin … The …             2024 2024-03-01       arti…</span></span>
+<span><span class="co">#&gt; 5 https://open… http… ACWGAN-GP f… ACWG…             2024 2024-02-01       arti…</span></span>
+<span><span class="co">#&gt; 6 https://open… http… A biobased … A bi…             2024 2024-01-01       arti…</span></span>
+<span><span class="co">#&gt; # ℹ 6 more variables: cited_by_count &lt;int&gt;, is_retracted &lt;lgl&gt;,</span></span>
+<span><span class="co">#&gt; #   is_paratext &lt;lgl&gt;, updated_date &lt;chr&gt;, cited_by_api_url &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   created_date &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $work_ids</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
+<span><span class="co">#&gt;   work_id                          doi                               pmid  mag  </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                            &lt;chr&gt;                             &lt;chr&gt; &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; 1 https://openalex.org/W4385324205 https://doi.org/10.1016/j.rcim.2… &lt;NA&gt;  &lt;NA&gt; </span></span>
+<span><span class="co">#&gt; 2 https://openalex.org/W4387083563 https://doi.org/10.1016/j.rcim.2… &lt;NA&gt;  &lt;NA&gt; </span></span>
+<span><span class="co">#&gt; 3 https://openalex.org/W4385217308 https://doi.org/10.1016/j.rcim.2… &lt;NA&gt;  &lt;NA&gt; </span></span>
+<span><span class="co">#&gt; 4 https://openalex.org/W4361283233 https://doi.org/10.1016/j.semcdb… http… &lt;NA&gt; </span></span>
+<span><span class="co">#&gt; 5 https://openalex.org/W4385437253 https://doi.org/10.1016/j.rcim.2… &lt;NA&gt;  &lt;NA&gt; </span></span>
+<span><span class="co">#&gt; 6 https://openalex.org/W4386987514 https://doi.org/10.1016/j.carbpo… http… &lt;NA&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $work_concepts</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 6</span></span>
+<span><span class="co">#&gt;   work_id                          id          wikidata display_name level score</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                            &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;        &lt;int&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 https://openalex.org/W4385324205 https://op… https:/… Context (ar…     2 0.575</span></span>
+<span><span class="co">#&gt; 2 https://openalex.org/W4385324205 https://op… https:/… Industry 4.0     2 0.559</span></span>
+<span><span class="co">#&gt; 3 https://openalex.org/W4385324205 https://op… https:/… Knowledge m…     1 0.523</span></span>
+<span><span class="co">#&gt; 4 https://openalex.org/W4385324205 https://op… https:/… Connotation      2 0.486</span></span>
+<span><span class="co">#&gt; 5 https://openalex.org/W4385324205 https://op… https:/… Computer sc…     0 0.423</span></span>
+<span><span class="co">#&gt; 6 https://openalex.org/W4385324205 https://op… https:/… Engineering      0 0.417</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $work_authorships_institutions</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 12</span></span>
+<span><span class="co">#&gt;   work_id       id    display_name ror   country_code type  lineage wa_countries</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;         &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt; &lt;list&gt;  &lt;list&gt;      </span></span>
+<span><span class="co">#&gt; 1 https://open… http… Zhejiang Un… http… CN           educ… &lt;list&gt;  &lt;list [1]&gt;  </span></span>
+<span><span class="co">#&gt; 2 https://open… http… Zhejiang Un… http… CN           educ… &lt;list&gt;  &lt;list [1]&gt;  </span></span>
+<span><span class="co">#&gt; 3 https://open… http… Purdue Univ… http… US           educ… &lt;list&gt;  &lt;list [1]&gt;  </span></span>
+<span><span class="co">#&gt; 4 https://open… http… Zhejiang Un… http… CN           educ… &lt;list&gt;  &lt;list [1]&gt;  </span></span>
+<span><span class="co">#&gt; 5 https://open… http… Zhejiang Lab http… CN           faci… &lt;list&gt;  &lt;list [1]&gt;  </span></span>
+<span><span class="co">#&gt; 6 https://open… http… Hong Kong P… http… HK           educ… &lt;list&gt;  &lt;list [1]&gt;  </span></span>
+<span><span class="co">#&gt; # ℹ 4 more variables: wa_is_corresponding &lt;lgl&gt;, wa_raw_author_name &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   wa_raw_affiliation_string &lt;chr&gt;, wa_raw_affiliation_strings &lt;list&gt;</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $work_abstract_inverted_index</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 3</span></span>
+<span><span class="co">#&gt;   work_id                          aii_value                             aii_key</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                            &lt;chr&gt;                                 &lt;chr&gt;  </span></span>
+<span><span class="co">#&gt; 1 https://openalex.org/W4385324205 0 1 43 141 164 181 2 3 4 12 19 34 60… Human-…</span></span>
+<span><span class="co">#&gt; 2 https://openalex.org/W4387083563 0 1 19 2 20 26 3 4 5 12 28 62 103 13… Human–…</span></span>
+<span><span class="co">#&gt; 3 https://openalex.org/W4385217308 0 105 1 2 3 4 111 5 6 7 8 42 9 10 33… In rec…</span></span>
+<span><span class="co">#&gt; 4 https://openalex.org/W4361283233 0 1 31 67 156 193 2 32 68 194 3 33 6… The Ca…</span></span>
+<span><span class="co">#&gt; 5 https://openalex.org/W4385437253 0 1 42 61 170 2 3 4 131 5 176 6 7 63… Tool b…</span></span>
+<span><span class="co">#&gt; 6 https://openalex.org/W4386987514 0 94 148 169 1 2 105 119 177 3 4 5 8… The am…</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $work_authorships_author</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 10</span></span>
+<span><span class="co">#&gt;   work_id               wa_author_position id    display_name orcid wa_countries</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                 &lt;chr&gt;              &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt; &lt;list&gt;      </span></span>
+<span><span class="co">#&gt; 1 https://openalex.org… first              http… Baicun Wang  http… &lt;list [1]&gt;  </span></span>
+<span><span class="co">#&gt; 2 https://openalex.org… middle             http… Huiying Zhou http… &lt;list [1]&gt;  </span></span>
+<span><span class="co">#&gt; 3 https://openalex.org… middle             http… Xingyu Li    http… &lt;list [1]&gt;  </span></span>
+<span><span class="co">#&gt; 4 https://openalex.org… middle             http… Geng Yang    http… &lt;list [1]&gt;  </span></span>
+<span><span class="co">#&gt; 5 https://openalex.org… middle             http… Pai Zheng    http… &lt;list [1]&gt;  </span></span>
+<span><span class="co">#&gt; 6 https://openalex.org… middle             http… Song Ci      http… &lt;list [1]&gt;  </span></span>
+<span><span class="co">#&gt; # ℹ 4 more variables: wa_is_corresponding &lt;lgl&gt;, wa_raw_author_name &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   wa_raw_affiliation_string &lt;chr&gt;, wa_raw_affiliation_strings &lt;list&gt;</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $work_biblio</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 5</span></span>
+<span><span class="co">#&gt;   work_id                          volume first_page last_page issue</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                            &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; 1 https://openalex.org/W4385324205 85     102626     102626    &lt;NA&gt; </span></span>
+<span><span class="co">#&gt; 2 https://openalex.org/W4387083563 86     102659     102659    &lt;NA&gt; </span></span>
+<span><span class="co">#&gt; 3 https://openalex.org/W4385217308 85     102610     102610    &lt;NA&gt; </span></span>
+<span><span class="co">#&gt; 4 https://openalex.org/W4361283233 155    71         83        &lt;NA&gt; </span></span>
+<span><span class="co">#&gt; 5 https://openalex.org/W4385437253 85     102624     102624    &lt;NA&gt; </span></span>
+<span><span class="co">#&gt; 6 https://openalex.org/W4386987514 323    121430     121430    &lt;NA&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $work_open_access</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 5</span></span>
+<span><span class="co">#&gt;   work_id                          is_oa oa_status any_repository_has_f…¹ oa_url</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                            &lt;lgl&gt; &lt;chr&gt;     &lt;lgl&gt;                  &lt;chr&gt; </span></span>
+<span><span class="co">#&gt; 1 https://openalex.org/W4385324205 FALSE closed    FALSE                  &lt;NA&gt;  </span></span>
+<span><span class="co">#&gt; 2 https://openalex.org/W4387083563 FALSE closed    FALSE                  &lt;NA&gt;  </span></span>
+<span><span class="co">#&gt; 3 https://openalex.org/W4385217308 TRUE  hybrid    FALSE                  https…</span></span>
+<span><span class="co">#&gt; 4 https://openalex.org/W4361283233 TRUE  hybrid    FALSE                  https…</span></span>
+<span><span class="co">#&gt; 5 https://openalex.org/W4385437253 FALSE closed    FALSE                  &lt;NA&gt;  </span></span>
+<span><span class="co">#&gt; 6 https://openalex.org/W4386987514 FALSE closed    FALSE                  &lt;NA&gt;  </span></span>
+<span><span class="co">#&gt; # ℹ abbreviated name: ¹​any_repository_has_fulltext</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $work_host_venue</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 1</span></span>
+<span><span class="co">#&gt;   work_id                         </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                           </span></span>
+<span><span class="co">#&gt; 1 https://openalex.org/W4385324205</span></span>
+<span><span class="co">#&gt; 2 https://openalex.org/W4387083563</span></span>
+<span><span class="co">#&gt; 3 https://openalex.org/W4385217308</span></span>
+<span><span class="co">#&gt; 4 https://openalex.org/W4361283233</span></span>
+<span><span class="co">#&gt; 5 https://openalex.org/W4385437253</span></span>
+<span><span class="co">#&gt; 6 https://openalex.org/W4386987514</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $work_counts_by_year</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 3</span></span>
+<span><span class="co">#&gt;   work_id                           year cited_by_count</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                            &lt;int&gt;          &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 https://openalex.org/W4385324205  2023              4</span></span>
+<span><span class="co">#&gt; 2 https://openalex.org/W4387083563  2023              4</span></span>
+<span><span class="co">#&gt; 3 https://openalex.org/W4385217308  2023              2</span></span>
+<span><span class="co">#&gt; 4 https://openalex.org/W4361283233  2023              2</span></span>
+<span><span class="co">#&gt; 5 https://openalex.org/W4386987514  2023              1</span></span>
+<span><span class="co">#&gt; 6 https://openalex.org/W4312529696  2023              1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $work_related_works</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 2</span></span>
+<span><span class="co">#&gt;   work_id                          related_works                   </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                            &lt;chr&gt;                           </span></span>
+<span><span class="co">#&gt; 1 https://openalex.org/W4385324205 https://openalex.org/W2360733422</span></span>
+<span><span class="co">#&gt; 2 https://openalex.org/W4385324205 https://openalex.org/W2362583379</span></span>
+<span><span class="co">#&gt; 3 https://openalex.org/W4385324205 https://openalex.org/W2386886609</span></span>
+<span><span class="co">#&gt; 4 https://openalex.org/W4385324205 https://openalex.org/W2394171004</span></span>
+<span><span class="co">#&gt; 5 https://openalex.org/W4385324205 https://openalex.org/W2361870167</span></span>
+<span><span class="co">#&gt; 6 https://openalex.org/W4385324205 https://openalex.org/W2381092078</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $work_referenced_works</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 2</span></span>
+<span><span class="co">#&gt;   work_id                          referenced_works                </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                            &lt;chr&gt;                           </span></span>
+<span><span class="co">#&gt; 1 https://openalex.org/W4385324205 https://openalex.org/W1706260973</span></span>
+<span><span class="co">#&gt; 2 https://openalex.org/W4385324205 https://openalex.org/W2000982104</span></span>
+<span><span class="co">#&gt; 3 https://openalex.org/W4385324205 https://openalex.org/W2007171144</span></span>
+<span><span class="co">#&gt; 4 https://openalex.org/W4385324205 https://openalex.org/W2010613163</span></span>
+<span><span class="co">#&gt; 5 https://openalex.org/W4385324205 https://openalex.org/W2020304579</span></span>
+<span><span class="co">#&gt; 6 https://openalex.org/W4385324205 https://openalex.org/W2026892459</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="rate-limits">Rate limits<a class="anchor" aria-label="anchor" href="#rate-limits"></a>
+<h2 id="rate-limits-and-using-an-api-key">Rate limits and using an API key<a class="anchor" aria-label="anchor" href="#rate-limits-and-using-an-api-key"></a>
 </h2>
-<p>By providing an email adress you enter the “polite pool” which provides even less of rate limiting for API requests.</p>
-<p>Either provide it in <code>~/.Renviron</code> or use helper fcn <code><a href="reference/openalex_polite.html">openalex_polite()</a></code> to set or unset email:</p>
+<p>By providing an email address you enter the “polite pool” which provides even less of rate limiting for API requests.</p>
+<p>You can provide it in <code>~/.Renviron</code> by setting <code>OPENALEX_USERAGENT=http://github.com/hadley/httr (mailto:your_email@your_institution.org)</code>.</p>
+<p>You can also set it just for the session by using a helper fcn <code><a href="reference/openalex_polite.html">openalex_polite()</a></code> to temporarily set or unset the email used in the user agent string when making API requests:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://kth-library.github.io/openalex/">openalex</a></span><span class="op">)</span>
-
-<span class="co"># set an email to use for the session</span>
-
-<span class="fu"><a href="reference/openalex_polite.html">openalex_polite</a></span><span class="op">(</span><span class="st">"you@example.com"</span><span class="op">)</span>
-<span class="co">#&gt; Hint: You can provide an email to enter the polite pool</span>
-<span class="co">#&gt; To have the setting stick persistently using .Renviron, do ...</span>
-<span class="co">#&gt;   file.edit("~/.Renviron")</span>
-<span class="co">#&gt;   # and add a line OPENALEX_USERAGENT="http://github.com/hadley/httr (mailto:you@example.com)"</span>
-<span class="co">#&gt; Then reload settings for the R environment in the current session</span>
-<span class="co">#&gt;   readRenviron("~/.Renviron")</span>
-<span class="co">#&gt; Temporarily setting OPENALEX_USERAGENT envvar for this session to: http://github.com/hadley/httr (mailto:you@example.com)</span>
-<span class="co">#&gt; [1] TRUE</span>
-
-<span class="co"># unset, and use default user agent string...</span>
-
-<span class="fu"><a href="reference/openalex_polite.html">openalex_polite</a></span><span class="op">(</span><span class="st">""</span><span class="op">)</span>
-<span class="co">#&gt; Exiting from polite pool, email no longer provided in user agent header</span>
-<span class="co">#&gt; [1] FALSE</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://kth-library.github.io/openalex/">openalex</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># set an email to use for the session</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/openalex_polite.html">openalex_polite</a></span><span class="op">(</span><span class="st">"you@example.com"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Hint: You can provide an email to enter the polite pool</span></span>
+<span><span class="co">#&gt; To have the setting stick persistently using .Renviron, do ...</span></span>
+<span><span class="co">#&gt;   file.edit("~/.Renviron")</span></span>
+<span><span class="co">#&gt;   # and add a line OPENALEX_USERAGENT="http://github.com/hadley/httr (mailto:you@example.com)"</span></span>
+<span><span class="co">#&gt; Then reload settings for the R environment in the current session</span></span>
+<span><span class="co">#&gt;   readRenviron("~/.Renviron")</span></span>
+<span><span class="co">#&gt; Temporarily setting OPENALEX_USERAGENT envvar for this session to: http://github.com/hadley/httr (mailto:you@example.com)</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span>
+<span></span>
+<span><span class="co"># unset, and use default user agent string...</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/openalex_polite.html">openalex_polite</a></span><span class="op">(</span><span class="st">""</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Exiting from polite pool, email no longer provided in user agent header</span></span>
+<span><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
+<p>A premium subscription API key can be used by setting <code>OPENALEX_KEY=secret_premium_api_key</code> in your <code>.Renviron</code>, or temporarily in a session using:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://kth-library.github.io/openalex/">openalex</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># temporarily use a premium subscription API key</span></span>
+<span><span class="fu"><a href="reference/openalex_key.html">openalex_key</a></span><span class="op">(</span><span class="st">"secret_premium_api_key"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># unset to not use the premium subscription API key</span></span>
+<span><span class="fu"><a href="reference/openalex_key.html">openalex_key</a></span><span class="op">(</span><span class="st">""</span><span class="op">)</span></span></code></pre></div>
+<p>This will make it possible to make API calls that return the latest available records, for example based on recent creation dates or recent last modification timestamps.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># we do not require an API key for the publish date</span></span>
+<span><span class="va">published_since_</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/openalex_works_published_since.html">openalex_works_published_since</a></span><span class="op">(</span>since_days <span class="op">=</span> <span class="fl">7</span><span class="op">)</span></span>
+<span><span class="co">#&gt; About to crawl a total of 4 pages of results with a total of 97 records.</span></span>
+<span><span class="co">#&gt; ■■■■■■■■■■■■■■■■ 50% | ETA: 1s</span></span>
+<span></span>
+<span><span class="co"># but an API key is needed when using "from_created_date" and "from_updated_date" fields.</span></span>
+<span><span class="va">created_since_7d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/openalex_works_created_since.html">openalex_works_created_since</a></span><span class="op">(</span>since_days <span class="op">=</span> <span class="fl">7</span><span class="op">)</span></span>
+<span><span class="co">#&gt; About to crawl a total of 1 pages of results with a total of 17 records.</span></span>
+<span><span class="va">updated_since_1h</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/openalex_works_updated_since.html">openalex_works_updated_since</a></span><span class="op">(</span>since_minutes <span class="op">=</span> <span class="fl">60</span><span class="op">)</span></span>
+<span><span class="co">#&gt; About to crawl a total of 7 pages of results with a total of 156 records.</span></span>
+<span><span class="co">#&gt;  ■■■■■                             14% |  ETA:  6s ■■■■■■■■■■                        29% |  ETA:  6s ■■■■■■■■■■■■■■                    43% |  ETA:  4s ■■■■■■■■■■■■■■■■■■                57% |  ETA:  3s ■■■■■■■■■■■■■■■■■■■■■■            71% |  ETA:  2s ■■■■■■■■■■■■■■■■■■■■■■■■■■■       86% |  ETA:  1s                                                   </span></span>
+<span></span>
+<span><span class="co"># first few rows of each of these retrievals</span></span>
+<span><span class="va">created_since_7d</span> <span class="op">|&gt;</span> <span class="va">_</span><span class="op">$</span><span class="va">work_ids</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<colgroup>
+<col width="40%">
+<col width="53%">
+<col width="6%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">work_id</th>
+<th align="left">doi</th>
+<th align="left">pmid</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left"><a href="https://openalex.org/W4390642226" class="external-link uri">https://openalex.org/W4390642226</a></td>
+<td align="left"><a href="https://doi.org/10.2478/ncr-2023-0011" class="external-link uri">https://doi.org/10.2478/ncr-2023-0011</a></td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left"><a href="https://openalex.org/W4390639369" class="external-link uri">https://openalex.org/W4390639369</a></td>
+<td align="left"><a href="https://doi.org/10.1016/j.seja.2023.100050" class="external-link uri">https://doi.org/10.1016/j.seja.2023.100050</a></td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left"><a href="https://openalex.org/W4390638132" class="external-link uri">https://openalex.org/W4390638132</a></td>
+<td align="left"><a href="https://doi.org/10.1007/s10798-023-09868-0" class="external-link uri">https://doi.org/10.1007/s10798-023-09868-0</a></td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left"><a href="https://openalex.org/W4390640547" class="external-link uri">https://openalex.org/W4390640547</a></td>
+<td align="left"><a href="https://doi.org/10.1016/j.carbon.2024.118799" class="external-link uri">https://doi.org/10.1016/j.carbon.2024.118799</a></td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left"><a href="https://openalex.org/W4390642146" class="external-link uri">https://openalex.org/W4390642146</a></td>
+<td align="left"><a href="https://doi.org/10.2478/ncr-2023-0012" class="external-link uri">https://doi.org/10.2478/ncr-2023-0012</a></td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left"><a href="https://openalex.org/W4390640114" class="external-link uri">https://openalex.org/W4390640114</a></td>
+<td align="left"><a href="https://doi.org/10.1016/j.cmpb.2024.108009" class="external-link uri">https://doi.org/10.1016/j.cmpb.2024.108009</a></td>
+<td align="left">NA</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">updated_since_1h</span> <span class="op">|&gt;</span> <span class="va">_</span><span class="op">$</span><span class="va">work_ids</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<colgroup>
+<col width="18%">
+<col width="24%">
+<col width="6%">
+<col width="22%">
+<col width="27%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">work_id</th>
+<th align="left">doi</th>
+<th align="left">mag</th>
+<th align="left">pmid</th>
+<th align="left">pmcid</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left"><a href="https://openalex.org/W2808465642" class="external-link uri">https://openalex.org/W2808465642</a></td>
+<td align="left"><a href="https://doi.org/10.1038/s41467-018-04724-5" class="external-link uri">https://doi.org/10.1038/s41467-018-04724-5</a></td>
+<td align="left">2808465642</td>
+<td align="left"><a href="https://pubmed.ncbi.nlm.nih.gov/29925878" class="external-link uri">https://pubmed.ncbi.nlm.nih.gov/29925878</a></td>
+<td align="left"><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/6010471" class="external-link uri">https://www.ncbi.nlm.nih.gov/pmc/articles/6010471</a></td>
+</tr>
+<tr class="even">
+<td align="left"><a href="https://openalex.org/W4294783296" class="external-link uri">https://openalex.org/W4294783296</a></td>
+<td align="left"><a href="https://doi.org/10.1021/jacs.2c06920" class="external-link uri">https://doi.org/10.1021/jacs.2c06920</a></td>
+<td align="left">NA</td>
+<td align="left"><a href="https://pubmed.ncbi.nlm.nih.gov/36066387" class="external-link uri">https://pubmed.ncbi.nlm.nih.gov/36066387</a></td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left"><a href="https://openalex.org/W2103896911" class="external-link uri">https://openalex.org/W2103896911</a></td>
+<td align="left"><a href="https://doi.org/10.1016/j.jmb.2004.06.033" class="external-link uri">https://doi.org/10.1016/j.jmb.2004.06.033</a></td>
+<td align="left">2103896911</td>
+<td align="left"><a href="https://pubmed.ncbi.nlm.nih.gov/15288786" class="external-link uri">https://pubmed.ncbi.nlm.nih.gov/15288786</a></td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left"><a href="https://openalex.org/W1974228254" class="external-link uri">https://openalex.org/W1974228254</a></td>
+<td align="left"><a href="https://doi.org/10.1109/percomw.2012.6197506" class="external-link uri">https://doi.org/10.1109/percomw.2012.6197506</a></td>
+<td align="left">1974228254</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left"><a href="https://openalex.org/W4224866865" class="external-link uri">https://openalex.org/W4224866865</a></td>
+<td align="left"><a href="https://doi.org/10.1021/acscatal.2c00188" class="external-link uri">https://doi.org/10.1021/acscatal.2c00188</a></td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left"><a href="https://openalex.org/W2018035699" class="external-link uri">https://openalex.org/W2018035699</a></td>
+<td align="left"><a href="https://doi.org/10.1128/aem.03678-13" class="external-link uri">https://doi.org/10.1128/aem.03678-13</a></td>
+<td align="left">2018035699</td>
+<td align="left"><a href="https://pubmed.ncbi.nlm.nih.gov/24487538" class="external-link uri">https://pubmed.ncbi.nlm.nih.gov/24487538</a></td>
+<td align="left"><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/3993154" class="external-link uri">https://www.ncbi.nlm.nih.gov/pmc/articles/3993154</a></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section level2">
 <h2 id="data-source-attribution">Data source attribution<a class="anchor" aria-label="anchor" href="#data-source-attribution"></a>
 </h2>
 <p>When data from <code>openalex</code> is displayed publicly, this attribution also needs to be displayed:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://kth-library.github.io/openalex/">openalex</a></span><span class="op">)</span>
-<span class="fu"><a href="reference/openalex_attribution.html">openalex_attribution</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; [1] "Data source: OpenAlex API at https://api.openalex.org/\nData license agreement: https://creativecommons.org/publicdomain/zero/1.0/"</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://kth-library.github.io/openalex/">openalex</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/openalex_attribution.html">openalex_attribution</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Data source: OpenAlex API at https://api.openalex.org/\nData license agreement: https://creativecommons.org/publicdomain/zero/1.0/"</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">
@@ -150,8 +444,8 @@
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/KTH-Library/openalex/actions" class="external-link"><img src="https://github.com/KTH-Library/openalex/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
+<li><a href="https://github.com/KTH-Library/openalex/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/KTH-Library/openalex/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 </ul>
 </div>
 
@@ -166,7 +460,7 @@
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
     </footer>

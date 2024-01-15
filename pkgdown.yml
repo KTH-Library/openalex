@@ -1,8 +1,8 @@
-pandoc: 2.7.3
-pkgdown: 2.0.2
+pandoc: 2.19.2
+pkgdown: 2.0.7
 pkgdown_sha: ~
 articles: {}
-last_built: 2022-03-09T15:17Z
+last_built: 2024-01-15T11:46Z
 urls:
   reference: https://kth-library.github.io/openalex/reference
   article: https://kth-library.github.io/openalex/articles
