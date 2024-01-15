@@ -33,29 +33,38 @@ devtools::install_github("kth-library/openalex", dependencies = TRUE)
 
 This is a basic example which shows you how to get information for papers and authors:
 
-```{r example, eval=FALSE}
+```{r example, eval=TRUE}
 
 library(openalex)
 library(dplyr)
 suppressPackageStartupMessages(library(purrr))
 library(knitr)
 
+iid <- 
+  openalex:::openalex_autocomplete(
+    query = "Royal Institute of Technology", 
+    entity_type = "institution", 
+    format = "table") |> 
+  head(1) |> 
+  pull("id")
+
 data <- 
-  openalex_crawl("works", verbose = TRUE,
-    query = openalex:::openalex_query(filter = 
-      "institutions.id:I86987016,publication_year:2022"))
+  openalex_crawl(entity = "works", verbose = TRUE, fmt = "tables",
+    query = openalex:::openalex_query(filter =
+      sprintf("institutions.id:%s,publication_year:2024", iid)))
 
-long <- openalex_flatten_long(data)
+res <- data |> map(head)  # return only first six rows from each table
 
-# number of ids
-#long %>% filter(name == "id") %>% nrow()
+res
 ```
 
-## Rate limits
+## Rate limits and using an API key
 
-By providing an email adress you enter the "polite pool" which provides even less of rate limiting for API requests.
+By providing an email address you enter the "polite pool" which provides even less of rate limiting for API requests.
 
-Either provide it in `~/.Renviron` or use helper fcn `openalex_polite()` to set or unset email:
+You can provide it in `~/.Renviron` by setting `OPENALEX_USERAGENT=http://github.com/hadley/httr (mailto:your_email@your_institution.org)`.
+
+You can also set it just for the session by using a helper fcn `openalex_polite()` to temporarily set or unset the email used in the user agent string when making API requests:
 
 ```{r polite}
 library(openalex)
@@ -69,6 +78,37 @@ openalex_polite("you@example.com")
 openalex_polite("")
 
 ```
+
+A premium subscription API key can be used by setting `OPENALEX_KEY=secret_premium_api_key` in your `.Renviron`, or temporarily in a session using:
+
+```{r premium, eval = FALSE}
+library(openalex)
+
+# temporarily use a premium subscription API key
+openalex_key("secret_premium_api_key")
+
+# unset to not use the premium subscription API key
+openalex_key("")
+
+```
+
+This will make it possible to make API calls that return the latest available records, for example based on recent creation dates or recent last modification timestamps.
+
+```{r updates, eval = TRUE}
+
+# we do not require an API key for the publish date
+published_since_ <- openalex_works_published_since(since_days = 7)
+
+# but an API key is needed when using "from_created_date" and "from_updated_date" fields.
+created_since_7d <- openalex_works_created_since(since_days = 7)
+updated_since_1h <- openalex_works_updated_since(since_minutes = 60)
+
+# first few rows of each of these retrievals
+created_since_7d |> _$work_ids |> head() |> knitr::kable()
+updated_since_1h |> _$work_ids |> head() |> knitr::kable()
+
+```
+
 
 ## Data source attribution
 
