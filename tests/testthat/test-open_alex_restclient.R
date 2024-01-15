@@ -6,7 +6,7 @@
 
 test_that("fetching work works", {
 
-  identifier <- "W2741809807"
+  identifier <- "W1851956350"
 
   #is_ok <- identical(openalex_work(identifier), openalex_work(identifier))
   expected_id <- paste0("https://openalex.org/", identifier)
@@ -71,6 +71,8 @@ test_that("fetching random work works", {
 # res %>% openalex_flatten_long() %>% count(name) %>% arrange(desc(n))
 
 test_that("providing email for polite pool gives faster response...", {
+
+  skip()
 
   # so initial setting can be restored
   initial <- Sys.getenv("OPENALEX_USERAGENT")

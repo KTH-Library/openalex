@@ -4,7 +4,7 @@
 \alias{openalex_crawl}
 \title{Crawl multiple pages of results}
 \usage{
-openalex_crawl(entity, query, verbose = TRUE)
+openalex_crawl(entity, query, verbose = FALSE, fmt = "object")
 }
 \arguments{
 \item{entity}{one of the values in openalex_entity_enum()}
@@ -12,6 +12,8 @@ openalex_crawl(entity, query, verbose = TRUE)
 \item{query}{an openalex_query object}
 
 \item{verbose}{boolean to indicate whether to output messages during process}
+
+\item{fmt}{the return format, one of "object" or "tables"}
 }
 \value{
 R object with results matching the query

@@ -1,6 +1,6 @@
 Package: openalex
 Title: Data from OpenAlex REST API
-Version: 0.0.2
+Version: 0.0.3
 Authors@R: 
     person(given = "Markus",
            family = "Skyttner",
@@ -13,7 +13,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 Imports: 
     httr,
     magrittr,
@@ -22,7 +22,9 @@ Imports:
     purrr,
     progress,
     jsonlite,
-    tibble
+    tibble,
+    tidyr,
+    lubridate
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
