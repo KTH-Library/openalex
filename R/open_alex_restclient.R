@@ -502,7 +502,7 @@ openalex_kth_rawaff_query <- function() {
  "royal college of technology" OR  
  "royalinstitute" OR  
  "alfven" OR  
- "alfvén" OR  
+ "alfv\u00e9n" OR  
  "10044 stockholm" OR  
  "100 44 stockholm") 
  

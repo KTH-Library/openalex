@@ -24,7 +24,11 @@ Imports:
     jsonlite,
     tibble,
     tidyr,
-    lubridate
+    lubridate,
+    DBI,
+    duckdb,
+    httr2,
+    readr
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

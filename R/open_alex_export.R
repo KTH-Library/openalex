@@ -1,9 +1,11 @@
+#' Use OpenAlex API for exporting data in tabular and wos formats
 #' @param q the query, for example "authorships.institutions.lineage:i86987016,authorships.institutions.lineage:!i4210161097,type:types/article,primary_location.source.type:source-types/journal|source-types/conference,publication_year:2023"
 #' @param fmt the export format, one of "csv" or "wos-plaintext" or "wos-plaintext-diva"
 #' @param raw_string boolean to indicate whether a raw string should be returned
 #' @return a character vector with a raw string with the results from the export or a data frame
 #' @import httr2
 #' @importFrom dplyr bind_cols
+#' @importFrom readr read_csv
 openalex_works_export <- function(q, fmt = c("csv", "wos-plaintext"), raw_string = FALSE) {
 
   query <- list(filter = q)
@@ -58,6 +60,9 @@ openalex_works_export <- function(q, fmt = c("csv", "wos-plaintext"), raw_string
 #' Function which converts a wos_plaintext-string into a format
 #' which can be uploaded to DiVA, by adding ER tags 
 #' (including a blank line) after each record
+#' @param x character string with "wos-plaintext" format as returned from OpenAlex export API endpoint
+#' @importFrom stats setNames
+#' @importFrom utils tail
 wos_plaintext_for_diva <- function(x) {
   w <- x |> strsplit("\n") |> unlist()
   i_header <- which(grepl("^FN|^VR", w))
@@ -74,7 +79,7 @@ wos_plaintext_for_diva <- function(x) {
 }
 
 #' Export the results from a crawl as a duckdb database file
-#' @param harvest the results from running the to_tbls fcn
+#' @param crawl the results from running the to_tbls fcn
 #' @param destdir the location to save the database file
 #' @return file path to the database file
 #' @importFrom purrr walk2

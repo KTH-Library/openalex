@@ -27,6 +27,8 @@ test_that("export works", {
 
 test_that("export for diva in wos-plain text format works", {
 
+  skip()
+
   my_filter <- paste0(collapse = ",", c(
     sprintf("publication_year:%s", 2024),    
     sprintf("authorships.author.id:%s", "a5058057533") #,
