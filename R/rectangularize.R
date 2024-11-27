@@ -179,3 +179,243 @@ parse_work <- function(chunk) {
   )
 
 }
+
+#' @noRd
+#' @import tidyr dplyr purrr
+parse_work2 <- function(object) {
+
+  unfwv <- function(l, field) {
+    l |> map(\(x) keep_at(x, c("id", field))) |> 
+      enframe() |> 
+      unnest_wider(any_of("value")) |>
+      tidyr::unnest_wider(any_of(field)) |> 
+      select(-any_of(c("name")))
+  }  
+  
+  unfwvs <- function(l, field) {
+    l |> map(\(x) keep_at(x, c("id", field))) |> 
+      enframe() |> 
+      unnest_wider(any_of("value")) |>
+      tidyr::unnest_wider(any_of(field), names_sep = "_") |> 
+      select(-any_of(c("name")))
+  }  
+    
+  unfw <- function(l, field) {
+    l |> map(\(x) keep_at(x, c("id", field))) |> 
+      map_df(tibble::as_tibble) |>
+      tidyr::unnest_wider(any_of(field))
+  }  
+    
+  unfws <- function(l, field) {
+    l |> map(\(x) keep_at(x, c("id", field))) |> 
+      map_df(tibble::as_tibble) |>
+      tidyr::unnest_wider(any_of(field), names_sep = "_")
+  }  
+  
+  unfl <- function(l, field) {
+    #has_field <- l |> map_lgl(\(x) field %in% names(x)) |> all()
+    #if (!has_field) return(data.frame(0))
+    l |> map(\(x) keep_at(x, c("id", field))) |>
+      compact() |> 
+      map_df(tibble::as_tibble) |>
+      tidyr::unnest_longer(any_of(field))
+  }
+
+  pluck_with_id <- function(x, field) {
+    if (!pluck_exists(x, field)) return (NULL)
+    c(id = pluck(x, "id"), pluck(x, field))
+  }
+  
+  w <- object
+
+
+  w$results  |> map(\(x) tibble(field = names(x), l = lengths(x)))  |> bind_rows()  |> distinct()  |> dplyr::filter(l == 1)  |> dplyr::pull(field)  |> cat(sep = "\n")
+
+  one_to_one <- 
+    readr::read_lines("id
+doi
+title
+display_name
+publication_year
+publication_date
+language
+type
+type_crossref
+indexed_in
+countries_distinct_count
+institutions_distinct_count
+corresponding_author_ids
+fwci
+has_fulltext
+cited_by_count
+is_retracted
+is_paratext
+locations_count
+locations
+sustainable_development_goals
+referenced_works_count
+cited_by_api_url
+updated_date
+created_date
+corresponding_institution_ids
+fulltext_origin
+counts_by_year
+keywords
+grants
+topics
+is_authors_truncated")
+  
+plf <- function(o, f) {
+  l <- o |> map(\(x) purrr::pluck(x, f)) |> unlist()
+  list(l) |> setNames(nm = f)
+}
+
+plf(w$results, "grants")
+  
+  work <- 
+    w$results |> map_dfr(
+      function(x) tibble(
+        id = pluck(x, "id"),
+        doi = pluck(x, "doi"),
+        display_name = pluck(x, "display_name"),
+        title = pluck(x, "title"),
+        publication_year = pluck(x, "publication_year"),
+        publication_date = pluck(x, "publication_date"),
+        type = pluck(x, "type"),
+        cited_by_count = pluck(x, "cited_by_count"),
+        is_retracted = pluck(x, "is_retracted"),
+        is_paratext = pluck(x, "is_paratext"),
+        updated_date = pluck(x, "updated_date"),
+        cited_by_api_url = pluck(x, "cited_by_api_url"),
+        created_date = pluck(x, "created_date")
+      )
+    )  
+  # title
+  # publication_year
+  # publication_date
+  # openalex
+  # language
+  # type_crossref
+  # oa_status
+  # any_repository_has_fulltext
+  # countries_distinct_count
+  # institutions_distinct_count
+  # currency
+  # value_usd
+  # provenance
+  # fwci
+  # has_fulltext
+  # is_in_top_1_percent
+  # is_in_top_10_percent
+  # min
+  # max
+  # volume
+  # first_page
+  # last_page
+  # is_retracted
+  # is_paratext
+  # locations_count
+  # referenced_works_count
+  # cited_by_api_url
+  # updated_date
+  # created_date
+
+  authorships <- 
+    w$results |> unfw("authorships") |> 
+    unnest_wider(any_of("author"), names_sep = "_") |> 
+    unnest_longer(any_of("countries")) |> 
+    unnest_longer(any_of("institutions")) |> 
+    unnest_wider(any_of("institutions"), names_sep = "_") |>
+    unnest_longer(any_of("institutions_lineage")) |> 
+    unnest_longer(any_of("affiliations")) |> 
+    unnest_wider(any_of("affiliations"), names_sep = "_") |> 
+    unnest_longer(any_of("raw_affiliation_strings")) |> 
+    unnest_longer(any_of("affiliations_institution_ids"))
+
+  fields <- c(
+    "ids", "open_access", "apc_list", "apc_paid", 
+    "citation_normalized_percentile", "cited_by_percentile_year", 
+    "biblio"
+  )   
+
+  #TODO: fix "citation_normalized_percentile"
+  #various <- fields |> map(\(x) w$results |> unfwv(x)) |> set_names(nm = fields)
+
+  various <- 
+    fields |> map(\(x) w$results |> map(\(y) pluck_with_id(y, x))) |> 
+    set_names(fields) |> map(bind_rows)
+
+  fields2 <- c("counts_by_year", "grants", "mesh")
+  various2 <- 
+    fields2 |> map(\(x) w$results |> unfw(x)) |> set_names(nm = fields2)
+  
+  fields3 <- c(
+    "sustainable_development_goals",
+    "keywords",
+    "concepts",
+    "datasets"
+  )
+  various3 <- fields3 |> map(\(x) w$results |> unfws(x)) |> set_names(nm = fields3)
+
+  fields4 <- c(
+    "referenced_works",
+    "related_works",
+    "indexed_in",
+    "corresponding_institution_ids",
+    "corresponding_author_ids"#,
+#    "abstract_inverted_index"
+  ) 
+  
+  abstract_inverted_index <- 
+    w$results |>  map(function(x) tibble(
+      work_id = pluck(x, "id"),
+      aii_value = paste(collapse = " ", unlist(pluck(x, "abstract_inverted_index", .default = NA_integer_))),
+      aii_key = paste(collapse = " ", unique(names(pluck(x, "abstract_inverted_index", .default = NA_character_))))
+    )) |>
+    map_dfr(bind_rows) |>
+    unnest_longer("aii_value") |>
+    distinct()  
+
+  various4 <- 
+    fields4 |> map(\(x) w$results |> unfl(x)) |> set_names(nm = fields4)
+
+  primary_location <- 
+    w$results |> unfwv("primary_location") |> 
+    unnest_wider(any_of("source"), names_sep = "_") |> 
+    unnest_longer(any_of("source_issn")) |> 
+    unnest_longer(any_of(c("source_host_organization_lineage", "source_host_organization_lineage_names"))) 
+    
+  primary_topic <- 
+    w$results |> unfwvs("primary_topic") |> 
+    unnest_wider(any_of("primary_topic"), names_sep = "_") |> 
+    unnest_wider(any_of("primary_topic_field"), names_sep = "_") |>
+    unnest_wider(any_of("primary_topic_subfield"), names_sep = "_") |>
+    unnest_wider(any_of("primary_topic_domain"), names_sep = "_")  
+    
+  best_oa_location <- 
+    w$results |> unfwv("best_oa_location") |> 
+    unnest_wider(any_of("source"), names_sep = "_") |> 
+    unnest_longer(any_of("source_issn")) |> 
+    unnest_longer(any_of(c("source_host_organization_lineage", "source_host_organization_lineage_names")))
+  
+  locations <- 
+    w$results |> unfw("locations") |> 
+    unnest_wider(any_of("source"), names_sep = "_") |> 
+    unnest_longer(any_of("source_issn")) |> 
+    unnest_longer(any_of(c("source_host_organization_lineage", "source_host_organization_lineage_names")))   
+    
+  topics <- 
+    w$results |> unfws("topics") |> 
+    unnest_wider(any_of("topics_field"), names_sep = "_") |> 
+    unnest_wider(any_of("topics_subfield"), names_sep = "_") |>
+    unnest_wider(any_of("topics_domain"), names_sep = "_")    
+
+  c(list(authorships = authorships), various, various2, various3, various4, 
+    list(
+      primary_location = primary_location, primary_topic = primary_topic,
+      best_oa_location = best_oa_location, locations = locations,
+      topics = topics, abstract_inverted_index = abstract_inverted_index
+    )
+  )
+
+}  

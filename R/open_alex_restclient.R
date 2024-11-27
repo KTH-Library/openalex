@@ -281,6 +281,21 @@ openalex_list <- function(entity, query, format = "object", verbose = FALSE) {
   return(res)
 }
 
+gs <- function(x, p, r) {
+  gsub(p, r, x, fixed = TRUE)
+}
+
+#' @importFrom purrr keep
+# support pipe
+tbl_from_slot <- function(x, slot)
+  x |> map(slot) |>
+  keep(.p = \(y) nrow(y) > 0) |>
+  bind_rows() |>
+  readr::type_convert() |>
+  suppressMessages() |>
+  mutate(across(is.character, \(x) x |> gs("https://openalex.org/", "")))
+
+
 #' Crawl multiple pages of results
 #'
 #' Iterates over paged results showing a progress bar
@@ -336,7 +351,7 @@ openalex_crawl <- function(entity, query, verbose = FALSE, fmt = "object") {
 
   if (fmt != "tables") {
     res <- pages |>  map(entities, .progress = TRUE)
-    res |>  pmap(c)
+    #res |>  pmap(c)
     return (res)
   }
 
@@ -346,18 +361,18 @@ openalex_crawl <- function(entity, query, verbose = FALSE, fmt = "object") {
   #TODO: fix so that NOT THE SAME work ids are fetched!!!!
 
   list(
-    work = res |> map_dfr("work", bind_rows),
-    work_ids = res |> map_dfr("work_ids", bind_rows),
-    work_concepts = res |> map_dfr("work_concepts", bind_rows),
-    work_authorships_institutions = res |> map_dfr("work_authorships_institutions", bind_rows),
-    work_abstract_inverted_index = res |> map_dfr("work_abstract_inverted_index", bind_rows),
-    work_authorships_author = res |> map_dfr("work_authorships_author", bind_rows),
-    work_biblio = res |> map_dfr("work_biblio", bind_rows),
-    work_open_access = res |> map_dfr("work_open_access", bind_rows),
-    work_host_venue = res |> map_dfr("work_host_venue", bind_rows),
-    work_counts_by_year = res |> map_dfr("work_counts_by_year", bind_rows),
-    work_related_works = res |> map_dfr("work_related_works", bind_rows),
-    work_referenced_works = res |> map_dfr("work_referenced_works", bind_rows)
+    work = res |> tbl_from_slot("work"),
+    work_ids = res |> tbl_from_slot("work_ids"),
+    work_concepts = res |> tbl_from_slot("work_concepts"),
+    work_authorships_institutions = res |> tbl_from_slot("work_authorships_institutions"),
+    work_abstract_inverted_index = res |> tbl_from_slot("work_abstract_inverted_index"),
+    work_authorships_author = res |> tbl_from_slot("work_authorships_author"),
+    work_biblio = res |> tbl_from_slot("work_biblio"),
+    work_open_access = res |> tbl_from_slot("work_open_access"),
+    work_host_venue = res |> tbl_from_slot("work_host_venue"),
+    work_counts_by_year = res |> tbl_from_slot("work_counts_by_year"),
+    work_related_works = res |> tbl_from_slot("work_related_works"),
+    work_referenced_works = res |> tbl_from_slot("work_referenced_works")
   )
 
 }
@@ -441,11 +456,62 @@ openalex_kth_rawaff_query <- function() {
   # (roy AND inst AND tech) OR
   # "Roy. Inst. T"
   # (roy* AND tech* AND univ*)) AND (Sweden))
-  paste0(
-    'KTH OR (roy* AND inst* AND tech*) OR ',
-    '(alfven) OR (kung* AND tek* AND hog*) OR (kung* AND tek* AND h\\u00f6g*) OR ',
-    '(kgl AND tek* AND hog*) OR (kung* AND tek* AND hg*)'
-  )
+  # paste0(
+  #   'KTH OR (roy* AND inst* AND tech*) OR ',
+  #   '(alfven) OR (kung* AND tek* AND hog*) OR (kung* AND tek* AND h\\u00f6g*) OR ',
+  #   '(kgl AND tek* AND hog*) OR (kung* AND tek* AND hg*)'
+  # )
+
+  '("KTH" OR  
+ 
+ (("roy inst" OR  
+ "royal in-stitute" OR  
+ "royal inititute" OR  
+ "royal institut" OR  
+ "royal institute" OR  
+ "royal institite" OR  
+ "royal institution" OR  
+ "royal institue" OR  
+ "royal insititu" OR  
+ "royal insitute" OR  
+ "royal inst" OR  
+ "royal inst." OR  
+ "royal intitute" OR  
+ "royal istitute" OR  
+ "royal lnstitute" OR  
+ "royal lnstitufe" OR  
+ "royal lnstltute") AND "tech") OR  
+ 
+ (("kgl" OR  
+ "kgl." OR  
+ "kungl" OR  
+ "kungl." OR  
+ "kungliga") AND "tekn") OR 
+ 
+ "r inst of technol" OR  
+ "r inst. of technol." OR  
+ "r. inst. of tech." OR  
+ "r. inst. of technol" OR  
+ "r. inst. of technol." OR  
+ "royal tech" OR  
+ "institute of technology stockholm" OR  
+ "royal of technology" OR  
+ "royal school of technology" OR  
+ "royal swedish institute of technology" OR  
+ "royal university of technology" OR  
+ "royal college of technology" OR  
+ "royalinstitute" OR  
+ "alfven" OR  
+ "alfvén" OR  
+ "10044 stockholm" OR  
+ "100 44 stockholm") 
+ 
+ NOT 
+ 
+ ("khyber" OR  
+ "peshawar" OR
+ "mcmaster")'
+  
 }
 
 # There seems to be a way to fetch ngrams
@@ -471,7 +537,7 @@ openalex_works_published_since <- function(
   criteria_from <- format(Sys.Date() - since_days, "%Y-%m-%d")
 
   params <- paste0(collapse = ",", c(
-      sprintf("raw_affiliation_string.search:%s", criteria_aff),
+      sprintf("raw_affiliation_strings.search:%s", criteria_aff),
       sprintf("from_publication_date:%s", criteria_from)
     )
   )
@@ -560,4 +626,86 @@ openalex_works_created_since <- function(
     )
   )
 
+}
+
+#' @import httr2
+openalex_aboutness <- function(title, abstract = NULL, verbose = FALSE, format = c("object", "tables")) {
+
+  #  "https://api.openalex.org/text?title=type%201%20diabetes%20research%20for%20children
+  #  https://groups.google.com/g/openalex-users/c/Df4dIA19adM
+
+  is_invalid <- function(x) nchar(x) < 20 | nchar(x) > 2000
+  
+  if (is_invalid(title))
+    stop("Title must be between 20 and 2000 characters long")
+  
+  if (!is.null(abstract) && is_invalid(abstract))
+    stop("Abstract, if provided, must be between 20 and 2000 character long")
+    
+  q <- purrr::compact(list(title = title, abstract = abstract))
+
+  req <- 
+    httr2::request(openalex_api()) |> 
+    httr2::req_url_path("text") |> 
+    httr2::req_user_agent(cfg()$user_agent) |> 
+    httr2::req_body_json(data = q)
+  
+  if (verbose) 
+    req <- req |> httr2::req_verbose() 
+  
+  resp <- req |> httr2::req_perform()
+
+  res <- switch(match.arg(format),
+    "object" = resp |> httr2::resp_body_json(),
+    "tables" = parse_resp_aboutness(resp |> httr2::resp_body_json())
+  )
+
+  return(res)
+
+}
+
+parse_topics <- function(topics) {
+
+  ones <- 
+    topics |> map(\(x) purrr::discard_at(x, at = c("field", "domain", "subfield"))) |> 
+    bind_rows()
+
+  manies <- 
+    topics |> map(\(x) purrr::keep_at(x, at = c("field", "domain", "subfield"))) 
+  
+  fsd <- bind_cols(
+    manies |> map("field") |> bind_rows() |> rename_with(\(x) paste0("field_", x)),
+    manies |> map("subfield") |> bind_rows() |> rename_with(\(x) paste0("subfield_", x)),
+    manies |> map("domain") |> bind_rows() |> rename_with(\(x) paste0("domain_", x))
+  )
+
+  bind_cols(ones, fsd)
+
+}
+
+parse_resp_aboutness <- function(resp) {
+
+  d <- resp
+
+  meta <- 
+    d$meta |> bind_rows()
+
+  keywords <- 
+    d$keywords |> bind_rows()
+
+  topics <- 
+    d$topics |> parse_topics()
+
+  primary_topic <- 
+    list(d$primary_topic) |> parse_topics()
+
+  concepts <-   
+    bind_cols(
+      d$concepts |> bind_rows() |> select(-any_of("ancestors")),
+      d$concepts |> bind_rows() |> pull(ancestors) |> map(bind_rows) |>
+        bind_rows() |> rename_with(.fn = \(x) paste0("ancestors_", x))
+    )
+ 
+  list(meta = meta, keywords = keywords, topics = topics, concepts = concepts)
+  
 }
