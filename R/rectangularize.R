@@ -229,7 +229,7 @@ parse_work2 <- function(object) {
   w <- object
 
 
-  w$results  |> map(\(x) tibble(field = names(x), l = lengths(x)))  |> bind_rows()  |> distinct()  |> dplyr::filter(l == 1)  |> dplyr::pull(field)  |> cat(sep = "\n")
+  #w$results  |> map(\(x) tibble(field = names(x), l = lengths(x)))  |> bind_rows()  |> distinct()  |> dplyr::filter(l == 1)  |> dplyr::pull(field)  |> cat(sep = "\n")
 
   one_to_one <- 
     readr::read_lines("id
@@ -263,33 +263,77 @@ counts_by_year
 keywords
 grants
 topics
-is_authors_truncated")
-  
+is_authors_truncated
+relevance_score
+versions")
+
+testset <- readr::read_lines("id
+doi
+title
+display_name
+relevance_score
+publication_year
+publication_date
+language
+type
+type_crossref
+countries_distinct_count
+institutions_distinct_count
+fwci
+has_fulltext
+cited_by_count
+is_retracted
+is_paratext
+locations_count
+sustainable_development_goals
+versions
+referenced_works_count
+cited_by_api_url
+updated_date
+created_date")
+
+testset <- 
+  w$results |> 
+  map(\(x) tibble(cols = names(x), l = lengths(x)) |> 
+    tidyr::pivot_wider(names_from = "cols", values_from = "l")
+  ) |> 
+  bind_rows() |>
+  summarize(across(everything(), max)) |>
+  ungroup() |> 
+  tidyr::pivot_longer(cols = everything()) |> 
+  filter(value == 1, name != "versions") |> pull(name) 
+    
+workz <- 
+  w$results  |> 
+  map(\(x) x[testset]  |> compact()  |> as_tibble())  |> 
+  bind_rows()
+
 plf <- function(o, f) {
   l <- o |> map(\(x) purrr::pluck(x, f)) |> unlist()
   list(l) |> setNames(nm = f)
 }
-
-plf(w$results, "grants")
   
-  work <- 
-    w$results |> map_dfr(
-      function(x) tibble(
-        id = pluck(x, "id"),
-        doi = pluck(x, "doi"),
-        display_name = pluck(x, "display_name"),
-        title = pluck(x, "title"),
-        publication_year = pluck(x, "publication_year"),
-        publication_date = pluck(x, "publication_date"),
-        type = pluck(x, "type"),
-        cited_by_count = pluck(x, "cited_by_count"),
-        is_retracted = pluck(x, "is_retracted"),
-        is_paratext = pluck(x, "is_paratext"),
-        updated_date = pluck(x, "updated_date"),
-        cited_by_api_url = pluck(x, "cited_by_api_url"),
-        created_date = pluck(x, "created_date")
-      )
-    )  
+#plf(w$results, "grants")
+  
+  # work <- 
+  #   w$results |> map_dfr(
+  #     function(x) tibble(
+  #       id = pluck(x, "id"),
+  #       doi = pluck(x, "doi"),
+  #       display_name = pluck(x, "display_name"),
+  #       title = pluck(x, "title"),
+  #       publication_year = pluck(x, "publication_year"),
+  #       publication_date = pluck(x, "publication_date"),
+  #       type = pluck(x, "type"),
+  #       cited_by_count = pluck(x, "cited_by_count"),
+  #       is_retracted = pluck(x, "is_retracted"),
+  #       is_paratext = pluck(x, "is_paratext"),
+  #       updated_date = pluck(x, "updated_date"),
+  #       cited_by_api_url = pluck(x, "cited_by_api_url"),
+  #       created_date = pluck(x, "created_date")
+  #     )
+  #   )  
+  
   # title
   # publication_year
   # publication_date
@@ -410,7 +454,8 @@ plf(w$results, "grants")
     unnest_wider(any_of("topics_subfield"), names_sep = "_") |>
     unnest_wider(any_of("topics_domain"), names_sep = "_")    
 
-  c(list(authorships = authorships), various, various2, various3, various4, 
+  c(list(work = workz),
+    list(authorships = authorships), various, various2, various3, various4, 
     list(
       primary_location = primary_location, primary_topic = primary_topic,
       best_oa_location = best_oa_location, locations = locations,

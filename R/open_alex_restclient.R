@@ -321,7 +321,7 @@ openalex_crawl <- function(entity, query, verbose = FALSE, fmt = "object") {
   }
 
   if (n_items > 1e4)
-    stop("A maximum of 10000 results can be paged, this query exceeds that.")
+    stop(paste0("A maximum of 10000 results can be paged, this query exceeds that. Results:", n_items))
 
   if (verbose)
     message("About to crawl a total of ", length(pages), " pages of results",
@@ -576,7 +576,7 @@ openalex_works_updated_since <- function(
     lubridate::format_ISO8601(usetz = "Z")
 
   params <- paste0(collapse = ",", c(
-      sprintf("raw_affiliation_string.search:%s", criteria_aff),
+      sprintf("raw_affiliation_strings.search:%s", criteria_aff),
       sprintf("from_updated_date:%s", criteria_from)
     )
   )
@@ -614,7 +614,7 @@ openalex_works_created_since <- function(
     format("%Y-%m-%d")
 
   params <- paste0(collapse = ",", c(
-      sprintf("raw_affiliation_string.search:%s", criteria_aff),
+      sprintf("raw_affiliation_strings.search:%s", criteria_aff),
       sprintf("from_created_date:%s", criteria_from)
     )
   )
@@ -708,4 +708,60 @@ parse_resp_aboutness <- function(resp) {
  
   list(meta = meta, keywords = keywords, topics = topics, concepts = concepts)
   
+}
+
+
+
+openalex_filter_similar_topics <- function(work_identifier, granularity = c("topic", "domain", "field", "subfield")) {
+
+  w <- openalex_work(work_identifier, format = "object")
+
+  topic_id <- function(w, field_type) {
+
+    f <- switch(field_type,
+      topic = "topics.id",
+      domain = "topics.domain.id",
+      field = "topics.field.id",
+      subfield = "topics.subfield.id"
+    )
+
+    if (field_type == "topic") 
+      field_type <- NULL
+    
+    res <- 
+      w$topics |> map_chr(c(field_type, "id")) |> unique() |> 
+      gsub(pattern = "https://.*?/(.*?)$", replacement = "\\1")
+
+    paste0(f, ":", paste0(collapse = "|", res))
+  }
+  
+  topics_filter <- function(w) {
+    fields <- granularity
+    topics <- fields |> map_chr(function(x) topic_id(w, x)) 
+    topics |> paste(collapse = ",")
+  }
+
+  topics_filter(w)
+
+}
+
+openalex_works_to_tbls <- function(works) {
+
+  tbls <- works |> map(parse_work2, .progress = TRUE)
+
+  unify_slots <- function(tbls) {
+    slotz <- map(tbls, names) |> unique() |> unlist()
+    strip_prefix <- function(x) gsub("^https://.*?/(.*?)$", "\\1", x)
+    #message("Merging slots:\n", slotz |> paste0(collapse = "\n"))
+    unify <- function(x) {
+      tbls |> map(x) |> bind_rows() |> 
+      readr::type_convert(guess_integer = TRUE) |> 
+      suppressMessages() |> suppressWarnings() |> 
+      mutate(across(where(is.character), strip_prefix))
+    }
+    slotz |> map(unify) |> setNames(nm = slotz)  
+  }
+
+  unify_slots(tbls)
+
 }

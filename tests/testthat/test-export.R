@@ -31,7 +31,7 @@ test_that("export for diva in wos-plain text format works", {
 
   my_filter <- paste0(collapse = ",", c(
     sprintf("publication_year:%s", 2024),    
-    sprintf("authorships.author.id:%s", "a5058057533") #,
+    sprintf("authorships.author.id:%s", "a5045975901") #,
   #   sprintf("raw_affiliation_strings.search:%s", openalex_kth_rawaff_query()),
   #   "authorships.institutions.lineage:!i86987016", ## KTH
   #   "authorships.institutions.lineage:!i4210161097", ## Bolin Center (some of these might be KTH pubs!)
@@ -40,6 +40,8 @@ test_that("export for diva in wos-plain text format works", {
   ))
 
   gm <- openalex_works_export(q = my_filter, fmt = "wos-plaintext")
+
+  cat(gm)
   
   is_valid <- (regmatches(gm, gregexpr("Maguire", gm)) |> unlist()) |> length() > 10
   expect_true(is_valid)
@@ -60,6 +62,46 @@ test_that("export of rawff query for 2024 in wos-plain diva text format works", 
   is_valid <- (regmatches(extras, gregexpr("ER", extras)) |> unlist()) |> length() > 0
   expect_true(is_valid)
 })
+
+test_that("export of rawff query for 2023 in csv format works", {
+
+  skip()
+
+  my_filter <- paste0(collapse = ",", c(
+    sprintf("publication_year:%s", 2023),    
+    sprintf("raw_affiliation_strings.search:%s", openalex_kth_rawaff_query())
+  ))
+
+  csv_2023 <- openalex_works_export(my_filter, "csv")
+
+  #arrow::write_parquet(csv_2023, "~/oa-2023-csv-export.parquet")
+
+  is_valid <- nrow(csv_2023) > 1
+
+  expect_true(is_valid)
+
+})
+
+test_that("export of rawff query for 2023 in csv format works", {
+
+  skip()
+
+  my_filter <- paste0(collapse = ",", c(
+    sprintf("publication_year:%s", 2023),    
+    sprintf("raw_affiliation_strings.search:%s", openalex_kth_rawaff_query())
+  ))
+
+  csv_2023 <- openalex_works_export(my_filter, "csv")
+
+  #arrow::write_parquet(csv_2023, "~/oa-2023-csv-export.parquet")
+
+  is_valid <- nrow(csv_2023) > 1
+
+  expect_true(is_valid)
+
+
+}
+
 
 
 # TODO: Vilka konferenspapper finns i OA som är kopplade till KTH (behöver inte ha DOI)?
