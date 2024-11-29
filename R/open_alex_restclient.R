@@ -702,7 +702,7 @@ parse_resp_aboutness <- function(resp) {
   concepts <-   
     bind_cols(
       d$concepts |> bind_rows() |> select(-any_of("ancestors")),
-      d$concepts |> bind_rows() |> pull(ancestors) |> map(bind_rows) |>
+      d$concepts |> bind_rows() |> pull(any_of("ancestors")) |> map(bind_rows) |>
         bind_rows() |> rename_with(.fn = \(x) paste0("ancestors_", x))
     )
  
@@ -752,14 +752,18 @@ openalex_works_to_tbls <- function(works) {
   unify_slots <- function(tbls) {
     slotz <- map(tbls, names) |> unique() |> unlist()
     strip_prefix <- function(x) gsub("^https://.*?/(.*?)$", "\\1", x)
+    strip_doi <- function(x) gsub("^https://doi.org/(.*?)$", "\\1", x)
     #message("Merging slots:\n", slotz |> paste0(collapse = "\n"))
     unify <- function(x) {
       tbls |> map(x) |> bind_rows() |> 
       readr::type_convert(guess_integer = TRUE) |> 
       suppressMessages() |> suppressWarnings() |> 
-      mutate(across(where(is.character), strip_prefix))
+      mutate(across(where(function(x) is.character(x)) & !any_of(c("doi")), .fns = strip_prefix)) |> 
+      mutate(across(any_of(c("doi")), .fns = strip_doi)) |> 
+      select(where(Negate(is.list)))
     }
-    slotz |> map(unify) |> setNames(nm = slotz)  
+    res <- slotz |> map(unify) |> setNames(nm = slotz)
+    return (res)
   }
 
   unify_slots(tbls)

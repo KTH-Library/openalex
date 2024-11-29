@@ -184,6 +184,8 @@ parse_work <- function(chunk) {
 #' @import tidyr dplyr purrr
 parse_work2 <- function(object) {
 
+  name <- value <- NULL
+
   unfwv <- function(l, field) {
     l |> map(\(x) keep_at(x, c("id", field))) |> 
       enframe() |> 
@@ -409,7 +411,38 @@ plf <- function(o, f) {
     "corresponding_author_ids"#,
 #    "abstract_inverted_index"
   ) 
+
+  aii_to_abstract <- function(aii) {
+
+    value <- NULL
+
+    abstract <- 
+      aii |> enframe() |> 
+      unnest_longer(any_of(c("value"))) |> 
+      arrange(-desc(value)) |> 
+      pull(any_of(c("name"))) |> 
+      paste0(collapse = " ")
   
+    if (!nzchar(abstract)) 
+      return (NA_character_)
+    
+    return (abstract)
+  
+  }  
+
+  # abstracts <- 
+  #   w$results |> 
+  #   map("abstract_inverted_index") |> 
+  #   map_chr(aii_to_abstract)
+
+  abstracts <- 
+    w$results |> 
+    map(function(x) tibble(
+      work_id = pluck(x, "id"),
+      abstract = aii_to_abstract(pluck(x, "abstract_inverted_index"))
+    )) |> 
+    map_dfr(bind_rows)
+
   abstract_inverted_index <- 
     w$results |>  map(function(x) tibble(
       work_id = pluck(x, "id"),
@@ -418,7 +451,7 @@ plf <- function(o, f) {
     )) |>
     map_dfr(bind_rows) |>
     unnest_longer("aii_value") |>
-    distinct()  
+    distinct()      
 
   various4 <- 
     fields4 |> map(\(x) w$results |> unfl(x)) |> set_names(nm = fields4)
@@ -455,6 +488,7 @@ plf <- function(o, f) {
     unnest_wider(any_of("topics_domain"), names_sep = "_")    
 
   c(list(work = workz),
+    list(abstracts = abstracts),
     list(authorships = authorships), various, various2, various3, various4, 
     list(
       primary_location = primary_location, primary_topic = primary_topic,
