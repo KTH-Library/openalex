@@ -320,7 +320,7 @@ openalex_crawl <- function(entity, query, verbose = FALSE, fmt = "object") {
     return (list())
   }
 
-  if (n_items > 1e4)
+  if (n_items > 1e5)
     stop(paste0("A maximum of 10000 results can be paged, this query exceeds that. Results:", n_items))
 
   if (verbose)
@@ -462,56 +462,56 @@ openalex_kth_rawaff_query <- function() {
   #   '(kgl AND tek* AND hog*) OR (kung* AND tek* AND hg*)'
   # )
 
-  '("KTH" OR  
- 
- (("roy inst" OR  
- "royal in-stitute" OR  
- "royal inititute" OR  
- "royal institut" OR  
- "royal institute" OR  
- "royal institite" OR  
- "royal institution" OR  
- "royal institue" OR  
- "royal insititu" OR  
- "royal insitute" OR  
- "royal inst" OR  
- "royal inst." OR  
- "royal intitute" OR  
- "royal istitute" OR  
- "royal lnstitute" OR  
- "royal lnstitufe" OR  
- "royal lnstltute") AND "tech") OR  
- 
- (("kgl" OR  
- "kgl." OR  
- "kungl" OR  
- "kungl." OR  
- "kungliga") AND "tekn") OR 
- 
- "r inst of technol" OR  
- "r inst. of technol." OR  
- "r. inst. of tech." OR  
- "r. inst. of technol" OR  
- "r. inst. of technol." OR  
- "royal tech" OR  
- "institute of technology stockholm" OR  
- "royal of technology" OR  
- "royal school of technology" OR  
- "royal swedish institute of technology" OR  
- "royal university of technology" OR  
- "royal college of technology" OR  
- "royalinstitute" OR  
- "alfven" OR  
- "alfv\u00e9n" OR  
- "10044 stockholm" OR  
- "100 44 stockholm") 
- 
- NOT 
- 
- ("khyber" OR  
+  '("KTH" OR
+
+ (("roy inst" OR
+ "royal in-stitute" OR
+ "royal inititute" OR
+ "royal institut" OR
+ "royal institute" OR
+ "royal institite" OR
+ "royal institution" OR
+ "royal institue" OR
+ "royal insititu" OR
+ "royal insitute" OR
+ "royal inst" OR
+ "royal inst." OR
+ "royal intitute" OR
+ "royal istitute" OR
+ "royal lnstitute" OR
+ "royal lnstitufe" OR
+ "royal lnstltute") AND "tech") OR
+
+ (("kgl" OR
+ "kgl." OR
+ "kungl" OR
+ "kungl." OR
+ "kungliga") AND "tekn") OR
+
+ "r inst of technol" OR
+ "r inst. of technol." OR
+ "r. inst. of tech." OR
+ "r. inst. of technol" OR
+ "r. inst. of technol." OR
+ "royal tech" OR
+ "institute of technology stockholm" OR
+ "royal of technology" OR
+ "royal school of technology" OR
+ "royal swedish institute of technology" OR
+ "royal university of technology" OR
+ "royal college of technology" OR
+ "royalinstitute" OR
+ "alfven" OR
+ "alfv\u00e9n" OR
+ "10044 stockholm" OR
+ "100 44 stockholm")
+
+ NOT
+
+ ("khyber" OR
  "peshawar" OR
  "mcmaster")'
-  
+
 }
 
 # There seems to be a way to fetch ngrams
@@ -635,24 +635,24 @@ openalex_aboutness <- function(title, abstract = NULL, verbose = FALSE, format =
   #  https://groups.google.com/g/openalex-users/c/Df4dIA19adM
 
   is_invalid <- function(x) nchar(x) < 20 | nchar(x) > 2000
-  
+
   if (is_invalid(title))
     stop("Title must be between 20 and 2000 characters long")
-  
+
   if (!is.null(abstract) && is_invalid(abstract))
     stop("Abstract, if provided, must be between 20 and 2000 character long")
-    
+
   q <- purrr::compact(list(title = title, abstract = abstract))
 
-  req <- 
-    httr2::request(openalex_api()) |> 
-    httr2::req_url_path("text") |> 
-    httr2::req_user_agent(cfg()$user_agent) |> 
+  req <-
+    httr2::request(openalex_api()) |>
+    httr2::req_url_path("text") |>
+    httr2::req_user_agent(cfg()$user_agent) |>
     httr2::req_body_json(data = q)
-  
-  if (verbose) 
-    req <- req |> httr2::req_verbose() 
-  
+
+  if (verbose)
+    req <- req |> httr2::req_verbose()
+
   resp <- req |> httr2::req_perform()
 
   res <- switch(match.arg(format),
@@ -666,13 +666,13 @@ openalex_aboutness <- function(title, abstract = NULL, verbose = FALSE, format =
 
 parse_topics <- function(topics) {
 
-  ones <- 
-    topics |> map(\(x) purrr::discard_at(x, at = c("field", "domain", "subfield"))) |> 
+  ones <-
+    topics |> map(\(x) purrr::discard_at(x, at = c("field", "domain", "subfield"))) |>
     bind_rows()
 
-  manies <- 
-    topics |> map(\(x) purrr::keep_at(x, at = c("field", "domain", "subfield"))) 
-  
+  manies <-
+    topics |> map(\(x) purrr::keep_at(x, at = c("field", "domain", "subfield")))
+
   fsd <- bind_cols(
     manies |> map("field") |> bind_rows() |> rename_with(\(x) paste0("field_", x)),
     manies |> map("subfield") |> bind_rows() |> rename_with(\(x) paste0("subfield_", x)),
@@ -687,27 +687,27 @@ parse_resp_aboutness <- function(resp) {
 
   d <- resp
 
-  meta <- 
+  meta <-
     d$meta |> bind_rows()
 
-  keywords <- 
+  keywords <-
     d$keywords |> bind_rows()
 
-  topics <- 
+  topics <-
     d$topics |> parse_topics()
 
-  primary_topic <- 
+  primary_topic <-
     list(d$primary_topic) |> parse_topics()
 
-  concepts <-   
+  concepts <-
     bind_cols(
       d$concepts |> bind_rows() |> select(-any_of("ancestors")),
       d$concepts |> bind_rows() |> pull(ancestors) |> map(bind_rows) |>
         bind_rows() |> rename_with(.fn = \(x) paste0("ancestors_", x))
     )
- 
+
   list(meta = meta, keywords = keywords, topics = topics, concepts = concepts)
-  
+
 }
 
 
@@ -725,19 +725,19 @@ openalex_filter_similar_topics <- function(work_identifier, granularity = c("top
       subfield = "topics.subfield.id"
     )
 
-    if (field_type == "topic") 
+    if (field_type == "topic")
       field_type <- NULL
-    
-    res <- 
-      w$topics |> map_chr(c(field_type, "id")) |> unique() |> 
+
+    res <-
+      w$topics |> map_chr(c(field_type, "id")) |> unique() |>
       gsub(pattern = "https://.*?/(.*?)$", replacement = "\\1")
 
     paste0(f, ":", paste0(collapse = "|", res))
   }
-  
+
   topics_filter <- function(w) {
     fields <- granularity
-    topics <- fields |> map_chr(function(x) topic_id(w, x)) 
+    topics <- fields |> map_chr(function(x) topic_id(w, x))
     topics |> paste(collapse = ",")
   }
 
@@ -754,12 +754,12 @@ openalex_works_to_tbls <- function(works) {
     strip_prefix <- function(x) gsub("^https://.*?/(.*?)$", "\\1", x)
     #message("Merging slots:\n", slotz |> paste0(collapse = "\n"))
     unify <- function(x) {
-      tbls |> map(x) |> bind_rows() |> 
-      readr::type_convert(guess_integer = TRUE) |> 
-      suppressMessages() |> suppressWarnings() |> 
+      tbls |> map(x) |> bind_rows() |>
+      readr::type_convert(guess_integer = TRUE) |>
+      suppressMessages() |> suppressWarnings() |>
       mutate(across(where(is.character), strip_prefix))
     }
-    slotz |> map(unify) |> setNames(nm = slotz)  
+    slotz |> map(unify) |> setNames(nm = slotz)
   }
 
   unify_slots(tbls)
