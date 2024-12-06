@@ -747,9 +747,16 @@ openalex_filter_similar_topics <- function(work_identifier, granularity = c("top
 
 openalex_works_to_tbls <- function(works) {
 
-  tbls <- works |> map(parse_work2, .progress = TRUE)
+  pw2 <- purrr::possibly(parse_work2, otherwise = NULL, quiet = FALSE)
+
+  message("Converting record batches to tables...")
+  tbls <- works |> map(pw2, .progress = TRUE)
+  message("Done")
+
+  message("Unifying and merging tables...")
 
   unify_slots <- function(tbls) {
+
     slotz <- map(tbls, names) |> unique() |> unlist()
     strip_prefix <- function(x) gsub("^https://.*?/(.*?)$", "\\1", x)
     strip_doi <- function(x) gsub("^https://doi.org/(.*?)$", "\\1", x)
@@ -767,6 +774,8 @@ openalex_works_to_tbls <- function(works) {
     return (res)
   }
 
-  unify_slots(tbls)
+  out <- unify_slots(tbls)
 
+  message("Done")
+  return(out)
 }
