@@ -243,6 +243,7 @@ openalex_query <- function(
     search=NULL,
     sort=NULL,
     page=NULL,
+    cursor=NULL,
     verbose = FALSE) {
 
   # filter... use , to indicate AND
@@ -262,6 +263,7 @@ openalex_query <- function(
     search = search,
     sort = sort,
     page = page,
+    cursor = cursor,
     api_key = cfg()$key
   ) |>
     purrr::compact()
@@ -311,17 +313,32 @@ tbl_from_slot <- function(x, slot)
 #' @export
 openalex_crawl <- function(entity, query, verbose = FALSE, fmt = "object") {
 
-  res <- openalex_list(entity, query, format = fmt, verbose = FALSE)
+  q <- query
+
+  # if (use_cursor) {
+  #   q$cursor <- "*"
+  #   message("Using query:")
+  #   print(q)
+  # }
+
+  res <- openalex_list(entity, q, format = fmt, verbose = FALSE)
+  #q <- query
   n_items <- attr(res, "meta")$count
   pages <- 1:attr(res, "page_count")
+  #next_cursor <- attr(res, "meta")$next_cursor
+  #q$next_cursor <- next_cursor
+
+  # if (use_cursor == TRUE && is.null(next_cursor))
+  #   stop("Requested cursor paging, but no next_cursor found in response from API")
 
   if (n_items <= 0) {
     message("No results, returning empty list.")
     return (list())
   }
 
-  if (n_items > 1e5)
-    stop(paste0("A maximum of 10000 results can be paged, this query exceeds that. Results:", n_items))
+  if (n_items > 1e4) {
+    stop("If there are more than 10000 results, please set use_cursor to activate cursor paging")
+  }
 
   if (verbose)
     message("About to crawl a total of ", length(pages), " pages of results",
@@ -332,17 +349,22 @@ openalex_crawl <- function(entity, query, verbose = FALSE, fmt = "object") {
     total = length(pages), clear = FALSE, width = 60)
 
   #TODO: fixme so this can run in parallel?
-  q <- query
+  iq <- q
   i <- 1
-  entities <- purrr::possibly(
+  entities <- purrr::possibly(quiet = FALSE,
     .f = function(x) {
       pb$tick()
-      q$page <- i
+      iq$page <- i
       #print(q)
       Sys.sleep(1 / 100)
-      res <- openalex_list(entity, q, format = fmt, verbose = FALSE) #%>%
-        #bind_cols(page = x) %>%
-        #select(page, everything())
+      # if (use_cursor & !is.null(next_cursor)) {
+      #   iq$filter <- paste0(q$filter, "&cursor=", next_cursor)
+      #   print(iq)
+      # }
+      res <- openalex_list(entity, iq, format = fmt, verbose = FALSE)
+      # if (use_cursor) {
+      #   next_cursor <<- attr(res, "meta")$next_cursor
+      # }
       i <<- i + 1
       return(res)
     },
@@ -359,6 +381,7 @@ openalex_crawl <- function(entity, query, verbose = FALSE, fmt = "object") {
     pages |>  map(entities, .progress = TRUE)
 
   #TODO: fix so that NOT THE SAME work ids are fetched!!!!
+  #TODO: do not assume entity is work below
 
   list(
     work = res |> tbl_from_slot("work"),

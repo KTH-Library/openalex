@@ -1,6 +1,6 @@
 Package: openalex
 Title: Data from OpenAlex REST API
-Version: 0.0.3
+Version: 0.0.4
 Authors@R: 
     person(given = "Markus",
            family = "Skyttner",
@@ -33,3 +33,5 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 URL: https://kth-library.github.io/openalex/
+Depends: 
+    R (>= 2.10)

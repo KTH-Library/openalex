@@ -62,7 +62,7 @@ test_that("Crawling 444 MB of works related to a specific topic in 2023 works", 
 
   skip()
 
-  my_filter <-
+  q <-
     list(
       filter = paste0(collapse = ",", c(
         "publication_year:2023",
@@ -70,7 +70,7 @@ test_that("Crawling 444 MB of works related to a specific topic in 2023 works", 
         ))
       )
 
-  res <- openalex_crawl("works", query = my_filter)
+  res <- openalex_crawl("works", query = q, verbose = TRUE)
 
   message("JSON object size is ", format(object.size(res), "MB"))
 

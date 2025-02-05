@@ -187,6 +187,7 @@ parse_work2 <- function(object) {
   name <- value <- NULL
 
   unfwv <- function(l, field) {
+    if (is.null(l$field)) return(tibble())
     l |> map(\(x) keep_at(x, c("id", field))) |>
       enframe() |>
       unnest_wider(any_of("value")) |>
@@ -195,6 +196,7 @@ parse_work2 <- function(object) {
   }
 
   unfwvs <- function(l, field) {
+    if (is.null(l$field)) return(tibble())
     l |> map(\(x) keep_at(x, c("id", field))) |>
       enframe() |>
       unnest_wider(any_of("value")) |>
@@ -203,6 +205,7 @@ parse_work2 <- function(object) {
   }
 
   unfw <- function(l, field) {
+    if (is.null(l$field)) return(tibble())
     l |> map(\(x) keep_at(x, c("id", field))) |>
       compact() |>
       map_df(tibble::as_tibble) |>
@@ -211,14 +214,18 @@ parse_work2 <- function(object) {
   }
 
   unfws <- function(l, field) {
+    if (is.null(l$field)) return(tibble())
     l |> map(\(x) keep_at(x, c("id", field))) |>
+      compact() |> 
       map_df(tibble::as_tibble) |>
-      tidyr::unnest_wider(any_of(field), names_sep = "_")
+      tidyr::unnest_wider(any_of(field), names_sep = "_") |> 
+      compact()
   }
 
   unfl <- function(l, field) {
     #has_field <- l |> map_lgl(\(x) field %in% names(x)) |> all()
     #if (!has_field) return(data.frame(0))
+    if (is.null(l$field)) return(tibble())
     l |> map(\(x) keep_at(x, c("id", field))) |>
       compact() |>
       map_df(tibble::as_tibble) |>
@@ -234,7 +241,7 @@ parse_work2 <- function(object) {
   w <- object
 
 
-  one_to_one <-
+  colz <-
     w$results |>
     map(\(x) tibble(cols = names(x), l = lengths(x)) |>
       tidyr::pivot_wider(names_from = "cols", values_from = "l")
@@ -242,8 +249,9 @@ parse_work2 <- function(object) {
     bind_rows() |>
     summarize(across(everything(), max)) |>
     ungroup() |>
-    tidyr::pivot_longer(cols = everything()) |>
-    filter(value == 1, name != "versions") |> pull(name)
+    tidyr::pivot_longer(cols = everything()) 
+  
+  one_to_one <- colz |> filter(value == 1, name != "versions") |> pull(name)
 
   workz <-
     w$results  |>
@@ -272,12 +280,14 @@ parse_work2 <- function(object) {
     "citation_normalized_percentile", "cited_by_percentile_year",
     "biblio"
   )
+  fields <- fields[which(fields %in% unique(colz$name))]
 
   various <-
     fields |> map(\(x) w$results |> map(\(y) pluck_with_id(y, x))) |>
     set_names(fields) |> map(bind_rows)
 
   fields2 <- c("counts_by_year", "grants", "mesh")
+  fields2 <- fields2[which(fields2 %in% unique(colz$name))]
 
   various2 <-
     fields2 |> map(\(x) w$results |> unfw(x)) |> set_names(nm = fields2)
@@ -288,7 +298,10 @@ parse_work2 <- function(object) {
     "concepts",
     "datasets"
   )
-  various3 <- fields3 |> map(\(x) w$results |> unfws(x)) |> set_names(nm = fields3)
+  fields3 <- fields3[which(fields3 %in% unique(colz$name))]
+
+  various3 <- 
+    fields3 |> map(\(x) w$results |> unfws(x)) |> set_names(nm = fields3)
 
   fields4 <- c(
     "referenced_works",
@@ -298,6 +311,11 @@ parse_work2 <- function(object) {
     "corresponding_author_ids"#,
 #    "abstract_inverted_index"
   )
+
+  fields4 <- fields4[which(fields4 %in% unique(colz$name))]
+
+  various4 <-
+    fields4 |> map(\(x) w$results |> unfl(x)) |> set_names(nm = fields4)
 
   aii_to_abstract <- function(aii) {
 
@@ -324,9 +342,6 @@ parse_work2 <- function(object) {
       abstract = aii_to_abstract(pluck(x, "abstract_inverted_index"))
     )) |>
     map_dfr(bind_rows)
-
-  various4 <-
-    fields4 |> map(\(x) w$results |> unfl(x)) |> set_names(nm = fields4)
 
   primary_location <-
     w$results |> unfwv("primary_location") |>
