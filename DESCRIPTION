@@ -1,6 +1,6 @@
 Package: openalex
 Title: Data from OpenAlex REST API
-Version: 0.0.3
+Version: 0.0.4
 Authors@R: 
     person(given = "Markus",
            family = "Skyttner",
@@ -13,7 +13,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Imports: 
     httr,
     magrittr,
@@ -24,8 +24,15 @@ Imports:
     jsonlite,
     tibble,
     tidyr,
-    lubridate
+    lubridate,
+    DBI,
+    duckdb,
+    httr2,
+    readr,
+    RcppSimdJson
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 URL: https://kth-library.github.io/openalex/
+Depends: 
+    R (>= 2.10)

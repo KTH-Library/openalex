@@ -179,3 +179,217 @@ parse_work <- function(chunk) {
   )
 
 }
+
+#' @noRd
+#' @import tidyr dplyr purrr
+parse_work2 <- function(object) {
+
+  name <- value <- NULL
+
+  unfwv <- function(l, field) {
+    if (is.null(l$field)) return(tibble())
+    l |> map(\(x) keep_at(x, c("id", field))) |>
+      enframe() |>
+      unnest_wider(any_of("value")) |>
+      tidyr::unnest_wider(any_of(field)) |>
+      select(-any_of(c("name")))
+  }
+
+  unfwvs <- function(l, field) {
+    if (is.null(l$field)) return(tibble())
+    l |> map(\(x) keep_at(x, c("id", field))) |>
+      enframe() |>
+      unnest_wider(any_of("value")) |>
+      tidyr::unnest_wider(any_of(field), names_sep = "_") |>
+      select(-any_of(c("name")))
+  }
+
+  unfw <- function(l, field) {
+    if (is.null(l$field)) return(tibble())
+    l |> map(\(x) keep_at(x, c("id", field))) |>
+      compact() |>
+      map_df(tibble::as_tibble) |>
+      tidyr::unnest_wider(any_of(field)) |>
+      compact()
+  }
+
+  unfws <- function(l, field) {
+    if (is.null(l$field)) return(tibble())
+    l |> map(\(x) keep_at(x, c("id", field))) |>
+      compact() |> 
+      map_df(tibble::as_tibble) |>
+      tidyr::unnest_wider(any_of(field), names_sep = "_") |> 
+      compact()
+  }
+
+  unfl <- function(l, field) {
+    #has_field <- l |> map_lgl(\(x) field %in% names(x)) |> all()
+    #if (!has_field) return(data.frame(0))
+    if (is.null(l$field)) return(tibble())
+    l |> map(\(x) keep_at(x, c("id", field))) |>
+      compact() |>
+      map_df(tibble::as_tibble) |>
+      tidyr::unnest_longer(any_of(field)) |>
+      compact()
+  }
+
+  pluck_with_id <- function(x, field) {
+    if (!pluck_exists(x, field)) return (NULL)
+    c(id = pluck(x, "id"), pluck(x, field))
+  }
+
+  w <- object
+
+
+  colz <-
+    w$results |>
+    map(\(x) tibble(cols = names(x), l = lengths(x)) |>
+      tidyr::pivot_wider(names_from = "cols", values_from = "l")
+    ) |>
+    bind_rows() |>
+    summarize(across(everything(), max)) |>
+    ungroup() |>
+    tidyr::pivot_longer(cols = everything()) 
+  
+  one_to_one <- colz |> filter(value == 1, name != "versions") |> pull(name)
+
+  workz <-
+    w$results  |>
+    map(\(x) x[one_to_one]  |> compact()  |> as_tibble())  |>
+    bind_rows()
+
+  plf <- function(o, f) {
+    l <- o |> map(\(x) purrr::pluck(x, f)) |> unlist()
+    list(l) |> setNames(nm = f)
+  }
+
+  authorships <-
+    w$results |> unfw("authorships") |>
+    unnest_wider(any_of("author"), names_sep = "_") |>
+    unnest_longer(any_of("countries")) |>
+    unnest_longer(any_of("institutions")) |>
+    unnest_wider(any_of("institutions"), names_sep = "_") |>
+    unnest_longer(any_of("institutions_lineage")) |>
+    unnest_longer(any_of("affiliations")) |>
+    unnest_wider(any_of("affiliations"), names_sep = "_") |>
+    unnest_longer(any_of("raw_affiliation_strings")) |>
+    unnest_longer(any_of("affiliations_institution_ids"))
+
+  fields <- c(
+    "ids", "open_access", "apc_list", "apc_paid",
+    "citation_normalized_percentile", "cited_by_percentile_year",
+    "biblio"
+  )
+  fields <- fields[which(fields %in% unique(colz$name))]
+
+  various <-
+    fields |> map(\(x) w$results |> map(\(y) pluck_with_id(y, x))) |>
+    set_names(fields) |> map(bind_rows)
+
+  fields2 <- c("counts_by_year", "grants", "mesh")
+  fields2 <- fields2[which(fields2 %in% unique(colz$name))]
+
+  various2 <-
+    fields2 |> map(\(x) w$results |> unfw(x)) |> set_names(nm = fields2)
+
+  fields3 <- c(
+    "sustainable_development_goals",
+    "keywords",
+    "concepts",
+    "datasets"
+  )
+  fields3 <- fields3[which(fields3 %in% unique(colz$name))]
+
+  various3 <- 
+    fields3 |> map(\(x) w$results |> unfws(x)) |> set_names(nm = fields3)
+
+  fields4 <- c(
+    "referenced_works",
+    "related_works",
+    "indexed_in",
+    "corresponding_institution_ids",
+    "corresponding_author_ids"#,
+#    "abstract_inverted_index"
+  )
+
+  fields4 <- fields4[which(fields4 %in% unique(colz$name))]
+
+  various4 <-
+    fields4 |> map(\(x) w$results |> unfl(x)) |> set_names(nm = fields4)
+
+  aii_to_abstract <- function(aii) {
+
+    value <- NULL
+
+    abstract <-
+      aii |> enframe() |>
+      unnest_longer(any_of(c("value"))) |>
+      arrange(-desc(value)) |>
+      pull(any_of(c("name"))) |>
+      paste0(collapse = " ")
+
+    if (!nzchar(abstract))
+      return (NA_character_)
+
+    return (abstract)
+
+  }
+
+  abstracts <-
+    w$results |>
+    map(function(x) tibble(
+      work_id = pluck(x, "id"),
+      abstract = aii_to_abstract(pluck(x, "abstract_inverted_index"))
+    )) |>
+    map_dfr(bind_rows)
+
+  primary_location <-
+    w$results |> unfwv("primary_location") |>
+    unnest_wider(any_of("source"), names_sep = "_") |>
+    unnest_longer(any_of("source_issn")) |>
+    unnest_longer(any_of(c("source_host_organization_lineage", "source_host_organization_lineage_names"))) |>
+    compact()
+
+  primary_topic <-
+    w$results |> unfwvs("primary_topic") |>
+    unnest_wider(any_of("primary_topic"), names_sep = "_") |>
+    unnest_wider(any_of("primary_topic_field"), names_sep = "_") |>
+    unnest_wider(any_of("primary_topic_subfield"), names_sep = "_") |>
+    unnest_wider(any_of("primary_topic_domain"), names_sep = "_") |>
+    compact()
+
+  best_oa_location <-
+    w$results |> unfwv("best_oa_location") |>
+    unnest_wider(any_of("source"), names_sep = "_") |>
+    unnest_longer(any_of("source_issn")) |>
+    unnest_longer(any_of(c("source_host_organization_lineage", "source_host_organization_lineage_names"))) |>
+    compact()
+
+  locations <-
+    w$results |> unfw("locations") |>
+    unnest_wider(any_of("source"), names_sep = "_") |>
+    unnest_longer(any_of("source_issn")) |>
+    unnest_longer(any_of(c("source_host_organization_lineage", "source_host_organization_lineage_names"))) |>
+    compact()
+
+  topics <-
+    w$results |> unfws("topics") |>
+    unnest_wider(any_of("topics_field"), names_sep = "_") |>
+    unnest_wider(any_of("topics_subfield"), names_sep = "_") |>
+    unnest_wider(any_of("topics_domain"), names_sep = "_") |>
+    compact()
+
+  c(list(work = workz),
+    list(abstracts = abstracts),
+    list(authorships = authorships),
+    various, various2, various3, various4,
+    list(
+      primary_location = primary_location,
+      best_oa_location = best_oa_location,
+      locations = locations,
+      primary_topic = primary_topic,
+      topics = topics
+    )
+  )
+
+}
