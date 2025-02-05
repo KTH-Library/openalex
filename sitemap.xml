@@ -1,57 +1,29 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://kth-library.github.io/openalex/404.html</loc>
-  </url>
-  <url>
-    <loc>https://kth-library.github.io/openalex/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://kth-library.github.io/openalex/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://kth-library.github.io/openalex/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://kth-library.github.io/openalex/index.html</loc>
-  </url>
-  <url>
-    <loc>https://kth-library.github.io/openalex/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://kth-library.github.io/openalex/reference/openalex_api.html</loc>
-  </url>
-  <url>
-    <loc>https://kth-library.github.io/openalex/reference/openalex_attribution.html</loc>
-  </url>
-  <url>
-    <loc>https://kth-library.github.io/openalex/reference/openalex_crawl.html</loc>
-  </url>
-  <url>
-    <loc>https://kth-library.github.io/openalex/reference/openalex_flatten_long.html</loc>
-  </url>
-  <url>
-    <loc>https://kth-library.github.io/openalex/reference/openalex_key.html</loc>
-  </url>
-  <url>
-    <loc>https://kth-library.github.io/openalex/reference/openalex_kth_rawaff_query.html</loc>
-  </url>
-  <url>
-    <loc>https://kth-library.github.io/openalex/reference/openalex_polite.html</loc>
-  </url>
-  <url>
-    <loc>https://kth-library.github.io/openalex/reference/openalex_work.html</loc>
-  </url>
-  <url>
-    <loc>https://kth-library.github.io/openalex/reference/openalex_works_created_since.html</loc>
-  </url>
-  <url>
-    <loc>https://kth-library.github.io/openalex/reference/openalex_works_published_since.html</loc>
-  </url>
-  <url>
-    <loc>https://kth-library.github.io/openalex/reference/openalex_works_updated_since.html</loc>
-  </url>
-  <url>
-    <loc>https://kth-library.github.io/openalex/reference/pipe.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://kth-library.github.io/openalex/404.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/LICENSE-text.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/LICENSE.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/authors.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/index.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/reference/index.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/reference/openalex-package.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/reference/openalex_api.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/reference/openalex_attribution.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/reference/openalex_counts.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/reference/openalex_crawl.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/reference/openalex_flatten_long.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/reference/openalex_key.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/reference/openalex_kth_rawaff_query.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/reference/openalex_polite.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/reference/openalex_topics.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/reference/openalex_work.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/reference/openalex_works_created_since.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/reference/openalex_works_cursorcrawl.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/reference/openalex_works_export.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/reference/openalex_works_published_since.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/reference/openalex_works_updated_since.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/reference/openalex_write_duckdb.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/reference/pipe.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/reference/topics.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/reference/wos_plaintext_for_diva.html</loc></url>
 </urlset>
+
