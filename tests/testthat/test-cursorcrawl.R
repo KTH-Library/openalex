@@ -9,10 +9,13 @@ test_that("cursor based paging for works works", {
     openalex_works_cursorcrawl(n_max_pages = 10)
 
   mydir <- unique(dirname(cc))
-  dir(mydir)
-  cmd <- paste0("flatterer --force --nocsv --parquet -m works --id-prefix work -j ",
-    paste(collapse = " ", cc), " ", mydir, paste0(mydir, "/cursorcrawl"))
+  is_valid <- all(cc %in% dir(mydir, full.names = TRUE))
+
+  expect_true(is_valid)
+
+  # cmd <- paste0("flatterer --force --nocsv --parquet -m works --id-prefix work -j ",
+  #   paste(collapse = " ", cc), " ", mydir, paste0(mydir, "/cursorcrawl"))
   
-  system(cmd)
+  # system(cmd)
 
 })

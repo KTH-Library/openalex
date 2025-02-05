@@ -109,3 +109,31 @@ test_that("export of rawff query for 2023 in csv format works", {
 # Hypotes: Scopus är duktiga på konferenser, kanske pga screenscraping-superpowers, hur står sig OpenAlex där?
 # TODO: Hur mycket "mer" av sådant ser man med en Premium Key?
 
+# tf <- openalex_counts(filter = "authorships.institutions.lineage:i86987016,publication_year:2025")
+
+# tree <- tf[grepl("Topic", names(tf))]
+# topics <- openalex_topics()
+
+# tree$`Primary Topic Domain Id` |> 
+#   left_join(topics |> distinct(id_domain, domain), by = c(name = "domain")) |> 
+#   rename(domain = "name")
+
+# tree$`Primary Topic Field Id` |> 
+#   left_join(topics |> distinct(id_field, field, id_domain, domain), by = c(name = "field")) |> 
+#   rename(field = "name")
+
+# tree$`Primary Topic Subfield Id` |> 
+#   left_join(topics |> distinct(id_subfield, subfield, id_field, field, id_domain, domain), by = c(name = "subfield")) |> 
+#   rename(subfield = "name")
+
+# tree$`Primary Topic Id` |> 
+#   left_join(topics, by = c(name = "topic")) |> 
+#   rename(topic = "name")
+
+# tt <- 
+#   list(tree, names(tree)) |> purrr::pmap(\(x, y) x |> mutate(var = y) |> select(var, everything())) |> 
+#   map_dfr(bind_rows) |> 
+#   rename(display_name = name) |> 
+#   left_join(topics, by = "display_name")
+
+# proceed to make a treemap

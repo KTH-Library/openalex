@@ -28,7 +28,8 @@ Imports:
     DBI,
     duckdb,
     httr2,
-    readr
+    readr,
+    RcppSimdJson
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

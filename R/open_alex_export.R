@@ -227,6 +227,8 @@ openalex_filter_default <- function() {
 
 openalex_groupbys <- function(q) {
 
+  colname <- field <- colid <- i <- NULL
+
   csv <- 
     q |> readr::read_lines()
   
@@ -267,6 +269,15 @@ openalex_groupbys <- function(q) {
 
 }
 
+#' Counts from OpenAlex
+#' 
+#' Aggregates/counts can be retrieved using the group_bys query parameter
+#' 
+#' @param filter a set of filter criteria, see the defaults in openalex_filter_default()
+#' @param dimensions a set of grouping dimensions, see the defaults in openalex_groupbys_default()
+#' @return a list of tibbles
+#' @export
+#' @importFrom utils URLencode
 openalex_counts <- function(
   filter = openalex_filter_default(), 
   dimensions = openalex_groupbys_default()
@@ -299,7 +310,7 @@ read_page <- function(level = c("topics", "subfields", "fields", "domains"), pag
 }
 
 openalex_level <- function(l) {
-
+  
   t <- read_page(level = l, page = 1)
   np <- ceiling(attr(t, "meta")$count / 200)
 
@@ -313,6 +324,8 @@ openalex_level <- function(l) {
 }
 
 openalex_levels <- function() {
+
+  display_name <- NULL
 
   topics <- openalex_level("topics")
 

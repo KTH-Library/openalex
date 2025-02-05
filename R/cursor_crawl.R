@@ -1,3 +1,10 @@
+#' Crawl multipage responses from queries against the API
+#' 
+#' Chunks and uses cursor based pagination to fetch works
+#' @param works_filter the works filter
+#' @param n_max_pages the max amount of pages to fetch (50 per page)
+#' @return paths to downloaded files
+#' @importFrom RcppSimdJson fminify fparse fload
 openalex_works_cursorcrawl <- function(
   works_filter,
   n_max_pages = 5
