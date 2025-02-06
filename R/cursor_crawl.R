@@ -5,6 +5,7 @@
 #' @param n_max_pages the max amount of pages to fetch (50 per page)
 #' @return paths to downloaded files
 #' @importFrom RcppSimdJson fminify fparse fload
+#' @importFrom jqr jq
 openalex_works_cursorcrawl <- function(
   works_filter,
   n_max_pages = 5
@@ -38,18 +39,13 @@ openalex_works_cursorcrawl <- function(
     json_line |> RcppSimdJson::fparse(query = "/meta", max_simplify_lvl = "list")
   }
 
-  if (Sys.which("jq") == "") {
-    stop("Please install jq and make sure it is available on the system.")
-  }
-
-  jq_binary <- Sys.which("jq") |> unname()
-
   json_results <- function(j) {
 
-    cmd <- sprintf("%s -c '.results[]' | %s -c 'del(..|.abstract_inverted_index?)'", 
-      jq_binary, jq_binary)
+    #cmd <- sprintf("%s -c '.results[]' | %s -c 'del(..|.abstract_inverted_index?)'", 
+    #  jq_binary, jq_binary)
     
-    system(cmd, input = j, intern = TRUE) #|> 
+    #system(cmd, input = j, intern = TRUE) #|> 
+    j |> jqr::jq(".results[] | del(..|.abstract_inverted_index?)")
   }
 
   #TODO: exclude abstract_inverted_index
