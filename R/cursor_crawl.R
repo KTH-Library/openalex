@@ -1,5 +1,5 @@
 #' Crawl multipage responses from queries against the API
-#' 
+#'
 #' Chunks and uses cursor based pagination to fetch works
 #' @param works_filter the works filter
 #' @param n_max_pages the max amount of pages to fetch (50 per page)
@@ -11,40 +11,40 @@ openalex_works_cursorcrawl <- function(
   n_max_pages = 5
 ) {
 
-  req_works <- 
-    "https://api.openalex.org/" |> 
-    httr2::request() |> 
+  req_works <-
+    "https://api.openalex.org/" |>
+    httr2::request() |>
     httr2::req_url_path("works")
-    
+
   # initially, cursor is set to "*"
   q <- list(
     filter = works_filter,
     cursor = "*",
     `per-page` = 50
   )
-  
+
   # fcn to get works based on query params
   fetch_works <- function(q) {
-      req_works |> 
-      httr2::req_url_query(!!!q) |> 
-      httr2::req_perform() |> 
-      httr2::resp_body_string() |> 
+      req_works |>
+      httr2::req_url_query(!!!q) |>
+      httr2::req_perform() |>
+      httr2::resp_body_string() |>
       RcppSimdJson::fminify()
   }
-  
+
   # get the first page of results
   json_line <- fetch_works(q)
 
   json_header <- function(j) {
-    json_line |> RcppSimdJson::fparse(query = "/meta", max_simplify_lvl = "list")
+    j |> RcppSimdJson::fparse(query = "/meta", max_simplify_lvl = "list")
   }
 
   json_results <- function(j) {
 
-    #cmd <- sprintf("%s -c '.results[]' | %s -c 'del(..|.abstract_inverted_index?)'", 
+    #cmd <- sprintf("%s -c '.results[]' | %s -c 'del(..|.abstract_inverted_index?)'",
     #  jq_binary, jq_binary)
-    
-    #system(cmd, input = j, intern = TRUE) #|> 
+
+    #system(cmd, input = j, intern = TRUE) #|>
     j |> jqr::jq(".results[] | del(..|.abstract_inverted_index?)")
   }
 
@@ -54,9 +54,9 @@ openalex_works_cursorcrawl <- function(
   header <- json_line |> json_header()
   results <- json_line |> json_results()
 
-  # page <- 
-  #   json_line |> 
-  #   RcppSimdJson::fparse("/results", max_simplify_lvl = "list") |> 
+  # page <-
+  #   json_line |>
+  #   RcppSimdJson::fparse("/results", max_simplify_lvl = "list") |>
   #   (\(x) list(list(results = x)))()
 
   #page |> openalex_works_to_tbls()
@@ -64,10 +64,10 @@ openalex_works_cursorcrawl <- function(
   # compute total number of pages
   h <- header
   n_pages <- ceiling(h$count / h$per_page) + ifelse(h$count > h$per_page, 1, 0)
-    
+
   # begin the crawl
   message("Retrieving ", n_max_pages, " out of a total of ",
-    n_pages, " pages, with a total record count of ", h$count, 
+    n_pages, " pages, with a total record count of ", h$count,
     ". Starting crawl...")
 
   # iterate using a while loop
@@ -100,8 +100,8 @@ openalex_works_cursorcrawl <- function(
     is_done <- is.null(q$cursor) || is_stopped
   }
 
-  message("\nDone, fetched ", i, " pages of works, written to ", td) 
-  filez <- dir(td, pattern = "\\.json$", full.names = TRUE) 
+  message("\nDone, fetched ", i, " pages of works, written to ", td)
+  filez <- dir(td, pattern = "\\.json$", full.names = TRUE)
   return (filez)
 }
 
