@@ -1,18 +1,33 @@
 test_that("cursor based paging for works works", {
 
-  skip()
+  skip_on_ci()
 
   works_filter <- "publication_year:2015-2023,primary_topic.id:t10783"
 
   cc <- 
     works_filter |> 
-    openalex_works_cursorcrawl(n_max_pages = 2)
+    openalex_works_cursorcrawl(n_max_pages = 10)
 
   mydir <- unique(dirname(cc))
   
+  read_jsonl <- function(fn) {
+      fn |> file() |> readr::read_lines() |> 
+      RcppSimdJson::fparse(max_simplify_lvl = "list")
+  }
+
+  ccs <- cc |> purrr::map(\(x) list(results = read_jsonl(x)))
+
+  #object <- ccs[[1]]
+  #w |> openalex_works_to_tbls()
+  
+  res <- 
+    cc |> 
+    purrr::map(\(x) list(results = read_jsonl(x))) |> 
+    openalex_works_to_tbls()
+
   is_valid <- 
     all(cc %in% dir(mydir, full.names = TRUE)) &
-    jsonlite::stream_in(file(cc[1])) |> nrow()
+    res$work |> nrow() == 500
 
   # TODO: Hmmm, what is a$abstract_inverted_index_v3?
   # a <- jsonlite::stream_in(file(cc[1])) |> as_tibble()

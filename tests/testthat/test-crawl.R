@@ -51,7 +51,12 @@ test_that("Similar topics can be retrieved given a work", {
 
   res <- openalex_crawl("works", query = my_filter)
 
-  works <- res |> openalex_works_to_tbls()
+  #one <- res[[1]]$results[[1]]
+  #two <- res[[1]]$results[[2]]
+  #more <- res[[1]]$results
+  res2 <- res |> map("results")
+  results <- list(list(results = res2[[1]]))
+  works <- results |> openalex_works_to_tbls()
 
   is_valid <- works$work |> nrow() > 5
   expect_true(is_valid)
