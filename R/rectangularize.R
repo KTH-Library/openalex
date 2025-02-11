@@ -184,7 +184,7 @@ parse_work <- function(chunk) {
 #' @import tidyr dplyr purrr
 parse_work2 <- function(object) {
 
-  name <- value <- NULL
+  name <- value <- work_id <- NULL
 
   unfwv <- function(l, field) {
     if (is.null(l$field)) return(tibble())
@@ -262,6 +262,7 @@ parse_work2 <- function(object) {
     list(l) |> setNames(nm = f)
   }
 
+  # TODO: remove keep_empty(?)
   wide <- enframe(w) |> unnest_longer(2, keep_empty = TRUE) |> unnest_wider(2) 
   
   workz <- 
@@ -278,7 +279,8 @@ parse_work2 <- function(object) {
 
   fuw <- function(fields) {
       wide |> select(work_id = "id", any_of(c(fields))) |> 
-      unnest_wider(any_of(c(fields))) |> 
+      unnest_wider(any_of(c(fields)), names_sep = "_") |> 
+#          unnest_wider(any_of(c(fields))) |> 
       mutate(across(-contains("url"), \(x) gsub(re_ids, "", x)))
   }
 
@@ -368,30 +370,29 @@ parse_work2 <- function(object) {
     w$results |>
     map(function(x) tibble(
       work_id = pluck(x, "id"),
-      abstract = aii_to_abstract(pluck(x, "abstract_inverted_index_v3"))
+      abstract = aii_to_abstract(pluck(x, "abstract_inverted_index"))
     )) |>
     map_dfr(bind_rows)
-
  
   primary_location <- 
     "primary_location" |> fuw() 
   
   primary_location_source <- 
-    primary_location |> select(any_of(c("work_id", "source"))) |> 
-    mutate(source = map(source, \(x) eval(parse(text = x)))) |> 
-    mutate(source = map(source, \(x) compact(x) |> as_tibble())) |> 
+    primary_location |> select(any_of(c("work_id", "primary_location_source"))) |> 
+    mutate(primary_location_source = map(primary_location_source, \(x) eval(parse(text = x)))) |> 
+    mutate(primary_location_source = map(primary_location_source, \(x) compact(x) |> as_tibble())) |> 
     unnest(2) |> unnest(any_of(c("issn")))
 
   primary_location <- 
-    primary_location |> select(-any_of("source"))
+    primary_location |> select(-any_of("primary_location_source"))
 
   primary_topic <-
     "primary_topic" |> fuw() |> 
-    mutate(across(any_of(c("subfield", "field", "domain")), \(y) y |> map(\(x) eval(parse(text = x))))) |> 
-    mutate(across(any_of(c("subfield", "field", "domain")), \(y) y |> map(\(x) compact(x) |> as_tibble()))) |> 
-    unnest("subfield", names_sep = "_") |> 
-    unnest("field", names_sep = "_") |> 
-    unnest("domain", names_sep = "_")
+    mutate(across(any_of(c("primary_topic_subfield", "primary_topic_field", "primary_topic_domain")), \(y) y |> map(\(x) eval(parse(text = x))))) |> 
+    mutate(across(any_of(c("primary_topic_subfield", "primary_topic_field", "primary_topic_domain")), \(y) y |> map(\(x) compact(x) |> as_tibble()))) |> 
+    unnest("primary_topic_subfield", names_sep = "_") |> 
+    unnest("primary_topic_field", names_sep = "_") |> 
+    unnest("primary_topic_domain", names_sep = "_")
 
   topics <-
     wide |> select(any_of(c("id", "topics"))) |> 
@@ -407,16 +408,16 @@ parse_work2 <- function(object) {
     "best_oa_location" |> fuw()
 
   best_oa_location_source <- 
-    best_oa_location |> select(work_id, source) |> 
-    mutate(source = map(source, \(x) eval(parse(text = x)))) |> 
-    mutate(source = map(source, \(x) compact(x) |> as_tibble())) |> 
+    best_oa_location |> select(work_id, best_oa_location_source) |> 
+    mutate(best_oa_location_source = map(best_oa_location_source, \(x) eval(parse(text = x)))) |> 
+    mutate(best_oa_location_source = map(best_oa_location_source, \(x) compact(x) |> as_tibble())) |> 
     unnest(2) |> unnest(any_of(c("issn"))) |> 
     unnest_longer(any_of(c("source_host_organization_lineage", "source_host_organization_lineage_names"))) |>
     compact() |> 
     mutate(across(-contains("url"), \(x) gsub(re_ids, "", x)))
 
   best_oa_location <-
-    best_oa_location |> select(-any_of(c("source")))
+    best_oa_location |> select(-any_of(c("best_oa_location_source")))
 
   locations <-
     wide |> select(any_of(c("id", "locations"))) |> 
