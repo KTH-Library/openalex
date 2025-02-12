@@ -379,9 +379,14 @@ parse_work2 <- function(object) {
   
   primary_location_source <- 
     primary_location |> select(any_of(c("work_id", "primary_location_source"))) |> 
-    mutate(primary_location_source = map(primary_location_source, \(x) eval(parse(text = x)))) |> 
-    mutate(primary_location_source = map(primary_location_source, \(x) compact(x) |> as_tibble())) |> 
-    unnest(2) |> unnest(any_of(c("issn")))
+    mutate(primary_location_source = map(primary_location_source, 
+      \(x) eval(parse(text = x)))) |> 
+    mutate(primary_location_source = map(primary_location_source, 
+      \(x) compact(x) |> enframe() |> pivot_wider())) |> #|> as_tibble())) |> 
+    #pull(primary_location_source) |> head(1)
+    unnest(2) |> 
+    unnest_longer(any_of("issn")) |> 
+    unnest(any_of(everything())) 
 
   primary_location <- 
     primary_location |> select(-any_of("primary_location_source"))
@@ -409,11 +414,14 @@ parse_work2 <- function(object) {
 
   best_oa_location_source <- 
     best_oa_location |> select(work_id, best_oa_location_source) |> 
-    mutate(best_oa_location_source = map(best_oa_location_source, \(x) eval(parse(text = x)))) |> 
-    mutate(best_oa_location_source = map(best_oa_location_source, \(x) compact(x) |> as_tibble())) |> 
-    unnest(2) |> unnest(any_of(c("issn"))) |> 
-    unnest_longer(any_of(c("source_host_organization_lineage", "source_host_organization_lineage_names"))) |>
-    compact() |> 
+    mutate(best_oa_location_source = map(best_oa_location_source, 
+      \(x) eval(parse(text = x)))) |> 
+    mutate(best_oa_location_source = map(best_oa_location_source, 
+      \(x) compact(x) |> enframe() |> pivot_wider())) |> #|> as_tibble())) |> 
+      unnest(2) |> 
+      unnest_longer(any_of("issn")) |> 
+      unnest(any_of(everything())) |> 
+      compact() |> 
     mutate(across(-contains("url"), \(x) gsub(re_ids, "", x)))
 
   best_oa_location <-

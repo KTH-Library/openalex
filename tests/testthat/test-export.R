@@ -63,44 +63,43 @@ test_that("export of rawff query for 2024 in wos-plain diva text format works", 
   expect_true(is_valid)
 })
 
-test_that("export of rawff query for 2023 in csv format works", {
+test_that("export of rawff query for 2025 in csv format works", {
 
-  skip()
+  skip_on_ci()
 
   my_filter <- paste0(collapse = ",", c(
-    sprintf("publication_year:%s", 2023),
+    sprintf("publication_year:%s", 2025),
     sprintf("raw_affiliation_strings.search:%s", openalex_kth_rawaff_query())
   ))
 
-  csv_2023 <- openalex_works_export(my_filter, "csv")
+  csv <- openalex_works_export(my_filter, "csv")
 
-  #arrow::write_parquet(csv_2023, "~/oa-2023-csv-export.parquet")
+  #arrow::write_parquet(csv, "~/oa-2025-csv-export.parquet")
 
-  is_valid <- nrow(csv_2023) > 1
+  is_valid <- nrow(csv) > 1
 
   expect_true(is_valid)
 
 })
 
-test_that("export of rawff query for 2023 in csv format works", {
+test_that("export of rawff query for 2025 in csv format works", {
 
-  skip()
+  skip_on_ci()
 
   my_filter <- paste0(collapse = ",", c(
-    sprintf("publication_year:%s", 2023),
+    sprintf("publication_year:%s", 2025),
     sprintf("raw_affiliation_strings.search:%s", openalex_kth_rawaff_query())
   ))
 
-  csv_2023 <- openalex_works_export(my_filter, "csv")
+  csv <- openalex_works_export(my_filter, "csv")
 
   #arrow::write_parquet(csv_2023, "~/oa-2023-csv-export.parquet")
 
-  is_valid <- nrow(csv_2023) > 1
+  is_valid <- nrow(csv) > 1
 
   expect_true(is_valid)
 
-}
-)
+})
 
 
 
