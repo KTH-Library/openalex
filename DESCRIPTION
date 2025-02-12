@@ -1,6 +1,6 @@
 Package: openalex
 Title: Data from OpenAlex REST API
-Version: 0.0.4
+Version: 0.0.5
 Authors@R: 
     person(given = "Markus",
            family = "Skyttner",

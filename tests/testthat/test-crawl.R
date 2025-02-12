@@ -1,7 +1,7 @@
 
-test_that("crawl works", {
+test_that("crawl works (not cursor based) and results can be persisted in db", {
 
-  skip()
+  skip_on_ci()
 
   my_filter <- paste0(collapse = ",", c(
     "authorships.institutions.lineage:i86987016", ## KTH
@@ -9,30 +9,37 @@ test_that("crawl works", {
     "authorships.institutions.lineage:!i119971240", ## NORDITA
     "type:types/article",
     "primary_location.source.type:source-types/journal|source-types/conference",
-    "publication_year:2024"
+    "publication_year:2025"
   ))
 
   my_query <- openalex:::openalex_query(filter = my_filter)
   works <- openalex_crawl("work", query = my_query, fmt = "object")
-
   #readr::write_rds(works, "~/openalex-2023.rds")
+
 
   # TODO: some error here!
   library(purrr)
   library(dplyr)
 
-  to_tbls <- function(x) {
-    parsed <- x |> map(parse_work2, .progress = TRUE)
-    list_transpose(parsed) |> map(bind_rows)
-  }
+  lol <- 
+    list(list(results = reduce(works |> map("results"), c)))
 
-  my_works <- works |> to_tbls()
+  my_works <- 
+    lol |> openalex_works_to_tbls()
+
+  is_valid <- 
+    attr(works[[1]], "meta")$count == nrow(my_works$work)
 
   harvest <-
-    my_works |>
-    map(\(x) x |> mutate(across(any_of(contains("id")), \(y) gsub("https://openalex.org/", "", y, fixed = TRUE))))
+    my_works |> map(\(x) x |> mutate(across(any_of(contains("id")), 
+      \(y) gsub("https://openalex.org/", "", y, fixed = TRUE)))
+    )
 
-  openalex_write_duckdb(harvest, "~/openalex-2023.db")
+  dump_path <-file.path(tempdir(), "openalex-2025.db")
+  harvest |> openalex_write_duckdb(dump_path)
+  message("Persisted dump at ", dump_path)
+
+  expect_true(is_valid)
 
 })
 
@@ -49,42 +56,49 @@ test_that("Similar topics can be retrieved given a work", {
     topics_filter
   ))
 
-  res <- openalex_crawl("works", query = my_filter)
+  works <- openalex_crawl("works", query = my_filter)
 
-  #one <- res[[1]]$results[[1]]
-  #two <- res[[1]]$results[[2]]
-  #more <- res[[1]]$results
-  res2 <- res |> map("results")
-  results <- list(list(results = res2[[1]]))
-  works <- results |> openalex_works_to_tbls()
+  lol <- 
+    list(list(results = reduce(works |> map("results"), c)))
 
-  is_valid <- works$work |> nrow() > 5
+  my_works <- 
+    lol |> openalex_works_to_tbls()
+
+  is_valid <- my_works$work |> nrow() > 5
   expect_true(is_valid)
 
 })
 
-test_that("Crawling 444 MB of works related to a specific topic in 2023 works", {
+test_that("Crawling several of works related to a specific topic works", {
 
-  skip()
+  skip_on_ci()
 
   q <-
     list(
       filter = paste0(collapse = ",", c(
-        "publication_year:2023",
+        "publication_year:2025",
         "primary_topic.id:T10783"
         ))
       )
 
-  res <- openalex_crawl("works", query = q, verbose = TRUE)
+  works <- openalex_crawl("works", query = q, verbose = TRUE)
 
-  message("JSON object size is ", format(object.size(res), "MB"))
+  message("JSON object size is ", format(object.size(works), "MB"))
 
-  works <-
-    res |> openalex_works_to_tbls()
+  lol <- 
+    list(list(results = reduce(works |> map("results"), c)))
 
-  message("Tables object size is ", format(object.size(works), "MB"))
+  my_works <- 
+    lol |> openalex_works_to_tbls()
 
-  is_valid <- object.size(works) > 7000000
+  message("Tables object size is ", format(object.size(my_works), "MB"))
+
+  message("Number of records are: ", nrow(my_works$work))
+
+  is_valid <- 
+    attr(works[[1]], "meta")$count == nrow(my_works$work)
+
+  #is_valid <- object.size(works) > 7000000
 
   expect_true(is_valid)
 
