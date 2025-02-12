@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">openalex</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -89,155 +89,153 @@
 <span><span class="va">data</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="reference/openalex_crawl.html">openalex_crawl</a></span><span class="op">(</span>entity <span class="op">=</span> <span class="st">"works"</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, fmt <span class="op">=</span> <span class="st">"tables"</span>,</span>
 <span>    query <span class="op">=</span> <span class="fu">openalex</span><span class="fu">:::</span><span class="fu">openalex_query</span><span class="op">(</span>filter <span class="op">=</span></span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"institutions.id:%s,publication_year:2024"</span>, <span class="va">iid</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; About to crawl a total of 9 pages of results with a total of 207 records.</span></span>
-<span><span class="co">#&gt; ■■■■■■■■ 22% | ETA: 4s ■■■■■■■■■■■ 33% | ETA: 3s ■■■■■■■■■■■■■■ 44% | ETA: 3s</span></span>
-<span><span class="co">#&gt; ■■■■■■■■■■■■■■■■■■ 56% | ETA: 2s ■■■■■■■■■■■■■■■■■■■■■ 67% | ETA: 2s</span></span>
-<span><span class="co">#&gt; ■■■■■■■■■■■■■■■■■■■■■■■■ 78% | ETA: 1s ■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 89% | ETA:</span></span>
-<span><span class="co">#&gt; 1s</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"institutions.id:%s,publication_year:2025"</span>, <span class="va">iid</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; About to crawl a total of 11 pages of results with a total of 257 records.</span></span>
+<span><span class="co">#&gt;  ■■■■■■■■■                         27% |  ETA:  3s</span></span>
+<span><span class="co">#&gt;  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■      91% |  ETA:  0s</span></span>
 <span></span>
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="va">data</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">head</span><span class="op">)</span>  <span class="co"># return only first six rows from each table</span></span>
 <span></span>
 <span><span class="va">res</span></span>
 <span><span class="co">#&gt; $work</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 13</span></span>
-<span><span class="co">#&gt;   id            doi   display_name title publication_year publication_date type </span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;         &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;            &lt;int&gt; &lt;chr&gt;            &lt;chr&gt;</span></span>
-<span><span class="co">#&gt; 1 https://open… http… Human Digit… Huma…             2024 2024-02-01       arti…</span></span>
-<span><span class="co">#&gt; 2 https://open… http… Skeleton-RG… Skel…             2024 2024-04-01       arti…</span></span>
-<span><span class="co">#&gt; 3 https://open… http… Cognitive n… Cogn…             2024 2024-02-01       arti…</span></span>
-<span><span class="co">#&gt; 4 https://open… http… The Calvin … The …             2024 2024-03-01       arti…</span></span>
-<span><span class="co">#&gt; 5 https://open… http… ACWGAN-GP f… ACWG…             2024 2024-02-01       arti…</span></span>
-<span><span class="co">#&gt; 6 https://open… http… A biobased … A bi…             2024 2024-01-01       arti…</span></span>
+<span><span class="co">#&gt;   id          doi     display_name title publication_year publication_date type </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;   &lt;chr&gt;        &lt;chr&gt;            &lt;int&gt; &lt;date&gt;           &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; 1 W4405989080 https:… Molecular b… Mole…             2025 2025-01-01       arti…</span></span>
+<span><span class="co">#&gt; 2 W4406001145 https:… Tracking th… Trac…             2025 2025-01-02       arti…</span></span>
+<span><span class="co">#&gt; 3 W4406016239 https:… DGCR2 targe… DGCR…             2025 2025-01-02       arti…</span></span>
+<span><span class="co">#&gt; 4 W4406082819 https:… Screening a… Scre…             2025 2025-01-05       arti…</span></span>
+<span><span class="co">#&gt; 5 W4406172907 https:… Static deep… Stat…             2025 2025-01-01       arti…</span></span>
+<span><span class="co">#&gt; 6 W4406435778 https:… Consistent,… Cons…             2025 2025-01-16       arti…</span></span>
 <span><span class="co">#&gt; # ℹ 6 more variables: cited_by_count &lt;int&gt;, is_retracted &lt;lgl&gt;,</span></span>
-<span><span class="co">#&gt; #   is_paratext &lt;lgl&gt;, updated_date &lt;chr&gt;, cited_by_api_url &lt;chr&gt;,</span></span>
-<span><span class="co">#&gt; #   created_date &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; #   is_paratext &lt;lgl&gt;, updated_date &lt;dttm&gt;, cited_by_api_url &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   created_date &lt;date&gt;</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $work_ids</span></span>
-<span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
-<span><span class="co">#&gt;   work_id                          doi                               pmid  mag  </span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;                            &lt;chr&gt;                             &lt;chr&gt; &lt;chr&gt;</span></span>
-<span><span class="co">#&gt; 1 https://openalex.org/W4385324205 https://doi.org/10.1016/j.rcim.2… &lt;NA&gt;  &lt;NA&gt; </span></span>
-<span><span class="co">#&gt; 2 https://openalex.org/W4387083563 https://doi.org/10.1016/j.rcim.2… &lt;NA&gt;  &lt;NA&gt; </span></span>
-<span><span class="co">#&gt; 3 https://openalex.org/W4385217308 https://doi.org/10.1016/j.rcim.2… &lt;NA&gt;  &lt;NA&gt; </span></span>
-<span><span class="co">#&gt; 4 https://openalex.org/W4361283233 https://doi.org/10.1016/j.semcdb… http… &lt;NA&gt; </span></span>
-<span><span class="co">#&gt; 5 https://openalex.org/W4385437253 https://doi.org/10.1016/j.rcim.2… &lt;NA&gt;  &lt;NA&gt; </span></span>
-<span><span class="co">#&gt; 6 https://openalex.org/W4386987514 https://doi.org/10.1016/j.carbpo… http… &lt;NA&gt; </span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 3</span></span>
+<span><span class="co">#&gt;   work_id     doi                                          pmid                 </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;                                        &lt;chr&gt;                </span></span>
+<span><span class="co">#&gt; 1 W4405989080 https://doi.org/10.1016/j.cell.2024.11.036   https://pubmed.ncbi.…</span></span>
+<span><span class="co">#&gt; 2 W4406001145 https://doi.org/10.1038/s41467-024-55688-8   https://pubmed.ncbi.…</span></span>
+<span><span class="co">#&gt; 3 W4406016239 https://doi.org/10.1038/s41598-024-84574-y   https://pubmed.ncbi.…</span></span>
+<span><span class="co">#&gt; 4 W4406082819 https://doi.org/10.1186/s12896-024-00926-6   https://pubmed.ncbi.…</span></span>
+<span><span class="co">#&gt; 5 W4406172907 https://doi.org/10.1063/5.0248856            &lt;NA&gt;                 </span></span>
+<span><span class="co">#&gt; 6 W4406435778 https://doi.org/10.21468/scipostphyscodeb.45 &lt;NA&gt;                 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $work_concepts</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 6</span></span>
-<span><span class="co">#&gt;   work_id                          id          wikidata display_name level score</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;                            &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;        &lt;int&gt; &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 https://openalex.org/W4385324205 https://op… https:/… Context (ar…     2 0.575</span></span>
-<span><span class="co">#&gt; 2 https://openalex.org/W4385324205 https://op… https:/… Industry 4.0     2 0.559</span></span>
-<span><span class="co">#&gt; 3 https://openalex.org/W4385324205 https://op… https:/… Knowledge m…     1 0.523</span></span>
-<span><span class="co">#&gt; 4 https://openalex.org/W4385324205 https://op… https:/… Connotation      2 0.486</span></span>
-<span><span class="co">#&gt; 5 https://openalex.org/W4385324205 https://op… https:/… Computer sc…     0 0.423</span></span>
-<span><span class="co">#&gt; 6 https://openalex.org/W4385324205 https://op… https:/… Engineering      0 0.417</span></span>
+<span><span class="co">#&gt;   work_id     id         wikidata                       display_name level score</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;                          &lt;chr&gt;        &lt;int&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 W4405989080 C86803240  https://www.wikidata.org/wiki… Biology          0 0.928</span></span>
+<span><span class="co">#&gt; 2 W4405989080 C170493617 https://www.wikidata.org/wiki… Receptor         2 0.615</span></span>
+<span><span class="co">#&gt; 3 W4405989080 C70721500  https://www.wikidata.org/wiki… Computation…     1 0.466</span></span>
+<span><span class="co">#&gt; 4 W4405989080 C12426560  https://www.wikidata.org/wiki… Basis (line…     2 0.455</span></span>
+<span><span class="co">#&gt; 5 W4405989080 C135285700 https://www.wikidata.org/wiki… G protein-c…     3 0.449</span></span>
+<span><span class="co">#&gt; 6 W4405989080 C95444343  https://www.wikidata.org/wiki… Cell biology     1 0.389</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $work_authorships_institutions</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 12</span></span>
-<span><span class="co">#&gt;   work_id       id    display_name ror   country_code type  lineage wa_countries</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;         &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt; &lt;list&gt;  &lt;list&gt;      </span></span>
-<span><span class="co">#&gt; 1 https://open… http… Zhejiang Un… http… CN           educ… &lt;list&gt;  &lt;list [1]&gt;  </span></span>
-<span><span class="co">#&gt; 2 https://open… http… Zhejiang Un… http… CN           educ… &lt;list&gt;  &lt;list [1]&gt;  </span></span>
-<span><span class="co">#&gt; 3 https://open… http… Purdue Univ… http… US           educ… &lt;list&gt;  &lt;list [1]&gt;  </span></span>
-<span><span class="co">#&gt; 4 https://open… http… Zhejiang Un… http… CN           educ… &lt;list&gt;  &lt;list [1]&gt;  </span></span>
-<span><span class="co">#&gt; 5 https://open… http… Zhejiang Lab http… CN           faci… &lt;list&gt;  &lt;list [1]&gt;  </span></span>
-<span><span class="co">#&gt; 6 https://open… http… Hong Kong P… http… HK           educ… &lt;list&gt;  &lt;list [1]&gt;  </span></span>
+<span><span class="co">#&gt;   work_id     id      display_name ror   country_code type  lineage wa_countries</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;   &lt;chr&gt;        &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt; &lt;list&gt;  &lt;list&gt;      </span></span>
+<span><span class="co">#&gt; 1 W4405989080 I18067… University … http… US           fund… &lt;list&gt;  &lt;list [1]&gt;  </span></span>
+<span><span class="co">#&gt; 2 W4405989080 I18067… University … http… US           fund… &lt;list&gt;  &lt;list [1]&gt;  </span></span>
+<span><span class="co">#&gt; 3 W4405989080 I11402… University … http… US           fund… &lt;list&gt;  &lt;list [1]&gt;  </span></span>
+<span><span class="co">#&gt; 4 W4405989080 I42101… National In… http… US           fund… &lt;list&gt;  &lt;list [1]&gt;  </span></span>
+<span><span class="co">#&gt; 5 W4405989080 I28001… Science for… http… SE           fund… &lt;list&gt;  &lt;list [1]&gt;  </span></span>
+<span><span class="co">#&gt; 6 W4405989080 I86987… KTH Royal I… http… SE           fund… &lt;list&gt;  &lt;list [1]&gt;  </span></span>
 <span><span class="co">#&gt; # ℹ 4 more variables: wa_is_corresponding &lt;lgl&gt;, wa_raw_author_name &lt;chr&gt;,</span></span>
-<span><span class="co">#&gt; #   wa_raw_affiliation_string &lt;chr&gt;, wa_raw_affiliation_strings &lt;list&gt;</span></span>
+<span><span class="co">#&gt; #   wa_raw_affiliation_strings &lt;list&gt;, wa_affiliations &lt;list&gt;</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $work_abstract_inverted_index</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 3</span></span>
-<span><span class="co">#&gt;   work_id                          aii_value                             aii_key</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;                            &lt;chr&gt;                                 &lt;chr&gt;  </span></span>
-<span><span class="co">#&gt; 1 https://openalex.org/W4385324205 0 1 43 141 164 181 2 3 4 12 19 34 60… Human-…</span></span>
-<span><span class="co">#&gt; 2 https://openalex.org/W4387083563 0 1 19 2 20 26 3 4 5 12 28 62 103 13… Human–…</span></span>
-<span><span class="co">#&gt; 3 https://openalex.org/W4385217308 0 105 1 2 3 4 111 5 6 7 8 42 9 10 33… In rec…</span></span>
-<span><span class="co">#&gt; 4 https://openalex.org/W4361283233 0 1 31 67 156 193 2 32 68 194 3 33 6… The Ca…</span></span>
-<span><span class="co">#&gt; 5 https://openalex.org/W4385437253 0 1 42 61 170 2 3 4 131 5 176 6 7 63… Tool b…</span></span>
-<span><span class="co">#&gt; 6 https://openalex.org/W4386987514 0 94 148 169 1 2 105 119 177 3 4 5 8… The am…</span></span>
+<span><span class="co">#&gt;   work_id     aii_value                                                  aii_key</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;                                                      &lt;chr&gt;  </span></span>
+<span><span class="co">#&gt; 1 W4405989080 &lt;NA&gt;                                                       &lt;NA&gt;   </span></span>
+<span><span class="co">#&gt; 2 W4406001145 0 1 8 15 19 23 44 60 81 86 90 99 106 123 127 138 149 166 … Regula…</span></span>
+<span><span class="co">#&gt; 3 W4406016239 &lt;NA&gt;                                                       &lt;NA&gt;   </span></span>
+<span><span class="co">#&gt; 4 W4406082819 0 1 2 252 279 3 26 69 77 114 118 134 142 164 193 198 211 … Abstra…</span></span>
+<span><span class="co">#&gt; 5 W4406172907 0 1 88 2 3 12 4 5 6 7 8 58 9 59 10 60 11 13 14 15 20 35 6… As com…</span></span>
+<span><span class="co">#&gt; 6 W4406435778 0 1 55 67 2 3 4 51 87 5 6 7 64 83 96 103 8 9 17 23 44 50 … Histog…</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $work_authorships_author</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 10</span></span>
-<span><span class="co">#&gt;   work_id               wa_author_position id    display_name orcid wa_countries</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;                 &lt;chr&gt;              &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt; &lt;list&gt;      </span></span>
-<span><span class="co">#&gt; 1 https://openalex.org… first              http… Baicun Wang  http… &lt;list [1]&gt;  </span></span>
-<span><span class="co">#&gt; 2 https://openalex.org… middle             http… Huiying Zhou http… &lt;list [1]&gt;  </span></span>
-<span><span class="co">#&gt; 3 https://openalex.org… middle             http… Xingyu Li    http… &lt;list [1]&gt;  </span></span>
-<span><span class="co">#&gt; 4 https://openalex.org… middle             http… Geng Yang    http… &lt;list [1]&gt;  </span></span>
-<span><span class="co">#&gt; 5 https://openalex.org… middle             http… Pai Zheng    http… &lt;list [1]&gt;  </span></span>
-<span><span class="co">#&gt; 6 https://openalex.org… middle             http… Song Ci      http… &lt;list [1]&gt;  </span></span>
+<span><span class="co">#&gt;   work_id     wa_author_position id          display_name     orcid wa_countries</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;              &lt;chr&gt;       &lt;chr&gt;            &lt;chr&gt; &lt;list&gt;      </span></span>
+<span><span class="co">#&gt; 1 W4405989080 first              A5035848333 Matthew K. Howa… http… &lt;list [1]&gt;  </span></span>
+<span><span class="co">#&gt; 2 W4405989080 middle             A5106732468 Nick Hoppe       http… &lt;list [1]&gt;  </span></span>
+<span><span class="co">#&gt; 3 W4405989080 middle             A5089436626 Xi‐Ping Huang    http… &lt;list [1]&gt;  </span></span>
+<span><span class="co">#&gt; 4 W4405989080 middle             A5063488695 Darko Mitrovic   http… &lt;list [1]&gt;  </span></span>
+<span><span class="co">#&gt; 5 W4405989080 middle             A5036507080 Christian B. Bi… http… &lt;list [1]&gt;  </span></span>
+<span><span class="co">#&gt; 6 W4405989080 middle             A5080561155 Christian B. Ma… http… &lt;list [1]&gt;  </span></span>
 <span><span class="co">#&gt; # ℹ 4 more variables: wa_is_corresponding &lt;lgl&gt;, wa_raw_author_name &lt;chr&gt;,</span></span>
-<span><span class="co">#&gt; #   wa_raw_affiliation_string &lt;chr&gt;, wa_raw_affiliation_strings &lt;list&gt;</span></span>
+<span><span class="co">#&gt; #   wa_raw_affiliation_strings &lt;list&gt;, wa_affiliations &lt;list&gt;</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $work_biblio</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 5</span></span>
-<span><span class="co">#&gt;   work_id                          volume first_page last_page issue</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;                            &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;</span></span>
-<span><span class="co">#&gt; 1 https://openalex.org/W4385324205 85     102626     102626    &lt;NA&gt; </span></span>
-<span><span class="co">#&gt; 2 https://openalex.org/W4387083563 86     102659     102659    &lt;NA&gt; </span></span>
-<span><span class="co">#&gt; 3 https://openalex.org/W4385217308 85     102610     102610    &lt;NA&gt; </span></span>
-<span><span class="co">#&gt; 4 https://openalex.org/W4361283233 155    71         83        &lt;NA&gt; </span></span>
-<span><span class="co">#&gt; 5 https://openalex.org/W4385437253 85     102624     102624    &lt;NA&gt; </span></span>
-<span><span class="co">#&gt; 6 https://openalex.org/W4386987514 323    121430     121430    &lt;NA&gt; </span></span>
+<span><span class="co">#&gt;   work_id     volume issue first_page last_page</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;    </span></span>
+<span><span class="co">#&gt; 1 W4405989080     NA &lt;NA&gt;  &lt;NA&gt;       &lt;NA&gt;     </span></span>
+<span><span class="co">#&gt; 2 W4406001145     16 1     &lt;NA&gt;       &lt;NA&gt;     </span></span>
+<span><span class="co">#&gt; 3 W4406016239     15 1     &lt;NA&gt;       &lt;NA&gt;     </span></span>
+<span><span class="co">#&gt; 4 W4406082819     25 1     &lt;NA&gt;       &lt;NA&gt;     </span></span>
+<span><span class="co">#&gt; 5 W4406172907     37 1     &lt;NA&gt;       &lt;NA&gt;     </span></span>
+<span><span class="co">#&gt; 6 W4406435778     NA &lt;NA&gt;  &lt;NA&gt;       &lt;NA&gt;     </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $work_open_access</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 5</span></span>
-<span><span class="co">#&gt;   work_id                          is_oa oa_status any_repository_has_f…¹ oa_url</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;                            &lt;lgl&gt; &lt;chr&gt;     &lt;lgl&gt;                  &lt;chr&gt; </span></span>
-<span><span class="co">#&gt; 1 https://openalex.org/W4385324205 FALSE closed    FALSE                  &lt;NA&gt;  </span></span>
-<span><span class="co">#&gt; 2 https://openalex.org/W4387083563 FALSE closed    FALSE                  &lt;NA&gt;  </span></span>
-<span><span class="co">#&gt; 3 https://openalex.org/W4385217308 TRUE  hybrid    FALSE                  https…</span></span>
-<span><span class="co">#&gt; 4 https://openalex.org/W4361283233 TRUE  hybrid    FALSE                  https…</span></span>
-<span><span class="co">#&gt; 5 https://openalex.org/W4385437253 FALSE closed    FALSE                  &lt;NA&gt;  </span></span>
-<span><span class="co">#&gt; 6 https://openalex.org/W4386987514 FALSE closed    FALSE                  &lt;NA&gt;  </span></span>
+<span><span class="co">#&gt;   work_id     is_oa oa_status oa_url                      any_repository_has_f…¹</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;       &lt;lgl&gt; &lt;chr&gt;     &lt;chr&gt;                       &lt;lgl&gt;                 </span></span>
+<span><span class="co">#&gt; 1 W4405989080 TRUE  green     https://doi.org/10.1101/20… TRUE                  </span></span>
+<span><span class="co">#&gt; 2 W4406001145 TRUE  gold      https://doi.org/10.1038/s4… FALSE                 </span></span>
+<span><span class="co">#&gt; 3 W4406016239 TRUE  gold      https://doi.org/10.1038/s4… FALSE                 </span></span>
+<span><span class="co">#&gt; 4 W4406082819 TRUE  gold      https://doi.org/10.1186/s1… FALSE                 </span></span>
+<span><span class="co">#&gt; 5 W4406172907 TRUE  hybrid    https://doi.org/10.1063/5.… FALSE                 </span></span>
+<span><span class="co">#&gt; 6 W4406435778 TRUE  hybrid    https://doi.org/10.21468/s… TRUE                  </span></span>
 <span><span class="co">#&gt; # ℹ abbreviated name: ¹​any_repository_has_fulltext</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $work_host_venue</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 1</span></span>
-<span><span class="co">#&gt;   work_id                         </span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;                           </span></span>
-<span><span class="co">#&gt; 1 https://openalex.org/W4385324205</span></span>
-<span><span class="co">#&gt; 2 https://openalex.org/W4387083563</span></span>
-<span><span class="co">#&gt; 3 https://openalex.org/W4385217308</span></span>
-<span><span class="co">#&gt; 4 https://openalex.org/W4361283233</span></span>
-<span><span class="co">#&gt; 5 https://openalex.org/W4385437253</span></span>
-<span><span class="co">#&gt; 6 https://openalex.org/W4386987514</span></span>
+<span><span class="co">#&gt;   work_id    </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;      </span></span>
+<span><span class="co">#&gt; 1 W4405989080</span></span>
+<span><span class="co">#&gt; 2 W4406001145</span></span>
+<span><span class="co">#&gt; 3 W4406016239</span></span>
+<span><span class="co">#&gt; 4 W4406082819</span></span>
+<span><span class="co">#&gt; 5 W4406172907</span></span>
+<span><span class="co">#&gt; 6 W4406435778</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $work_counts_by_year</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 3</span></span>
-<span><span class="co">#&gt;   work_id                           year cited_by_count</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;                            &lt;int&gt;          &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1 https://openalex.org/W4385324205  2023              4</span></span>
-<span><span class="co">#&gt; 2 https://openalex.org/W4387083563  2023              4</span></span>
-<span><span class="co">#&gt; 3 https://openalex.org/W4385217308  2023              2</span></span>
-<span><span class="co">#&gt; 4 https://openalex.org/W4361283233  2023              2</span></span>
-<span><span class="co">#&gt; 5 https://openalex.org/W4386987514  2023              1</span></span>
-<span><span class="co">#&gt; 6 https://openalex.org/W4312529696  2023              1</span></span>
+<span><span class="co">#&gt;   work_id      year cited_by_count</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;       &lt;int&gt;          &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 W4405989080  2025              1</span></span>
+<span><span class="co">#&gt; 2 W4406001145  2025              1</span></span>
+<span><span class="co">#&gt; 3 W4406082819  2025              1</span></span>
+<span><span class="co">#&gt; 4 W4406172907  2025              1</span></span>
+<span><span class="co">#&gt; 5 W4406435778  2025              1</span></span>
+<span><span class="co">#&gt; 6 W4406435863  2025              1</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $work_related_works</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 2</span></span>
-<span><span class="co">#&gt;   work_id                          related_works                   </span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;                            &lt;chr&gt;                           </span></span>
-<span><span class="co">#&gt; 1 https://openalex.org/W4385324205 https://openalex.org/W2360733422</span></span>
-<span><span class="co">#&gt; 2 https://openalex.org/W4385324205 https://openalex.org/W2362583379</span></span>
-<span><span class="co">#&gt; 3 https://openalex.org/W4385324205 https://openalex.org/W2386886609</span></span>
-<span><span class="co">#&gt; 4 https://openalex.org/W4385324205 https://openalex.org/W2394171004</span></span>
-<span><span class="co">#&gt; 5 https://openalex.org/W4385324205 https://openalex.org/W2361870167</span></span>
-<span><span class="co">#&gt; 6 https://openalex.org/W4385324205 https://openalex.org/W2381092078</span></span>
+<span><span class="co">#&gt;   work_id     related_works</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;        </span></span>
+<span><span class="co">#&gt; 1 W4405989080 W4391375266  </span></span>
+<span><span class="co">#&gt; 2 W4405989080 W4224216382  </span></span>
+<span><span class="co">#&gt; 3 W4405989080 W416861399   </span></span>
+<span><span class="co">#&gt; 4 W4405989080 W3195483439  </span></span>
+<span><span class="co">#&gt; 5 W4405989080 W3011298851  </span></span>
+<span><span class="co">#&gt; 6 W4405989080 W2609050007  </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $work_referenced_works</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 2</span></span>
-<span><span class="co">#&gt;   work_id                          referenced_works                </span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;                            &lt;chr&gt;                           </span></span>
-<span><span class="co">#&gt; 1 https://openalex.org/W4385324205 https://openalex.org/W1706260973</span></span>
-<span><span class="co">#&gt; 2 https://openalex.org/W4385324205 https://openalex.org/W2000982104</span></span>
-<span><span class="co">#&gt; 3 https://openalex.org/W4385324205 https://openalex.org/W2007171144</span></span>
-<span><span class="co">#&gt; 4 https://openalex.org/W4385324205 https://openalex.org/W2010613163</span></span>
-<span><span class="co">#&gt; 5 https://openalex.org/W4385324205 https://openalex.org/W2020304579</span></span>
-<span><span class="co">#&gt; 6 https://openalex.org/W4385324205 https://openalex.org/W2026892459</span></span></code></pre></div>
+<span><span class="co">#&gt;   work_id     referenced_works</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;           </span></span>
+<span><span class="co">#&gt; 1 W4405989080 W1031578623     </span></span>
+<span><span class="co">#&gt; 2 W4405989080 W1483147211     </span></span>
+<span><span class="co">#&gt; 3 W4405989080 W1503765703     </span></span>
+<span><span class="co">#&gt; 4 W4405989080 W1513618424     </span></span>
+<span><span class="co">#&gt; 5 W4405989080 W1833104430     </span></span>
+<span><span class="co">#&gt; 6 W4405989080 W189880865</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="rate-limits-and-using-an-api-key">Rate limits and using an API key<a class="anchor" aria-label="anchor" href="#rate-limits-and-using-an-api-key"></a>
@@ -279,23 +277,39 @@
 <code class="sourceCode R"><span></span>
 <span><span class="co"># we do not require an API key for the publish date</span></span>
 <span><span class="va">published_since_</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/openalex_works_published_since.html">openalex_works_published_since</a></span><span class="op">(</span>since_days <span class="op">=</span> <span class="fl">7</span><span class="op">)</span></span>
-<span><span class="co">#&gt; About to crawl a total of 4 pages of results with a total of 97 records.</span></span>
-<span><span class="co">#&gt; ■■■■■■■■■■■■■■■■ 50% | ETA: 1s</span></span>
+<span><span class="co">#&gt; About to crawl a total of 1 pages of results with a total of 21 records.</span></span>
+<span><span class="co">#&gt; Warning: `type_convert()` only converts columns of type 'character'.</span></span>
+<span><span class="co">#&gt; - `df` has no columns of type 'character'</span></span>
 <span></span>
 <span><span class="co"># but an API key is needed when using "from_created_date" and "from_updated_date" fields.</span></span>
 <span><span class="va">created_since_7d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/openalex_works_created_since.html">openalex_works_created_since</a></span><span class="op">(</span>since_days <span class="op">=</span> <span class="fl">7</span><span class="op">)</span></span>
-<span><span class="co">#&gt; About to crawl a total of 1 pages of results with a total of 17 records.</span></span>
+<span><span class="co">#&gt; About to crawl a total of 2 pages of results with a total of 44 records.</span></span>
+<span><span class="co">#&gt; Warning: `type_convert()` only converts columns of type 'character'.</span></span>
+<span><span class="co">#&gt; - `df` has no columns of type 'character'</span></span>
 <span><span class="va">updated_since_1h</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/openalex_works_updated_since.html">openalex_works_updated_since</a></span><span class="op">(</span>since_minutes <span class="op">=</span> <span class="fl">60</span><span class="op">)</span></span>
-<span><span class="co">#&gt; About to crawl a total of 7 pages of results with a total of 156 records.</span></span>
-<span><span class="co">#&gt;  ■■■■■                             14% |  ETA:  6s ■■■■■■■■■■                        29% |  ETA:  6s ■■■■■■■■■■■■■■                    43% |  ETA:  4s ■■■■■■■■■■■■■■■■■■                57% |  ETA:  3s ■■■■■■■■■■■■■■■■■■■■■■            71% |  ETA:  2s ■■■■■■■■■■■■■■■■■■■■■■■■■■■       86% |  ETA:  1s                                                   </span></span>
+<span><span class="co">#&gt; About to crawl a total of 18 pages of results with a total of 442 records.</span></span>
+<span><span class="co">#&gt;  ■■■                                6% |  ETA: 32s</span></span>
+<span><span class="co">#&gt;  ■■■■                              11% |  ETA: 35s</span></span>
+<span><span class="co">#&gt;  ■■■■■■                            17% |  ETA: 31s</span></span>
+<span><span class="co">#&gt;  ■■■■■■■■■                         28% |  ETA: 28s</span></span>
+<span><span class="co">#&gt;  ■■■■■■■■■■■                       33% |  ETA: 26s</span></span>
+<span><span class="co">#&gt;  ■■■■■■■■■■■■■■                    44% |  ETA: 21s</span></span>
+<span><span class="co">#&gt;  ■■■■■■■■■■■■■■■■                  50% |  ETA: 20s</span></span>
+<span><span class="co">#&gt;  ■■■■■■■■■■■■■■■■■■                56% |  ETA: 17s</span></span>
+<span><span class="co">#&gt;  ■■■■■■■■■■■■■■■■■■■■■             67% |  ETA: 13s</span></span>
+<span><span class="co">#&gt;  ■■■■■■■■■■■■■■■■■■■■■■■           72% |  ETA: 11s</span></span>
+<span><span class="co">#&gt;  ■■■■■■■■■■■■■■■■■■■■■■■■          78% |  ETA:  9s</span></span>
+<span><span class="co">#&gt;  ■■■■■■■■■■■■■■■■■■■■■■■■■■        83% |  ETA:  7s</span></span>
+<span><span class="co">#&gt;  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■      89% |  ETA:  5s</span></span>
+<span><span class="co">#&gt;  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■     94% |  ETA:  2s</span></span>
 <span></span>
 <span><span class="co"># first few rows of each of these retrievals</span></span>
 <span><span class="va">created_since_7d</span> <span class="op">|&gt;</span> <span class="va">_</span><span class="op">$</span><span class="va">work_ids</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
-<col width="40%">
-<col width="53%">
-<col width="6%">
+<col width="11%">
+<col width="45%">
+<col width="43%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">work_id</th>
@@ -304,33 +318,33 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left"><a href="https://openalex.org/W4390642226" class="external-link uri">https://openalex.org/W4390642226</a></td>
-<td align="left"><a href="https://doi.org/10.2478/ncr-2023-0011" class="external-link uri">https://doi.org/10.2478/ncr-2023-0011</a></td>
+<td align="left">W4407223209</td>
+<td align="left"><a href="https://doi.org/10.1063/5.0238622" class="external-link uri">https://doi.org/10.1063/5.0238622</a></td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
-<td align="left"><a href="https://openalex.org/W4390639369" class="external-link uri">https://openalex.org/W4390639369</a></td>
-<td align="left"><a href="https://doi.org/10.1016/j.seja.2023.100050" class="external-link uri">https://doi.org/10.1016/j.seja.2023.100050</a></td>
+<td align="left">W4407212560</td>
+<td align="left"><a href="https://doi.org/10.1109/tac.2025.3539332" class="external-link uri">https://doi.org/10.1109/tac.2025.3539332</a></td>
 <td align="left">NA</td>
 </tr>
 <tr class="odd">
-<td align="left"><a href="https://openalex.org/W4390638132" class="external-link uri">https://openalex.org/W4390638132</a></td>
-<td align="left"><a href="https://doi.org/10.1007/s10798-023-09868-0" class="external-link uri">https://doi.org/10.1007/s10798-023-09868-0</a></td>
+<td align="left">W4407347106</td>
+<td align="left"><a href="https://doi.org/10.1002/srin.202400360" class="external-link uri">https://doi.org/10.1002/srin.202400360</a></td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
-<td align="left"><a href="https://openalex.org/W4390640547" class="external-link uri">https://openalex.org/W4390640547</a></td>
-<td align="left"><a href="https://doi.org/10.1016/j.carbon.2024.118799" class="external-link uri">https://doi.org/10.1016/j.carbon.2024.118799</a></td>
+<td align="left">W4407235267</td>
+<td align="left"><a href="https://doi.org/10.1002/tea.22031" class="external-link uri">https://doi.org/10.1002/tea.22031</a></td>
 <td align="left">NA</td>
 </tr>
 <tr class="odd">
-<td align="left"><a href="https://openalex.org/W4390642146" class="external-link uri">https://openalex.org/W4390642146</a></td>
-<td align="left"><a href="https://doi.org/10.2478/ncr-2023-0012" class="external-link uri">https://doi.org/10.2478/ncr-2023-0012</a></td>
-<td align="left">NA</td>
+<td align="left">W4407203234</td>
+<td align="left"><a href="https://doi.org/10.1038/s41467-025-56408-6" class="external-link uri">https://doi.org/10.1038/s41467-025-56408-6</a></td>
+<td align="left"><a href="https://pubmed.ncbi.nlm.nih.gov/39915442" class="external-link uri">https://pubmed.ncbi.nlm.nih.gov/39915442</a></td>
 </tr>
 <tr class="even">
-<td align="left"><a href="https://openalex.org/W4390640114" class="external-link uri">https://openalex.org/W4390640114</a></td>
-<td align="left"><a href="https://doi.org/10.1016/j.cmpb.2024.108009" class="external-link uri">https://doi.org/10.1016/j.cmpb.2024.108009</a></td>
+<td align="left">W4407277358</td>
+<td align="left"><a href="https://doi.org/10.3934/cpaa.2025036" class="external-link uri">https://doi.org/10.3934/cpaa.2025036</a></td>
 <td align="left">NA</td>
 </tr>
 </tbody>
@@ -339,61 +353,61 @@
 <code class="sourceCode R"><span><span class="va">updated_since_1h</span> <span class="op">|&gt;</span> <span class="va">_</span><span class="op">$</span><span class="va">work_ids</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
-<col width="18%">
-<col width="24%">
-<col width="6%">
-<col width="22%">
-<col width="27%">
+<col width="9%">
+<col width="41%">
+<col width="8%">
+<col width="36%">
+<col width="4%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">work_id</th>
 <th align="left">doi</th>
-<th align="left">mag</th>
+<th align="right">mag</th>
 <th align="left">pmid</th>
 <th align="left">pmcid</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left"><a href="https://openalex.org/W2808465642" class="external-link uri">https://openalex.org/W2808465642</a></td>
-<td align="left"><a href="https://doi.org/10.1038/s41467-018-04724-5" class="external-link uri">https://doi.org/10.1038/s41467-018-04724-5</a></td>
-<td align="left">2808465642</td>
-<td align="left"><a href="https://pubmed.ncbi.nlm.nih.gov/29925878" class="external-link uri">https://pubmed.ncbi.nlm.nih.gov/29925878</a></td>
-<td align="left"><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/6010471" class="external-link uri">https://www.ncbi.nlm.nih.gov/pmc/articles/6010471</a></td>
-</tr>
-<tr class="even">
-<td align="left"><a href="https://openalex.org/W4294783296" class="external-link uri">https://openalex.org/W4294783296</a></td>
-<td align="left"><a href="https://doi.org/10.1021/jacs.2c06920" class="external-link uri">https://doi.org/10.1021/jacs.2c06920</a></td>
-<td align="left">NA</td>
-<td align="left"><a href="https://pubmed.ncbi.nlm.nih.gov/36066387" class="external-link uri">https://pubmed.ncbi.nlm.nih.gov/36066387</a></td>
-<td align="left">NA</td>
-</tr>
-<tr class="odd">
-<td align="left"><a href="https://openalex.org/W2103896911" class="external-link uri">https://openalex.org/W2103896911</a></td>
-<td align="left"><a href="https://doi.org/10.1016/j.jmb.2004.06.033" class="external-link uri">https://doi.org/10.1016/j.jmb.2004.06.033</a></td>
-<td align="left">2103896911</td>
-<td align="left"><a href="https://pubmed.ncbi.nlm.nih.gov/15288786" class="external-link uri">https://pubmed.ncbi.nlm.nih.gov/15288786</a></td>
+<td align="left">W2010417920</td>
+<td align="left"><a href="https://doi.org/10.1016/j.wasman.2007.02.015" class="external-link uri">https://doi.org/10.1016/j.wasman.2007.02.015</a></td>
+<td align="right">2010417920</td>
+<td align="left"><a href="https://pubmed.ncbi.nlm.nih.gov/17434726" class="external-link uri">https://pubmed.ncbi.nlm.nih.gov/17434726</a></td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
-<td align="left"><a href="https://openalex.org/W1974228254" class="external-link uri">https://openalex.org/W1974228254</a></td>
-<td align="left"><a href="https://doi.org/10.1109/percomw.2012.6197506" class="external-link uri">https://doi.org/10.1109/percomw.2012.6197506</a></td>
-<td align="left">1974228254</td>
+<td align="left">W2076716399</td>
+<td align="left"><a href="https://doi.org/10.1016/j.tra.2008.11.014" class="external-link uri">https://doi.org/10.1016/j.tra.2008.11.014</a></td>
+<td align="right">2076716399</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 </tr>
 <tr class="odd">
-<td align="left"><a href="https://openalex.org/W4224866865" class="external-link uri">https://openalex.org/W4224866865</a></td>
-<td align="left"><a href="https://doi.org/10.1021/acscatal.2c00188" class="external-link uri">https://doi.org/10.1021/acscatal.2c00188</a></td>
-<td align="left">NA</td>
+<td align="left">W2130306081</td>
+<td align="left"><a href="https://doi.org/10.1016/j.trc.2015.01.015" class="external-link uri">https://doi.org/10.1016/j.trc.2015.01.015</a></td>
+<td align="right">2130306081</td>
 <td align="left">NA</td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
-<td align="left"><a href="https://openalex.org/W2018035699" class="external-link uri">https://openalex.org/W2018035699</a></td>
-<td align="left"><a href="https://doi.org/10.1128/aem.03678-13" class="external-link uri">https://doi.org/10.1128/aem.03678-13</a></td>
-<td align="left">2018035699</td>
-<td align="left"><a href="https://pubmed.ncbi.nlm.nih.gov/24487538" class="external-link uri">https://pubmed.ncbi.nlm.nih.gov/24487538</a></td>
-<td align="left"><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/3993154" class="external-link uri">https://www.ncbi.nlm.nih.gov/pmc/articles/3993154</a></td>
+<td align="left">W2153980567</td>
+<td align="left"><a href="https://doi.org/10.1016/j.trd.2010.12.004" class="external-link uri">https://doi.org/10.1016/j.trd.2010.12.004</a></td>
+<td align="right">2153980567</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">W2131628642</td>
+<td align="left"><a href="https://doi.org/10.1016/j.techfore.2009.03.003" class="external-link uri">https://doi.org/10.1016/j.techfore.2009.03.003</a></td>
+<td align="right">2131628642</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">W2045503958</td>
+<td align="left"><a href="https://doi.org/10.1016/j.techfore.2010.09.005" class="external-link uri">https://doi.org/10.1016/j.techfore.2010.09.005</a></td>
+<td align="right">2045503958</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
 </tr>
 </tbody>
 </table>
