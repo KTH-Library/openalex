@@ -320,13 +320,18 @@ parse_work2 <- function(object) {
   fields3 <- c(
     "sustainable_development_goals",
     "keywords",
-    "concepts",
-    "datasets"
+    "concepts"#
+    #"datasets"
   )
+
   fields3 <- fields3[which(fields3 %in% unique(colz$name))]
 
   various3 <- 
     fields3 |> map(bcbr) |> set_names(fields3)
+
+  datasets <- 
+    wide |> select(id, datasets) |> unnest(datasets) |> unnest(datasets) |> 
+      mutate(across(-contains("url"), \(x) gsub(re_ids, "", x)))
 
   fields4 <- c(
     "referenced_works",
@@ -443,6 +448,7 @@ parse_work2 <- function(object) {
     list(work = workz),
     list(abstracts = abstracts),
     list(authorships = authorships),
+    list(datasets = datasets),
     various, various2, various3, various4,
     list(
       primary_location = primary_location,

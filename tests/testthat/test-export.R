@@ -1,6 +1,6 @@
 test_that("export works", {
 
-  skip()
+  skip_on_ci()
 
   my_filter <- paste0(collapse = ",", c(
     "authorships.institutions.lineage:i86987016", ## KTH
@@ -9,7 +9,7 @@ test_that("export works", {
     "authorships.institutions.lineage:i4210147696", ## THS Tekniska Högskolans Studentkår
     "type:types/article",
     "primary_location.source.type:source-types/journal|source-types/conference",
-    "publication_year:2024"
+    "publication_year:2025"
   ))
 
   # TODO:
@@ -27,10 +27,10 @@ test_that("export works", {
 
 test_that("export for diva in wos-plain text format works", {
 
-  skip()
+  skip_on_ci()
 
   my_filter <- paste0(collapse = ",", c(
-    sprintf("publication_year:%s", 2024),
+    sprintf("publication_year:%s", 2025),
     sprintf("authorships.author.id:%s", "a5045975901") #,
   #   sprintf("raw_affiliation_strings.search:%s", openalex_kth_rawaff_query()),
   #   "authorships.institutions.lineage:!i86987016", ## KTH
@@ -47,10 +47,12 @@ test_that("export for diva in wos-plain text format works", {
   expect_true(is_valid)
 })
 
-test_that("export of rawff query for 2024 in wos-plain diva text format works", {
+test_that("export of rawff query for 2025 in wos-plain diva text format works", {
+
+  skip_on_ci()
 
   my_filter <- paste0(collapse = ",", c(
-    sprintf("publication_year:%s", 2024),
+    sprintf("publication_year:%s", 2025),
     sprintf("raw_affiliation_strings.search:%s", openalex_kth_rawaff_query()),
     "authorships.institutions.lineage:!i86987016", ## KTH
     "authorships.institutions.lineage:!i4210161097", ## Bolin Center (some of these might be KTH pubs!)
