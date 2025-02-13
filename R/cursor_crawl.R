@@ -63,7 +63,7 @@ openalex_works_cursorcrawl <- function(
 
   # compute total number of pages
   h <- header
-  n_pages <- ceiling(h$count / h$per_page) + ifelse(h$count > h$per_page, 1, 0)
+  n_pages <- ceiling(h$count / h$per_page)
 
   # begin the crawl
   message("Retrieving ", n_max_pages, " out of a total of ",
