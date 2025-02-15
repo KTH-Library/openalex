@@ -10,7 +10,8 @@ test_that("cursor based paging for works works", {
 
   mydir <- unique(dirname(cc))
   
-  read_jsonl <- function(fn) {
+  read_jsonl <- function(fn) {    
+    Sys.setenv(VROOM_CONNECTION_SIZE = as.integer(buf_size))    
       fn |> file() |> readr::read_lines() |> 
       RcppSimdJson::fparse(max_simplify_lvl = "list")
   }
