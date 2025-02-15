@@ -63,11 +63,11 @@ openalex_works_cursorcrawl <- function(
 
   # compute total number of pages
   h <- header
-  n_pages <- ceiling(h$count / h$per_page) + ifelse(h$count > h$per_page, 1, 0)
+  n_pages <- ceiling(h$count / h$per_page)
 
   # begin the crawl
-  message("Retrieving ", n_max_pages, " out of a total of ",
-    n_pages, " pages, with a total record count of ", h$count,
+  message("Retrieving ", min(n_max_pages, n_pages), " out of a total of ",
+    n_pages, " pages having a total record count of ", h$count,
     ". Starting crawl...")
 
   # iterate using a while loop
@@ -79,7 +79,7 @@ openalex_works_cursorcrawl <- function(
   unlink(dir(td, pattern = "\\.json$", full.names = TRUE))
   fn <- file.path(td, sprintf("%04i%s", i, ".json"))
   readr::write_lines(results, fn)
-  message("Wrote page ", i, " to ", fn, " and next cursor is ", q$cursor)
+  #message("Wrote page ", i, " to ", fn, " and next cursor is ", q$cursor)
   #readr::write_rds(page, file = fn)
   #message("Cursor: ", q$cursor)
 
@@ -93,16 +93,24 @@ openalex_works_cursorcrawl <- function(
     h <- json_header(next_page)
     q$cursor <- h$next_cursor
     fn <- file.path(td, sprintf("%04i%s", i, ".json"))
+    if (file.exists(fn)) unlink(fn)
+    
     results <- json_results(next_page)
-    readr::write_lines(results, fn, append = TRUE)
-    #readr::write_rds(next_page, file = fn)
-    is_stopped <- i >= n_max_pages
+    #message("Batch: #", i, " ", length(results))
+    if (length(results) > 0) {
+      readr::write_lines(results, fn, append = TRUE)    
+    }
+    is_stopped <- i >= min(n_max_pages, n_pages)
+    if (is_stopped)
+      message("Stopped, next cursor is: ", q$cursor)
     is_done <- is.null(q$cursor) || is_stopped
   }
 
-  message("\nDone, fetched ", i, " pages of works, written to ", td)
   filez <- dir(td, pattern = "\\.json$", full.names = TRUE)
   return (filez)
+
+  message("\nDone, fetched ", length(filez), " pages of works, written to ", td)
+
 }
 
 jsonl_to_tbl <- function(fn) {

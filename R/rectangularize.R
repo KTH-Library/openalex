@@ -274,7 +274,7 @@ parse_work2 <- function(object) {
   re_ids <- paste0(
       "(https://openalex.org/)|(https://doi.org/)|",
       "(https://pubmed.ncbi.nlm.nih.gov/)|(https://www.ncbi.nlm.nih.gov/pmc/articles/)|",
-      "(https://www.wikidata.org/wiki/)"
+      "(https://www.wikidata.org/wiki/)|(https://orcid.org/)|(https://ror.org/)"
     )
 
   fuw <- function(fields) {
@@ -285,19 +285,42 @@ parse_work2 <- function(object) {
   }
 
   authorships <- 
-    wide |> select(work_id = id, authorships) |> 
+    wide |> select(work_id = "id", any_of("authorships")) |> 
     unnest_longer(2) |> unnest_wider(2) |> 
-    #pull("author") hoist("authorships", list("author")) |>   
-    unnest_wider(any_of("author"), names_sep = "_") |>
-    unnest_longer(any_of("countries")) |>
-    unnest_longer(any_of("institutions")) |>
-    unnest_wider(any_of("institutions"), names_sep = "_") |>
-    unnest_longer(any_of("institutions_lineage")) |>
+    mutate(across(contains("id"), \(x) gsub(re_ids, "", x)))
+
+  authorships_affiliations_raw <- 
+    authorships |> 
+    select(any_of(c("work_id", "author_id", "raw_author_name", "raw_affiliation_strings"))) |> 
+    unnest_longer("raw_affiliation_strings") |> 
+    mutate(across(contains("id"), \(x) gsub(re_ids, "", x)))
+
+  authorships_affiliations <- 
+    authorships |>
+    select(any_of(c("work_id", "affiliations", "author"))) |> 
     unnest_longer(any_of("affiliations")) |>
     unnest_wider(any_of("affiliations"), names_sep = "_") |>
-    unnest_longer(any_of("raw_affiliation_strings")) |>
-    unnest_longer(any_of("affiliations_institution_ids"))
+    unnest_longer(any_of("affiliations_institution_ids")) |> 
+    unnest_wider(any_of("author"), names_sep = "_") |> 
+    mutate(across(contains("id"), \(x) gsub(re_ids, "", x))) |> 
+    distinct()
 
+  authorships_authors <- 
+    authorships |> 
+    unnest_wider(any_of("author"), names_sep = "_") |> 
+    select(-any_of(c("institutions", "affiliations", "raw_author_name", "raw_affiliation_strings", "countries"))) |> 
+#    unnest_wider(any_of(c("countries")), names_sep = "_") |> 
+    mutate(across(contains("id"), \(x) gsub(re_ids, "", x)))
+    
+  authorships_institutions <- 
+    authorships |>
+    select(any_of(c("work_id", "institutions", "author"))) |> 
+    unnest_longer(any_of("institutions")) |> 
+    unnest_wider("institutions", names_sep = "_") |> 
+    unnest_longer("institutions_lineage") |>
+    unnest_wider(any_of(c("author")), names_sep = "_") |> 
+    mutate(across(everything(), \(x) gsub(re_ids, "", x)))
+          
   fields <- c(
     "ids", "open_access", "apc_list", "apc_paid",
     "citation_normalized_percentile", "cited_by_percentile_year",
@@ -320,13 +343,18 @@ parse_work2 <- function(object) {
   fields3 <- c(
     "sustainable_development_goals",
     "keywords",
-    "concepts",
-    "datasets"
+    "concepts"#
+    #"datasets"
   )
+
   fields3 <- fields3[which(fields3 %in% unique(colz$name))]
 
   various3 <- 
     fields3 |> map(bcbr) |> set_names(fields3)
+
+  datasets <- 
+    wide |> select(id, datasets) |> unnest(datasets) |> unnest(datasets) |> 
+      mutate(across(-contains("url"), \(x) gsub(re_ids, "", x)))
 
   fields4 <- c(
     "referenced_works",
@@ -386,15 +414,22 @@ parse_work2 <- function(object) {
     #pull(primary_location_source) |> head(1)
     unnest(2) |> 
     unnest_longer(any_of("issn")) |> 
-    unnest(any_of(everything())) 
+    unnest(any_of(everything())) |> 
+    unnest_wider(any_of(c("host_organization_lineage")), names_sep = "_")
 
   primary_location <- 
     primary_location |> select(-any_of("primary_location_source"))
 
   primary_topic <-
     "primary_topic" |> fuw() |> 
-    mutate(across(any_of(c("primary_topic_subfield", "primary_topic_field", "primary_topic_domain")), \(y) y |> map(\(x) eval(parse(text = x))))) |> 
-    mutate(across(any_of(c("primary_topic_subfield", "primary_topic_field", "primary_topic_domain")), \(y) y |> map(\(x) compact(x) |> as_tibble()))) |> 
+    mutate(across(any_of(
+      c("primary_topic_subfield", "primary_topic_field", "primary_topic_domain")), 
+      \(y) y |> map(\(x) eval(parse(text = x))))
+    ) |> 
+    mutate(across(any_of(
+      c("primary_topic_subfield", "primary_topic_field", "primary_topic_domain")), 
+      \(y) y |> map(\(x) compact(x) |> as_tibble()))
+    ) |> 
     unnest("primary_topic_subfield", names_sep = "_") |> 
     unnest("primary_topic_field", names_sep = "_") |> 
     unnest("primary_topic_domain", names_sep = "_")
@@ -413,15 +448,16 @@ parse_work2 <- function(object) {
     "best_oa_location" |> fuw()
 
   best_oa_location_source <- 
-    best_oa_location |> select(work_id, best_oa_location_source) |> 
+    best_oa_location |> 
+    select(any_of(c("work_id", "best_oa_location_source"))) |> 
     mutate(best_oa_location_source = map(best_oa_location_source, 
       \(x) eval(parse(text = x)))) |> 
     mutate(best_oa_location_source = map(best_oa_location_source, 
       \(x) compact(x) |> enframe() |> pivot_wider())) |> #|> as_tibble())) |> 
-      unnest(2) |> 
-      unnest_longer(any_of("issn")) |> 
-      unnest(any_of(everything())) |> 
-      compact() |> 
+    unnest(2) |> 
+    unnest_longer(any_of("issn")) |> 
+    unnest(any_of(everything())) |> 
+    compact() |> 
     mutate(across(-contains("url"), \(x) gsub(re_ids, "", x)))
 
   best_oa_location <-
@@ -429,9 +465,9 @@ parse_work2 <- function(object) {
 
   locations <-
     wide |> select(any_of(c("id", "locations"))) |> 
-    unnest(locations) |> 
-    unnest_wider(locations) |> 
-    unnest_wider(source, names_sep = "_") |> 
+    unnest(any_of(c("locations"))) |> 
+    unnest_wider(any_of(c("locations"))) |> 
+    unnest_wider(any_of(c("source")), names_sep = "_") |> 
     #w$results |> unfw("locations") |>
     #unnest_wider(any_of("source"), names_sep = "_") |>
     unnest_longer(any_of("source_issn")) |>
@@ -442,7 +478,11 @@ parse_work2 <- function(object) {
   c(
     list(work = workz),
     list(abstracts = abstracts),
-    list(authorships = authorships),
+    list(authorships_affiliations_raw = authorships_affiliations_raw),
+    list(authorships_affiliations = authorships_affiliations),
+    list(authorships_authors = authorships_authors),
+    list(authorships_institutions = authorships_institutions),
+    list(datasets = datasets),
     various, various2, various3, various4,
     list(
       primary_location = primary_location,

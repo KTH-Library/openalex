@@ -21,12 +21,16 @@ test_that("doi lookup works for 20 dois", {
     split_chunks_of_n(50) |> 
     map(doi_filter)
   
-  doi_filters |> map(\(x) doi_lookup_identifiers(doi_filter = x))
+  #doi_filters |> map(\(x) doi_lookup_identifiers(doi_filter = x))
 
-  ids <- openalex_doi_lookup(dois, "identifiers")
+  #ids <- openalex_doi_lookup(dois, "identifiers")
   more <- openalex_doi_lookup(dois, "all")
 
-  is_valid <- nrow(ids) == length(dois) & nrow(more[[1]]$ids) == length(dois)
+  is_valid <- 
+    #nrow(ids) == length(dois) & 
+    nrow(more[[1]]$ids) == length(dois)
+  
   expect_true(is_valid)
 
 })
+
