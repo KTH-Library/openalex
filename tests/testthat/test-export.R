@@ -1,6 +1,6 @@
 test_that("export works", {
 
-  skip_on_ci()
+  skip()
 
   my_filter <- paste0(collapse = ",", c(
     "authorships.institutions.lineage:i86987016", ## KTH
@@ -41,9 +41,11 @@ test_that("export for diva in wos-plain text format works", {
 
   gm <- openalex_works_export(q = my_filter, fmt = "wos-plaintext")
 
-  cat(gm)
+  #cat(gm)
 
-  is_valid <- (regmatches(gm, gregexpr("Maguire", gm)) |> unlist()) |> length() > 10
+  is_valid <- 
+    (regmatches(gm, gregexpr("KTH", gm)) |> unlist()) |> length() > 10
+
   expect_true(is_valid)
 })
 

@@ -9,11 +9,14 @@ test_that("cursor based paging for works works", {
     openalex_works_cursorcrawl(n_max_pages = 10)
 
   mydir <- unique(dirname(cc))
-  
-  read_jsonl <- function(fn) {    
-    Sys.setenv(VROOM_CONNECTION_SIZE = as.integer(buf_size))    
-      fn |> file() |> readr::read_lines() |> 
-      RcppSimdJson::fparse(max_simplify_lvl = "list")
+
+  mydir <- unique(dirname(cc))
+  fns_max_size <- max(file.size(cc))
+
+  read_jsonl <- function(fn) {
+    Sys.setenv("VROOM_CONNECTION_SIZE" = fns_max_size)
+    fn |> file() |> readr::read_lines() |> 
+    RcppSimdJson::fparse(max_simplify_lvl = "list")
   }
 
   ccs <- cc |> purrr::map(\(x) list(results = read_jsonl(x)))
