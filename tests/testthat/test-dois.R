@@ -28,9 +28,29 @@ test_that("doi lookup works for 20 dois", {
 
   is_valid <- 
     #nrow(ids) == length(dois) & 
-    nrow(more[[1]]$ids) == length(dois)
+    nrow(more$ids) == length(dois)
   
   expect_true(is_valid)
 
+})
+
+test_that("a specific doi with some attributes being null (best_oa_location_source) can be rectangularized", {
+
+  my_doi <- "10.1007/978-94-017-9756-6"
+
+  #my_doi |> openalex_doi_lookup("identifiers")
+  works <- my_doi |> openalex_doi_lookup("all")
+  
+  #works <- openalex_crawl("works", query = list(filter = paste0("doi:", my_doi)), verbose = TRUE)
+  
+  #lol <- 
+    #list(list(results = reduce(works |> map("results"), c)))
+  
+  #my_works <- 
+    #lol |> openalex_works_to_tbls()
+
+  is_valid <- works$work |> nrow() == 1
+
+  expect_true(is_valid)
 })
 

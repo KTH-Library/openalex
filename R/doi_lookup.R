@@ -54,15 +54,14 @@ openalex_doi_lookup <- function(dois, resolution = c("all", "identifiers")) {
   doi_chunks <- switch(resolution, 
     "all" = {
       doi_filters |> 
-        purrr::map(doi_crawl, .progress = TRUE)
+        purrr::map(doi_crawl, .progress = TRUE) |> 
+        purrr::reduce(c)
     },
     "identifiers" = {
       doi_filters |> 
         map_dfr(\(x) doi_lookup_identifiers(doi_filter = x), .progress = TRUE)
     }
   )
-
-  doi_chunks
  
 }
 
