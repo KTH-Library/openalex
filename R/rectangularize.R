@@ -278,7 +278,13 @@ parse_work2 <- function(object) {
     )
 
   fuw <- function(fields) {
-      wide |> select(work_id = "id", any_of(c(fields))) |> 
+    
+    step1 <- wide |> select(work_id = "id", any_of(c(fields))) 
+    
+    if (length(fields) == 1 & all(is.na(step1 |> pull(fields))))
+      return (tibble(work_id = character(0), a = character(0)) |> setNames(nm = c("work_id", fields)))
+    
+    step1 |> 
       unnest_wider(any_of(c(fields)), names_sep = "_") |> 
 #          unnest_wider(any_of(c(fields))) |> 
       mutate(across(-contains("url"), \(x) gsub(re_ids, "", x)))
@@ -317,7 +323,7 @@ parse_work2 <- function(object) {
     select(any_of(c("work_id", "institutions", "author"))) |> 
     unnest_longer(any_of("institutions")) |> 
     unnest_wider("institutions", names_sep = "_") |> 
-    unnest_longer("institutions_lineage") |>
+    unnest_longer(any_of(c("institutions_lineage"))) |>
     unnest_wider(any_of(c("author")), names_sep = "_") |> 
     mutate(across(everything(), \(x) gsub(re_ids, "", x)))
           
@@ -447,21 +453,28 @@ parse_work2 <- function(object) {
   best_oa_location <-
     "best_oa_location" |> fuw()
 
-  best_oa_location_source <- 
-    best_oa_location |> 
-    select(any_of(c("work_id", "best_oa_location_source"))) |> 
-    mutate(best_oa_location_source = map(best_oa_location_source, 
-      \(x) eval(parse(text = x)))) |> 
-    mutate(best_oa_location_source = map(best_oa_location_source, 
-      \(x) compact(x) |> enframe() |> pivot_wider())) |> #|> as_tibble())) |> 
-    unnest(2) |> 
-    unnest_longer(any_of("issn")) |> 
-    unnest(any_of(everything())) |> 
-    compact() |> 
-    mutate(across(-contains("url"), \(x) gsub(re_ids, "", x)))
+  if ("best_oa_location_source" %in% names(best_oa_location)) {
 
-  best_oa_location <-
-    best_oa_location |> select(-any_of(c("best_oa_location_source")))
+    best_oa_location_source <- 
+      best_oa_location |> 
+      select(any_of(c("work_id", "best_oa_location_source"))) |> 
+      mutate(best_oa_location_source = map(best_oa_location_source, 
+        \(x) eval(parse(text = x)))) |> 
+      mutate(best_oa_location_source = map(best_oa_location_source, 
+        \(x) compact(x) |> enframe() |> pivot_wider())) |> #|> as_tibble())) |> 
+      unnest(2) |> 
+      unnest_longer(any_of("issn")) |> 
+      unnest(any_of(everything())) |> 
+      compact() |> 
+      mutate(across(-contains("url"), \(x) gsub(re_ids, "", x)))
+  
+    best_oa_location <-
+      best_oa_location |> select(-any_of(c("best_oa_location_source")))
+  
+  } else {
+    best_oa_location_source <- tibble()
+  }
+
 
   locations <-
     wide |> select(any_of(c("id", "locations"))) |> 

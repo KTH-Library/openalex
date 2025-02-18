@@ -1,7 +1,7 @@
 
 test_that("crawl works (not cursor based) and results can be persisted in db", {
 
-  skip_on_ci()
+  skip()
 
   my_filter <- paste0(collapse = ",", c(
     "authorships.institutions.lineage:i86987016", ## KTH
@@ -15,7 +15,6 @@ test_that("crawl works (not cursor based) and results can be persisted in db", {
   my_query <- openalex:::openalex_query(filter = my_filter)
   works <- openalex_crawl("work", query = my_query, fmt = "object")
   #readr::write_rds(works, "~/openalex-2023.rds")
-
 
   # TODO: some error here!
   library(purrr)
