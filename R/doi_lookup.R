@@ -17,7 +17,8 @@ doi_crawl <- function(dois) {
   lol <- 
     list(list(results = reduce(works |> map("results"), c)))
 
-  lol |> openalex_works_to_tbls()
+  return (lol)
+#  lol |> openalex_works_to_tbls()
     
 }
 
@@ -53,15 +54,25 @@ openalex_doi_lookup <- function(dois, resolution = c("all", "identifiers")) {
 
   doi_chunks <- switch(resolution, 
     "all" = {
+
       doi_filters |> 
+        # get each batch of 50 DOIs 
         purrr::map(doi_crawl, .progress = TRUE) |> 
-        purrr::reduce(c)
+        # combine batches
+        purrr::reduce(c) |> purrr::map("results") |> purrr::list_c() |> 
+        # wrap in a list of results (suitable for conversion)
+        list() |> purrr::set_names(nm = "results") |> list() |> 
+        # convert to tables
+        openalex_works_to_tbls() 
+      
     },
     "identifiers" = {
       doi_filters |> 
         map_dfr(\(x) doi_lookup_identifiers(doi_filter = x), .progress = TRUE)
     }
   )
+
+  return(doi_chunks)
  
 }
 
