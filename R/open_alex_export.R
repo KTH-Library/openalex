@@ -116,7 +116,6 @@ openalex_write_duckdb <- function(crawl, destdir = NULL, append = TRUE) {
 
   toc_tbl <- crawl |> names()
   toc_view <- sprintf("view_%s", toc_tbl)
-  tbl_fields <- sapply(toc_tbl, \(x) crawl |> getElement(x) |> names() |> paste(collapse = ", "))
 
   toc_tbl |>
     purrr::walk(\(x) duckdb::duckdb_register(con, sprintf("view_%s", x), crawl |> getElement(x)))
@@ -126,7 +125,7 @@ openalex_write_duckdb <- function(crawl, destdir = NULL, append = TRUE) {
     paste(collapse = "\n")
 
   # insert data from dataframes into existing tables
-  sql_insert_tbls <- sprintf("insert into %1$s (%2$s) select %2$s from %3$s;", toc_tbl, tbl_fields, toc_view) |>
+  sql_insert_tbls <- sprintf("insert into %s by name from %s;", toc_tbl, toc_view) |>
     paste(collapse = "\n")
 
   message("Ensuring duckdb database tables exist and are updated at ", destdir)
