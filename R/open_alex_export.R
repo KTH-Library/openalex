@@ -83,7 +83,7 @@ wos_plaintext_for_diva <- function(x) {
 #' @param destdir the location to save the database file
 #' @param append logical, by default TRUE, set to FALSE for overwriting an existing database
 #' @return file path to the database file
-#' @importFrom purrr walk2
+#' @importFrom purrr walk
 #' @import duckdb DBI
 openalex_write_duckdb <- function(crawl, destdir = NULL, append = TRUE) {
 
