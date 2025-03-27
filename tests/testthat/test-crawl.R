@@ -1,7 +1,7 @@
 
 test_that("crawl works (not cursor based) and results can be persisted in db", {
 
-  skip()
+  skip_on_ci()
 
   my_filter <- paste0(collapse = ",", c(
     "authorships.institutions.lineage:i86987016", ## KTH
@@ -34,9 +34,9 @@ test_that("crawl works (not cursor based) and results can be persisted in db", {
       \(y) gsub("https://openalex.org/", "", y, fixed = TRUE)))
     )
 
-  dump_path <-file.path(tempdir(), "openalex-2025.db")
+  dump_path <- file.path(tempdir(), "openalex-2025.db")
   harvest |> openalex_write_duckdb(dump_path)
-  message("Persisted dump at ", dump_path)
+  message("\n Persisted dump at ", dump_path)
 
   expect_true(is_valid)
 

@@ -81,10 +81,11 @@ wos_plaintext_for_diva <- function(x) {
 #' Export the results from a crawl as a duckdb database file
 #' @param crawl the results from running the to_tbls fcn
 #' @param destdir the location to save the database file
+#' @param append logical, by default TRUE, set to FALSE for overwriting an existing database
 #' @return file path to the database file
 #' @importFrom purrr walk2
 #' @import duckdb DBI
-openalex_write_duckdb <- function(crawl, destdir = NULL) {
+openalex_write_duckdb <- function(crawl, destdir = NULL, append = TRUE) {
 
   if (!requireNamespace("duckdb", quietly = TRUE)) {
     stop(
@@ -101,9 +102,12 @@ openalex_write_duckdb <- function(crawl, destdir = NULL) {
   if (!dir.exists(dirname(destdir))) {
     is_created <- dir.create(dirname(destdir), showWarnings = TRUE)
   } else {
-    message("Removing existing file ", destdir)
-    if (file.exists(destdir))
+    if (file.exists(destdir) & !append) {
+      message("Removing existing db at ", destdir)
       unlink(destdir)
+    } else if (file.exists(destdir) & append) {
+      message("Appending to existing db!")
+    }
   }
 
   drv <- duckdb::duckdb()
@@ -116,12 +120,19 @@ openalex_write_duckdb <- function(crawl, destdir = NULL) {
   toc <- DBI::dbListTables(con)
   new_tbl <- gsub("^view_", "", toc)
 
-  sql_create_db <- sprintf("create table %s as from %s;", new_tbl, toc) |>
+  # use schema of existing dataframes to create corresponding duckdb tables
+  sql_create_tbls <- sprintf("create table if not exists %s as from %s where 1 = 2;", new_tbl, toc) |>
     paste(collapse = "\n")
 
-  message("Creating duckdb file at ", destdir, " using sql ", sql_create_db)
-  result <- DBI::dbExecute(con, sql_create_db)
-  message("Result is ", result)
+  # insert data from dataframes into existing tables
+  sql_insert_tbls <- sprintf("insert into %s from %s;", new_tbl, toc) |>
+    paste(collapse = "\n")
+
+  message("Ensuring duckdb database tables exist and are updated at ", destdir)
+  result_create <- DBI::dbExecute(con, sql_create_tbls)
+  result_insert <- DBI::dbExecute(con, sql_insert_tbls)
+
+  message("Results can be inspected with: duckdb -ui ", destdir)
 
   return(destdir)
 
