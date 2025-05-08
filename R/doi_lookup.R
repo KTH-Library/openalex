@@ -89,7 +89,7 @@ doi_lookup_to_duckdb <- function(dois, dest = NULL) {
 
   walk(doi_chunks, \(x) {
     res <- openalex_doi_lookup(x, resolution = "all")
-    z <- openalex_write_duckdb(res, destdir = dest, append = TRUE)
+    z <<- openalex_write_duckdb(res, destdir = dest, append = TRUE)
   })
 
   return(z)
