@@ -4,6 +4,7 @@
 <url><loc>https://kth-library.github.io/openalex/LICENSE.html</loc></url>
 <url><loc>https://kth-library.github.io/openalex/authors.html</loc></url>
 <url><loc>https://kth-library.github.io/openalex/index.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/reference/doi_lookup_to_duckdb.html</loc></url>
 <url><loc>https://kth-library.github.io/openalex/reference/index.html</loc></url>
 <url><loc>https://kth-library.github.io/openalex/reference/openalex-package.html</loc></url>
 <url><loc>https://kth-library.github.io/openalex/reference/openalex_api.html</loc></url>
@@ -14,6 +15,7 @@
 <url><loc>https://kth-library.github.io/openalex/reference/openalex_flatten_long.html</loc></url>
 <url><loc>https://kth-library.github.io/openalex/reference/openalex_key.html</loc></url>
 <url><loc>https://kth-library.github.io/openalex/reference/openalex_kth_rawaff_query.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/reference/openalex_orcid_lookup.html</loc></url>
 <url><loc>https://kth-library.github.io/openalex/reference/openalex_polite.html</loc></url>
 <url><loc>https://kth-library.github.io/openalex/reference/openalex_topics.html</loc></url>
 <url><loc>https://kth-library.github.io/openalex/reference/openalex_work.html</loc></url>
@@ -23,6 +25,7 @@
 <url><loc>https://kth-library.github.io/openalex/reference/openalex_works_published_since.html</loc></url>
 <url><loc>https://kth-library.github.io/openalex/reference/openalex_works_updated_since.html</loc></url>
 <url><loc>https://kth-library.github.io/openalex/reference/openalex_write_duckdb.html</loc></url>
+<url><loc>https://kth-library.github.io/openalex/reference/orcid_lookup_to_duckdb.html</loc></url>
 <url><loc>https://kth-library.github.io/openalex/reference/pipe.html</loc></url>
 <url><loc>https://kth-library.github.io/openalex/reference/topics.html</loc></url>
 <url><loc>https://kth-library.github.io/openalex/reference/wos_plaintext_for_diva.html</loc></url>

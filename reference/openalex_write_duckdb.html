@@ -37,7 +37,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">openalex_write_duckdb</span><span class="op">(</span><span class="va">crawl</span>, destdir <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">openalex_write_duckdb</span><span class="op">(</span><span class="va">crawl</span>, destdir <span class="op">=</span> <span class="cn">NULL</span>, append <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -50,6 +50,10 @@
 
 <dt id="arg-destdir">destdir<a class="anchor" aria-label="anchor" href="#arg-destdir"></a></dt>
 <dd><p>the location to save the database file</p></dd>
+
+
+<dt id="arg-append">append<a class="anchor" aria-label="anchor" href="#arg-append"></a></dt>
+<dd><p>logical, by default TRUE, set to FALSE for overwriting an existing database</p></dd>
 
 </dl></div>
     <div class="section level2">
