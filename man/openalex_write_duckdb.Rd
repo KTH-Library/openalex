@@ -4,12 +4,14 @@
 \alias{openalex_write_duckdb}
 \title{Export the results from a crawl as a duckdb database file}
 \usage{
-openalex_write_duckdb(crawl, destdir = NULL)
+openalex_write_duckdb(crawl, destdir = NULL, append = TRUE)
 }
 \arguments{
 \item{crawl}{the results from running the to_tbls fcn}
 
 \item{destdir}{the location to save the database file}
+
+\item{append}{logical, by default TRUE, set to FALSE for overwriting an existing database}
 }
 \value{
 file path to the database file

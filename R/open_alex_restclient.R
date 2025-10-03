@@ -642,7 +642,7 @@ openalex_works_created_since <- function(
     )
   )
 
-  openalex_crawl("works", fmt = "tables", verbose = TRUE,
+  openalex_crawl("works", fmt = "object", verbose = TRUE,
     query = openalex_query(
       filter = params,
       verbose = FALSE
@@ -790,7 +790,7 @@ openalex_works_to_tbls <- function(works) {
       readr::type_convert(guess_integer = TRUE) |>
       suppressMessages() |> suppressWarnings() |>
       mutate(across(where(function(x) is.character(x)) & !any_of(c("doi")), .fns = strip_prefix)) |>
-      mutate(across(any_of(c("doi")), .fns = strip_doi)) |>
+      #mutate(across(any_of(c("doi")), .fns = strip_doi)) |>
       select(where(Negate(is.list)))
     }
     res <- slotz |> map(unify) |> setNames(nm = slotz)

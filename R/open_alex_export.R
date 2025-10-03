@@ -13,37 +13,37 @@ openalex_works_export <- function(q, fmt = c("csv", "wos-plaintext"), raw_string
   query$truncate <- "false"
   query$api_key <- cfg()$key
 
-  ep <- 
-    "https://export.openalex.org" |> 
-    httr2::request() |> 
-    httr2::req_url_path("works") |> 
-    httr2::req_user_agent(cfg()$user_agent) |> 
-    httr2::req_url_query(!!!query) 
-  
+  ep <-
+    "https://export.openalex.org" |>
+    httr2::request() |>
+    httr2::req_url_path("works") |>
+    httr2::req_user_agent(cfg()$user_agent) |>
+    httr2::req_url_query(!!!query)
+
   check_progress <- function() {
     ep |> httr2::req_perform() |> httr2::resp_body_json() |> dplyr::bind_cols()
   }
-  
+
   res <- check_progress()
-  
+
   message("Waiting for export to be generated ...\n")
-  
+
   while (res$status != "finished") {
     Sys.sleep(5)
     res <- check_progress()
-    message(sprintf("%0.1f%%", as.double(res$progress) * 100), " (", res$status, ")") 
+    message(sprintf("%0.1f%%", as.double(res$progress) * 100), " (", res$status, ")")
   }
 
   message("Export is ready, retrieving results.")
-  out <- 
-    httr2::request(res$result_url) |> 
-    httr2::req_perform() |> 
+  out <-
+    httr2::request(res$result_url) |>
+    httr2::req_perform() |>
     httr2::resp_body_string()
 
   message("Done, returning results")
   if (raw_string) return(out)
-  
-  res <- switch(match.arg(fmt), 
+
+  res <- switch(match.arg(fmt),
     "csv" = {
       out |> readr::read_csv(show_col_types = FALSE)
     },
@@ -58,7 +58,7 @@ openalex_works_export <- function(q, fmt = c("csv", "wos-plaintext"), raw_string
 }
 
 #' Function which converts a wos_plaintext-string into a format
-#' which can be uploaded to DiVA, by adding ER tags 
+#' which can be uploaded to DiVA, by adding ER tags
 #' (including a blank line) after each record
 #' @param x character string with "wos-plaintext" format as returned from OpenAlex export API endpoint
 #' @importFrom stats setNames
@@ -69,7 +69,7 @@ wos_plaintext_for_diva <- function(x) {
   #i_indented <- which(grepl("^\\s+", w))
   i_eor <- which(grepl("^ER$", w))
   i_blank <- which(nchar(w) == 0)
-  
+
   pt <- w[-c(i_eor, i_blank)]  # TODO: should i_header rows be removed too?
   i_record <- which(grepl("^PT\\s+", pt))
   n_records <- length(i_record)
@@ -81,10 +81,11 @@ wos_plaintext_for_diva <- function(x) {
 #' Export the results from a crawl as a duckdb database file
 #' @param crawl the results from running the to_tbls fcn
 #' @param destdir the location to save the database file
+#' @param append logical, by default TRUE, set to FALSE for overwriting an existing database
 #' @return file path to the database file
-#' @importFrom purrr walk2
+#' @importFrom purrr walk
 #' @import duckdb DBI
-openalex_write_duckdb <- function(crawl, destdir = NULL) {
+openalex_write_duckdb <- function(crawl, destdir = NULL, append = TRUE) {
 
   if (!requireNamespace("duckdb", quietly = TRUE)) {
     stop(
@@ -101,27 +102,37 @@ openalex_write_duckdb <- function(crawl, destdir = NULL) {
   if (!dir.exists(dirname(destdir))) {
     is_created <- dir.create(dirname(destdir), showWarnings = TRUE)
   } else {
-    message("Removing existing file ", destdir)
-    if (file.exists(destdir))
+    if (file.exists(destdir) & !append) {
+      message("Removing existing db at ", destdir)
       unlink(destdir)
+    } else if (file.exists(destdir) & append) {
+      message("Appending to existing db!")
+    }
   }
 
   drv <- duckdb::duckdb()
   con <- duckdb::dbConnect(drv, dbdir = destdir)
   on.exit(DBI::dbDisconnect(con, shutdown = TRUE))
 
-  crawl |> names() |> 
+  toc_tbl <- crawl |> names()
+  toc_view <- sprintf("view_%s", toc_tbl)
+
+  toc_tbl |>
     purrr::walk(\(x) duckdb::duckdb_register(con, sprintf("view_%s", x), crawl |> getElement(x)))
 
-  toc <- DBI::dbListTables(con)
-  new_tbl <- gsub("^view_", "", toc)
-
-  sql_create_db <- sprintf("create table %s as from %s;", new_tbl, toc) |>
+  # use schema of existing dataframes to create corresponding duckdb tables
+  sql_create_tbls <- sprintf("create table if not exists %s as from %s where 1 = 2;", toc_tbl, toc_view) |>
     paste(collapse = "\n")
 
-  message("Creating duckdb file at ", destdir, " using sql ", sql_create_db)
-  result <- DBI::dbExecute(con, sql_create_db)
-  message("Result is ", result)
+  # insert data from dataframes into existing tables
+  sql_insert_tbls <- sprintf("insert into %s by name from %s;", toc_tbl, toc_view) |>
+    paste(collapse = "\n")
+
+  message("Ensuring duckdb database tables exist and are updated at ", destdir)
+  result_create <- DBI::dbExecute(con, sql_create_tbls)
+  result_insert <- DBI::dbExecute(con, sql_insert_tbls)
+
+  message("Results can be inspected with: duckdb -ui ", destdir)
 
   return(destdir)
 
@@ -229,39 +240,39 @@ openalex_groupbys <- function(q) {
 
   colname <- field <- colid <- i <- NULL
 
-  csv <- 
+  csv <-
     q |> readr::read_lines()
-  
-  schema <- 
-    csv[1:2] |> 
-    strsplit(split = ",") |> 
-    setNames(c("field", "colname")) |> 
-    purrr::map(\(x) na_if(x, "")) |> 
-    tibble::as_tibble() |> 
-    tibble::rowid_to_column(var = "colid") |> 
-    tidyr::fill(any_of(c("field"))) |> 
-    dplyr::filter(!is.na(colname)) |> 
-    dplyr::group_by(field) |> 
-    dplyr::summarize(i = min(colid), j = max(colid), colnames = list(colname)) |> 
+
+  schema <-
+    csv[1:2] |>
+    strsplit(split = ",") |>
+    setNames(c("field", "colname")) |>
+    purrr::map(\(x) na_if(x, "")) |>
+    tibble::as_tibble() |>
+    tibble::rowid_to_column(var = "colid") |>
+    tidyr::fill(any_of(c("field"))) |>
+    dplyr::filter(!is.na(colname)) |>
+    dplyr::group_by(field) |>
+    dplyr::summarize(i = min(colid), j = max(colid), colnames = list(colname)) |>
     dplyr::arrange(-desc(i))
-  
-  body <- 
+
+  body <-
     csv[-c(1:2)] |> paste(collapse = "\n")
-  
-  all <- 
+
+  all <-
     readr::read_csv(body, col_names = NULL, show_col_types = FALSE)
-  
+
   parse_body <- function(field, i, j, colnames) {
-    all |> 
-      select(c(i, j)) |> 
-      setNames(nm = unlist(colnames)) |> 
+    all |>
+      select(c(i, j)) |>
+      setNames(nm = unlist(colnames)) |>
       filter(!if_all(everything(), is.na))
-      #filter(if_all(\(x) all(is.na(x)))) #|> 
+      #filter(if_all(\(x) all(is.na(x)))) #|>
       #list() |> setNames(nm = field)
   }
 
-  tbls <- 
-    schema |> purrr::pmap(parse_body) |> 
+  tbls <-
+    schema |> purrr::pmap(parse_body) |>
     setNames(nm = schema$field) |>
     map(\(x) x |> mutate(across(any_of(c("name")), as.character)))
 
@@ -270,20 +281,20 @@ openalex_groupbys <- function(q) {
 }
 
 #' Counts from OpenAlex
-#' 
+#'
 #' Aggregates/counts can be retrieved using the group_bys query parameter
-#' 
+#'
 #' @param filter a set of filter criteria, see the defaults in openalex_filter_default()
 #' @param dimensions a set of grouping dimensions, see the defaults in openalex_groupbys_default()
 #' @return a list of tibbles
 #' @export
 #' @importFrom utils URLencode
 openalex_counts <- function(
-  filter = openalex_filter_default(), 
+  filter = openalex_filter_default(),
   dimensions = openalex_groupbys_default()
 ) {
 
-  groupbys <- 
+  groupbys <-
     dimensions|> paste0(collapse = ",") |> utils::URLencode(reserved = TRUE)
 
   url <- paste0(
@@ -299,9 +310,9 @@ openalex_counts <- function(
 
 read_page <- function(level = c("topics", "subfields", "fields", "domains"), page) {
 
-  topic_page <- 
-    "https://api.openalex.org/%s?select=id,display_name,description,subfield,field,domain&per_page=200&page=%s" |> 
-    sprintf(level, page) |> 
+  topic_page <-
+    "https://api.openalex.org/%s?select=id,display_name,description,subfield,field,domain&per_page=200&page=%s" |>
+    sprintf(level, page) |>
     jsonlite::fromJSON()
 
   tbl <- topic_page$results |> tibble::as_tibble()
@@ -310,7 +321,7 @@ read_page <- function(level = c("topics", "subfields", "fields", "domains"), pag
 }
 
 openalex_level <- function(l) {
-  
+
   t <- read_page(level = l, page = 1)
   np <- ceiling(attr(t, "meta")$count / 200)
 
@@ -318,9 +329,9 @@ openalex_level <- function(l) {
   if (np > 1) {
     ts <- (2:np) |> map(\(x) read_page(level = l, page = x), .progress = TRUE)
   }
-  
+
   t |> bind_rows(map_dfr(ts, bind_rows))
-  
+
 }
 
 openalex_levels <- function() {
@@ -335,13 +346,13 @@ openalex_levels <- function() {
     four$subfield |> as_tibble() |> rename(id_subfield = id, subfield = display_name),
     four$field |> as_tibble() |> rename(id_field = id, field = display_name),
     four$domain |> as_tibble() |> rename(id_domain = id, domain = display_name)
-  ) |> 
+  ) |>
   mutate(across(contains("id_"), \(x) gsub("https://openalex.org/", "", x)))
 
 }
 
 #' Topics
-#' 
+#'
 #' Table of current topics, subfields, fields and domains used at OpenAlex
 #' @export
 openalex_topics <- function() {
