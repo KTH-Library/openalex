@@ -358,9 +358,9 @@ parse_work2 <- function(object) {
   various3 <- 
     fields3 |> map(bcbr) |> set_names(fields3)
 
-  datasets <- 
-    wide |> select(id, datasets) |> unnest(datasets) |> unnest(datasets) |> 
-      mutate(across(-contains("url"), \(x) gsub(re_ids, "", x)))
+#  datasets <- 
+#    wide |> select(id, datasets) |> unnest(datasets) |> unnest(datasets) |> 
+#      mutate(across(-contains("url"), \(x) gsub(re_ids, "", x)))
 
   fields4 <- c(
     "referenced_works",
@@ -479,7 +479,7 @@ parse_work2 <- function(object) {
   locations <-
     wide |> select(any_of(c("id", "locations"))) |> 
     unnest(any_of(c("locations"))) |> 
-    unnest_wider(any_of(c("locations"))) |> 
+    unnest_wider(any_of(c("locations")), names_sep = "_") |> 
     unnest_wider(any_of(c("source")), names_sep = "_") |> 
     #w$results |> unfw("locations") |>
     #unnest_wider(any_of("source"), names_sep = "_") |>
@@ -495,7 +495,7 @@ parse_work2 <- function(object) {
     list(authorships_affiliations = authorships_affiliations),
     list(authorships_authors = authorships_authors),
     list(authorships_institutions = authorships_institutions),
-    list(datasets = datasets),
+#    list(datasets = datasets),
     various, various2, various3, various4,
     list(
       primary_location = primary_location,

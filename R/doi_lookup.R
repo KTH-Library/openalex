@@ -31,9 +31,12 @@ doi_lookup_identifiers <- function(con, doi_filter) {
   }
 
   sql <-
-    paste0("from (from read_json_auto('",
+    paste0("from (from (from read_json_objects('",
     sprintf("https://api.openalex.org/works?filter=doi:%s&per-page=50&mailto=support@openalex.org", doi_filter),
-    "') select unnest(results) as r) select unnest(r.ids);")
+    "')) select ids: json_transform(unnest(json->'$.results[*].ids'),'", 
+    '{"openalex":"VARCHAR","doi":"VARCHAR","mag":"VARCHAR","pmid":"VARCHAR"}', "')) select ids.*;")
+  
+  #cat(sql)
 
   DBI::dbGetQuery(con, sql) |> as_tibble()
 }
