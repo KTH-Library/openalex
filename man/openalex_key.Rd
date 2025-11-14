@@ -24,7 +24,7 @@ Additional details...
 \url{https://docs.openalex.org/api-entities/works/filter-works#from_updated_date}
 }
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
  openalex_key("my_secret_api_key")
  openalex_key("")
 \dontshow{\}) # examplesIf}

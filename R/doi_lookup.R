@@ -90,6 +90,8 @@ openalex_doi_lookup <- function(dois, resolution = c("all", "identifiers")) {
 #' @export
 doi_lookup_to_duckdb <- function(dois, dest = NULL) {
 
+  z <- NULL
+  
   doi_chunks <- split_chunks_of_n(dois, 1000)
 
   walk(doi_chunks, \(x) {
