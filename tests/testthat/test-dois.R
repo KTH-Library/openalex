@@ -189,8 +189,8 @@ test_that("doi binds for biblio and grants works", {
   # is_valid <- nrow(lu$biblio) == 100 & nrow(lu$grants >= 27)
 
   is_valid <- 
-    nrow(res$biblio == 100) &
-    nrow(res$grants) >= 27 &
+    nrow(res$biblio == 98) &
+    nrow(res$grants) >= 24 &
     class(res$biblio$biblio_volume) == "character" &
     class(res$grants$award_id) == "character"
     

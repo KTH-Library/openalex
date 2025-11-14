@@ -30,10 +30,15 @@ doi_lookup_identifiers <- function(con, doi_filter) {
     on.exit(duckdb::dbDisconnect(con, shutdown = TRUE))
   }
 
+# from (from (from read_json_objects(printf('https://api.openalex.org/works?filter=doi:%s&per-page=50&mailto=support@openalex.org', '10.1121/1.4869090')) select * as r) select ids: json_transform(unnest(r->'$.results[*].ids'), '{"openalex":"VARCHAR","doi":"VARCHAR","mag":"VARCHAR","pmid":"VARCHAR"}')) select ids.*;
+
   sql <-
-    paste0("from (from read_json_auto('",
+    paste0("from (from (from read_json_objects('",
     sprintf("https://api.openalex.org/works?filter=doi:%s&per-page=50&mailto=support@openalex.org", doi_filter),
-    "') select unnest(results) as r) select unnest(r.ids);")
+    "')) select ids: json_transform(unnest(json->'$.results[*].ids'),'", 
+    '{"openalex":"VARCHAR","doi":"VARCHAR","mag":"VARCHAR","pmid":"VARCHAR"}', "')) select ids.*;")
+  
+  #cat(sql)
 
   DBI::dbGetQuery(con, sql) |> as_tibble()
 }
@@ -85,6 +90,8 @@ openalex_doi_lookup <- function(dois, resolution = c("all", "identifiers")) {
 #' @export
 doi_lookup_to_duckdb <- function(dois, dest = NULL) {
 
+  z <- NULL
+  
   doi_chunks <- split_chunks_of_n(dois, 1000)
 
   walk(doi_chunks, \(x) {
